@@ -23,6 +23,9 @@ import {
   StyleguidePage,
   TermsOfServicePage,
   TransactionPage,
+
+  TestPage,
+
 } from './containers';
 
 // routeConfiguration needs to initialize containers first
@@ -314,6 +317,15 @@ const routeConfiguration = () => {
       name: 'NotFoundPage',
       component: props => <NotFoundPage {...props} />,
     },
+
+    // add to 
+    {
+      path: '/test',
+      name: 'TestPage',
+      component: props => <TestPage {...props} />,
+      loadData: TestPage.loadData,
+    },
+
 
     // Do not change this path!
     //
