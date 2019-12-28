@@ -7,15 +7,15 @@ import config from '../../config';
 
 // ================ Action types ================ //
 
-export const SEARCH_LISTINGS_REQUEST = 'app/SearchPage/SEARCH_LISTINGS_REQUEST';
-export const SEARCH_LISTINGS_SUCCESS = 'app/SearchPage/SEARCH_LISTINGS_SUCCESS';
-export const SEARCH_LISTINGS_ERROR = 'app/SearchPage/SEARCH_LISTINGS_ERROR';
+export const TEST_LISTINGS_REQUEST = 'app/TestPage/TEST_LISTINGS_REQUEST';
+export const TEST_LISTINGS_SUCCESS = 'app/TestPage/TEST_LISTINGS_SUCCESS';
+export const TEST_LISTINGS_ERROR = 'app/TestPage/TEST_LISTINGS_ERROR';
 
-export const SEARCH_MAP_LISTINGS_REQUEST = 'app/SearchPage/SEARCH_MAP_LISTINGS_REQUEST';
-export const SEARCH_MAP_LISTINGS_SUCCESS = 'app/SearchPage/SEARCH_MAP_LISTINGS_SUCCESS';
-export const SEARCH_MAP_LISTINGS_ERROR = 'app/SearchPage/SEARCH_MAP_LISTINGS_ERROR';
+export const TEST_MAP_LISTINGS_REQUEST = 'app/TestPage/TEST_MAP_LISTINGS_REQUEST';
+export const TEST_MAP_LISTINGS_SUCCESS = 'app/TestPage/TEST_MAP_LISTINGS_SUCCESS';
+export const TEST_MAP_LISTINGS_ERROR = 'app/TestPage/TEST_MAP_LISTINGS_ERROR';
 
-export const SEARCH_MAP_SET_ACTIVE_LISTING = 'app/SearchPage/SEARCH_MAP_SET_ACTIVE_LISTING';
+export const TEST_MAP_SET_ACTIVE_LISTING = 'app/TestPage/TEST_MAP_SET_ACTIVE_LISTING';
 
 // ================ Reducer ================ //
 
@@ -32,9 +32,11 @@ const initialState = {
 const resultIds = data => data.data.map(l => l.id);
 
 const listingPageReducer = (state = initialState, action = {}) => {
+  console.log("reducer called", state, action);
+
   const { type, payload } = action;
   switch (type) {
-    case SEARCH_LISTINGS_REQUEST:
+    case TEST_LISTINGS_REQUEST:
       return {
         ...state,
         searchParams: payload.searchParams,
@@ -42,24 +44,24 @@ const listingPageReducer = (state = initialState, action = {}) => {
         searchMapListingIds: [],
         searchListingsError: null,
       };
-    case SEARCH_LISTINGS_SUCCESS:
+    case TEST_LISTINGS_SUCCESS:
       return {
         ...state,
         currentPageResultIds: resultIds(payload.data),
         pagination: payload.data.meta,
         searchInProgress: false,
       };
-    case SEARCH_LISTINGS_ERROR:
+    case TEST_LISTINGS_ERROR:
       // eslint-disable-next-line no-console
       console.error(payload);
       return { ...state, searchInProgress: false, searchListingsError: payload };
 
-    case SEARCH_MAP_LISTINGS_REQUEST:
+    case TEST_MAP_LISTINGS_REQUEST:
       return {
         ...state,
         searchMapListingsError: null,
       };
-    case SEARCH_MAP_LISTINGS_SUCCESS: {
+    case TEST_MAP_LISTINGS_SUCCESS: {
       const searchMapListingIds = unionWith(
         state.searchMapListingIds,
         resultIds(payload.data),
@@ -70,12 +72,12 @@ const listingPageReducer = (state = initialState, action = {}) => {
         searchMapListingIds,
       };
     }
-    case SEARCH_MAP_LISTINGS_ERROR:
+    case TEST_MAP_LISTINGS_ERROR:
       // eslint-disable-next-line no-console
       console.error(payload);
       return { ...state, searchMapListingsError: payload };
 
-    case SEARCH_MAP_SET_ACTIVE_LISTING:
+    case TEST_MAP_SET_ACTIVE_LISTING:
       return {
         ...state,
         activeListingId: payload,
@@ -90,35 +92,36 @@ export default listingPageReducer;
 // ================ Action creators ================ //
 
 export const searchListingsRequest = searchParams => ({
-  type: SEARCH_LISTINGS_REQUEST,
+  type: TEST_LISTINGS_REQUEST,
   payload: { searchParams },
 });
 
 export const searchListingsSuccess = response => ({
-  type: SEARCH_LISTINGS_SUCCESS,
+  type: TEST_LISTINGS_SUCCESS,
   payload: { data: response.data },
 });
 
 export const searchListingsError = e => ({
-  type: SEARCH_LISTINGS_ERROR,
+  type: TEST_LISTINGS_ERROR,
   error: true,
   payload: e,
 });
 
-export const searchMapListingsRequest = () => ({ type: SEARCH_MAP_LISTINGS_REQUEST });
+export const searchMapListingsRequest = () => ({ type: TEST_MAP_LISTINGS_REQUEST });
 
 export const searchMapListingsSuccess = response => ({
-  type: SEARCH_MAP_LISTINGS_SUCCESS,
+  type: TEST_MAP_LISTINGS_SUCCESS,
   payload: { data: response.data },
 });
 
 export const searchMapListingsError = e => ({
-  type: SEARCH_MAP_LISTINGS_ERROR,
+  type: TEST_MAP_LISTINGS_ERROR,
   error: true,
   payload: e,
 });
 
 export const searchListings = searchParams => (dispatch, getState, sdk) => {
+  console.log("searchListings called");
   dispatch(searchListingsRequest(searchParams));
 
   const priceSearchParams = priceParam => {
@@ -164,6 +167,7 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
   return sdk.listings
     .query(params)
     .then(response => {
+      console.log("searchListings queary succeeded");
       dispatch(addMarketplaceEntities(response));
       dispatch(searchListingsSuccess(response));
       return response;
@@ -175,11 +179,12 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
 };
 
 export const setActiveListing = listingId => ({
-  type: SEARCH_MAP_SET_ACTIVE_LISTING,
+  type: TEST_MAP_SET_ACTIVE_LISTING,
   payload: listingId,
 });
 
 export const searchMapListings = searchParams => (dispatch, getState, sdk) => {
+  console.log("searchMapListings called");
   dispatch(searchMapListingsRequest(searchParams));
 
   const { perPage, ...rest } = searchParams;
@@ -191,6 +196,7 @@ export const searchMapListings = searchParams => (dispatch, getState, sdk) => {
   return sdk.listings
     .query(params)
     .then(response => {
+      console.log("searchMapListings queary succeeded");
       dispatch(addMarketplaceEntities(response));
       dispatch(searchMapListingsSuccess(response));
       return response;

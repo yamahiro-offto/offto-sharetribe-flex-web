@@ -10,7 +10,7 @@
     since browsers support CSS Properties already.
  */
 
-  --SearchPage_containerHeight: calc(100vh - var(--topbarHeightDesktop));
+  --TestPage_containerHeight: calc(100vh - var(--topbarHeightDesktop));
 }
 
 /* Can be given to Topbar when a modal is opened
@@ -38,7 +38,7 @@
   @media (--viewportMedium) {
     position: relative;
     padding-top: var(--topbarHeightDesktop);
-    min-height: var(--SearchPage_containerHeight);
+    min-height: var(--TestPage_containerHeight);
   }
 }
 
@@ -154,7 +154,7 @@
 
     /* Fixed content needs width relative to viewport */
     width: 50vw;
-    height: var(--SearchPage_containerHeight);
+    height: var(--TestPage_containerHeight);
   }
 
   @media (--viewportLarge) {

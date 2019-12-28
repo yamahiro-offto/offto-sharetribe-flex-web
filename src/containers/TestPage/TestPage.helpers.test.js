@@ -3,7 +3,7 @@ import {
   validFilterParams,
   validURLParamsForExtendedData,
   pickSearchParamsOnly,
-} from './SearchPage.helpers.js';
+} from './TestPage.helpers.js';
 
 const urlParams = {
   pub_category: 'smoke',
@@ -21,7 +21,7 @@ const filters = {
   },
 };
 
-describe('SearchPage.helpers', () => {
+describe('TestPage.helpers', () => {
   describe('validURLParamForExtendedData', () => {
     it('returns a valid parameter', () => {
       const validParam = validURLParamForExtendedData('pub_category', 'smoke', filters);

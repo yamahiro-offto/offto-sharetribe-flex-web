@@ -10,9 +10,9 @@ import {
   SearchFiltersMobile,
   SearchFiltersPanel,
 } from '../../components';
-import { validFilterParams } from './SearchPage.helpers';
+import { validFilterParams } from './TestPage.helpers';
 
-import css from './SearchPage.css';
+import css from './TestPage.css';
 
 class MainPanel extends Component {
   constructor(props) {
@@ -121,7 +121,7 @@ class MainPanel extends Component {
           >
             {searchListingsError ? (
               <h2 className={css.error}>
-                <FormattedMessage id="SearchPage.searchError" />
+                <FormattedMessage id="TestPage.searchError" />
               </h2>
             ) : null}
             <SearchResultsPanel

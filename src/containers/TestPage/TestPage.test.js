@@ -2,7 +2,7 @@ import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { fakeIntl } from '../../util/test-data';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { SearchPageComponent } from './SearchPage';
+import { TestPageComponent } from './TestPage';
 import reducer, {
   ADD_FILTER,
   LOAD_LISTINGS,
@@ -11,12 +11,12 @@ import reducer, {
   initialState,
   loadListings,
   watchLoadListings,
-} from './SearchPage.duck';
+} from './TestPage.duck';
 
 const { LatLng } = sdkTypes;
 const noop = () => null;
 
-describe('SearchPageComponent', () => {
+describe('TestPageComponent', () => {
   it('matches snapshot', () => {
     const props = {
       location: { search: '' },
@@ -45,7 +45,7 @@ describe('SearchPageComponent', () => {
       categories: [{ key: 'cat1', label: 'Cat 1' }, { key: 'cat2', label: 'Cat 2' }],
       amenities: [{ key: 'dog1', label: 'Dog 1' }, { key: 'dog2', label: 'Dog 2' }],
     };
-    const tree = renderShallow(<SearchPageComponent {...props} />);
+    const tree = renderShallow(<TestPageComponent {...props} />);
     expect(tree).toMatchSnapshot();
   });
 });

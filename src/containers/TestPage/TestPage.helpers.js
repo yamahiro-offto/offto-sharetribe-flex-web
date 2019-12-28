@@ -114,10 +114,10 @@ export const createSearchResultSchema = (listings, address, intl) => {
   // http://schema.org
   // We are using JSON-LD format
   const siteTitle = config.siteTitle;
-  const searchAddress = address || intl.formatMessage({ id: 'SearchPage.schemaMapSearch' });
-  const schemaDescription = intl.formatMessage({ id: 'SearchPage.schemaDescription' });
+  const searchAddress = address || intl.formatMessage({ id: 'TestPage.schemaMapSearch' });
+  const schemaDescription = intl.formatMessage({ id: 'TestPage.schemaDescription' });
   const schemaTitle = intl.formatMessage(
-    { id: 'SearchPage.schemaTitle' },
+    { id: 'TestPage.schemaTitle' },
     { searchAddress, siteTitle }
   );
 

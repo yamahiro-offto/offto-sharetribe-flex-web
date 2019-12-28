@@ -1,4 +1,4 @@
-# SearchPage
+# TestPage
 
 > **Note:** _category_ and _amenities_ filters are not actually filtering anything by default. They
 > are tied to [extended data](https://www.sharetribe.com/docs/references/extended-data/), which is
@@ -9,7 +9,7 @@
 
 ## Structure
 
-SearchPage component has roughly 3 sections inside its layout: Topbar, MainPanel (for results and
+TestPage component has roughly 3 sections inside its layout: Topbar, MainPanel (for results and
 filters), and Map
 
 So, rough JSX presentation is something like:
@@ -53,7 +53,7 @@ On the mobile layout, all the filters are shown in separate mobile filters panel
 
 ## SearchMap
 
-SearchMap listens to 'idle' event and SearchPage function `onIndle` can create a new location search
+SearchMap listens to 'idle' event and TestPage function `onIndle` can create a new location search
 if SearchMap's bounds have changed enough.
 
 ## Other things to consider
@@ -64,5 +64,5 @@ See the [filters documentation](../../../docs/search-filters.md).
 
 ### SeachPage schema / SEO
 
-Schema is created inside `createSearchResultSchema` in _SearchPage.helpers.js_. It needs listings
+Schema is created inside `createSearchResultSchema` in _TestPage.helpers.js_. It needs listings
 and address to make meaningful JSON-LD presentation for search engines.

@@ -17,15 +17,15 @@ import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck
 import { SearchMap, ModalInMobile, Page } from '../../components';
 import { TopbarContainer } from '../../containers';
 
-import { searchListings, searchMapListings, setActiveListing } from './SearchPage.duck';
+import { searchListings, searchMapListings, setActiveListing } from './TestPage.duck';
 import {
   pickSearchParamsOnly,
   validURLParamsForExtendedData,
   validFilterParams,
   createSearchResultSchema,
-} from './SearchPage.helpers';
+} from './TestPage.helpers';
 import MainPanel from './MainPanel';
-import css from './SearchPage.css';
+import css from './TestPage.css';
 
 // Pagination page size might need to be dynamic on responsive page layouts
 // Current design has max 3 columns 12 is divisible by 2 and 3
@@ -34,8 +34,9 @@ const RESULT_PAGE_SIZE = 24;
 const MODAL_BREAKPOINT = 768; // Search is in modal on mobile layout
 const SEARCH_WITH_MAP_DEBOUNCE = 300; // Little bit of debounce before search is initiated.
 
-export class SearchPageComponent extends Component {
+export class TestPageComponent extends Component {
   constructor(props) {
+    console.log("TestPageComponent construct");
     super(props);
 
     this.state = {
@@ -52,6 +53,8 @@ export class SearchPageComponent extends Component {
   }
 
   filters() {
+    console.log("filters called");
+
     const {
       categories,
       amenities,
@@ -95,18 +98,18 @@ export class SearchPageComponent extends Component {
     const { viewportBounds, viewportCenter } = data;
 
     const routes = routeConfiguration();
-    const searchPagePath = pathByRouteName('SearchPage', routes);
+    const TestPagePath = pathByRouteName('TestPage', routes);
     const currentPath =
       typeof window !== 'undefined' && window.location && window.location.pathname;
 
-    // When using the ReusableMapContainer onMapMoveEnd can fire from other pages than SearchPage too
-    const isSearchPage = currentPath === searchPagePath;
+    // When using the ReusableMapContainer onMapMoveEnd can fire from other pages than TestPage too
+    const isTestPage = currentPath === TestPagePath;
 
     // If mapSearch url param is given
     // or original location search is rendered once,
     // we start to react to "mapmoveend" events by generating new searches
     // (i.e. 'moveend' event in Mapbox and 'bounds_changed' in Google Maps)
-    if (viewportBoundsChanged && isSearchPage) {
+    if (viewportBoundsChanged && isTestPage) {
       const { history, location } = this.props;
 
       // parse query parameters, including a custom attribute named category
@@ -126,7 +129,7 @@ export class SearchPageComponent extends Component {
         ...validFilterParams(rest, this.filters()),
       };
 
-      history.push(createResourceLocatorString('SearchPage', routes, {}, searchParams));
+      history.push(createResourceLocatorString('TestPage', routes, {}, searchParams));
     }
   }
 
@@ -143,6 +146,8 @@ export class SearchPageComponent extends Component {
   }
 
   render() {
+    console.log("render");
+
     const {
       intl,
       listings,
@@ -207,7 +212,7 @@ export class SearchPageComponent extends Component {
       >
         <TopbarContainer
           className={topbarClasses}
-          currentPage="SearchPage"
+          currentPage="TestPage"
           currentSearchParams={urlQueryParams}
         />
         <div className={css.container}>
@@ -235,7 +240,7 @@ export class SearchPageComponent extends Component {
           />
           <ModalInMobile
             className={css.mapPanel}
-            id="SearchPage.map"
+            id="TestPage.map"
             isModalOpenOnMobile={this.state.isSearchMapOpenOnMobile}
             onClose={() => this.setState({ isSearchMapOpenOnMobile: false })}
             showAsModalMaxWidth={MODAL_BREAKPOINT}
@@ -253,7 +258,7 @@ export class SearchPageComponent extends Component {
                   listings={mapListings || []}
                   onMapMoveEnd={this.onMapMoveEnd}
                   onCloseAsModal={() => {
-                    onManageDisableScrolling('SearchPage.map', false);
+                    onManageDisableScrolling('TestPage.map', false);
                   }}
                   messages={intl.messages}
                 />
@@ -267,7 +272,7 @@ export class SearchPageComponent extends Component {
   }
 }
 
-SearchPageComponent.defaultProps = {
+TestPageComponent.defaultProps = {
   listings: [],
   mapListings: [],
   pagination: null,
@@ -282,7 +287,7 @@ SearchPageComponent.defaultProps = {
   activeListingId: null,
 };
 
-SearchPageComponent.propTypes = {
+TestPageComponent.propTypes = {
   listings: array,
   mapListings: array,
   onActivateListing: func.isRequired,
@@ -316,6 +321,8 @@ SearchPageComponent.propTypes = {
 };
 
 const mapStateToProps = state => {
+  console.log("mapDispatchToProps");
+  
   const {
     currentPageResultIds,
     pagination,
@@ -324,7 +331,7 @@ const mapStateToProps = state => {
     searchParams,
     searchMapListingIds,
     activeListingId,
-  } = state.SearchPage;
+  } = state.TestPage;
   const pageListings = getListingsById(state, currentPageResultIds);
   const mapListings = getListingsById(
     state,
@@ -356,16 +363,17 @@ const mapDispatchToProps = dispatch => ({
 // lifecycle hook.
 //
 // See: https://github.com/ReactTraining/react-router/issues/4671
-const SearchPage = compose(
+const TestPage = compose(
   withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(SearchPageComponent);
+)(TestPageComponent);
 
-SearchPage.loadData = (params, search) => {
+TestPage.loadData = (params, search) => {
+  console.log("loadData called");
   const queryParams = parse(search, {
     latlng: ['origin'],
     latlngBounds: ['bounds'],
@@ -385,4 +393,4 @@ SearchPage.loadData = (params, search) => {
   });
 };
 
-export default SearchPage;
+export default TestPage;

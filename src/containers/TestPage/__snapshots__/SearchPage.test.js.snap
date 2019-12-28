@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchPageComponent matches snapshot 1`] = `
+exports[`TestPageComponent matches snapshot 1`] = `
 <Page
-  description="SearchPage.schemaDescription"
+  description="TestPage.schemaDescription"
   schema={
     Object {
       "@context": "http://schema.org",
       "@type": "SearchResultsPage",
-      "description": "SearchPage.schemaDescription",
+      "description": "TestPage.schemaDescription",
       "mainEntity": Array [
-        "{\\"@type\\":\\"ItemList\\",\\"name\\":\\"SearchPage.schemaMapSearch\\",\\"itemListOrder\\":\\"http://schema.org/ItemListOrderAscending\\",\\"itemListElement\\":[]}",
+        "{\\"@type\\":\\"ItemList\\",\\"name\\":\\"TestPage.schemaMapSearch\\",\\"itemListOrder\\":\\"http://schema.org/ItemListOrderAscending\\",\\"itemListElement\\":[]}",
       ],
-      "name": "SearchPage.schemaTitle",
+      "name": "TestPage.schemaTitle",
     }
   }
   scrollingDisabled={false}
-  title="SearchPage.schemaTitle"
+  title="TestPage.schemaTitle"
 >
   <withRouter(Connect(TopbarContainerComponent))
-    currentPage="SearchPage"
+    currentPage="TestPage"
     currentSearchParams={Object {}}
   />
   <div>
@@ -99,7 +99,7 @@ exports[`SearchPageComponent matches snapshot 1`] = `
       urlQueryParams={Object {}}
     />
     <withViewport(ModalInMobileComponent)
-      id="SearchPage.map"
+      id="TestPage.map"
       isModalOpenOnMobile={false}
       onClose={[Function]}
       onManageDisableScrolling={[Function]}
