@@ -270,7 +270,9 @@ const infoCardComponent = (
   createURLToListing,
   mapComponentRefreshToken
 ) => {
-  const listingsArray = Array.isArray(infoCardOpen) ? infoCardOpen : [infoCardOpen];
+  console.log("infoCardOpen", infoCardOpen);
+  const shop = infoCardOpen;
+  const listingsArray = shop.listings;
 
   if (!infoCardOpen) {
     return null;
@@ -442,15 +444,6 @@ class SearchMapWithMapbox extends Component {
 
     if (this.map) {
       // Create markers out of price labels and grouped labels
-      const labels_ = priceLabelsInLocations(
-        listings,
-        activeListingId,
-        infoCardOpen,
-        onListingClicked,
-        mapComponentRefreshToken
-      );
-
-      // TODO: revise
       const labels = shopLabelsInLocations(
         listings,
         activeListingId,
