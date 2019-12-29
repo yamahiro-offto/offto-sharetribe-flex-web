@@ -197,14 +197,26 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
         userResponses.forEach(userResponse => {
           const authorId = userResponse.data.data.id.uuid;
 
+          // add AuthorInfo to data(listing)
           listingsResponse.data.data
             .filter(listing => {
               // listings whose author is the same as user-show response
-              return listing.relationships.author.data.id.uuid == authorId;
+              return listing.relationships.author.data.id.uuid === authorId;
             })
             .forEach(listing => {
               // set AuthorInfo to data in listings
               listing.relationships.author.data = userResponse.data.data;
+            });
+
+          // add AuthorInfo to included(user)
+          listingsResponse.data.included
+            .filter(entity => {
+              // listings whose author is the same as user-show response
+              return entity.type === 'user' && entity.id.uuid === authorId;
+            })
+            .forEach(entity => {
+              // set AuthorInfo to data in listings
+              entity.attributes = userResponse.data.data.attributes;
             });
         });
 
