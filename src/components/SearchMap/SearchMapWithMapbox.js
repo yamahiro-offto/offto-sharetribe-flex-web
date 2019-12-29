@@ -198,6 +198,78 @@ const priceLabelsInLocations = (
 };
 
 /**
+ * Return price labels grouped by listing locations.
+ * This is a helper function for SearchMapWithMapbox component.
+ */
+const shopLabelsInLocations = (
+  listings,
+  activeListingId,
+  infoCardOpen,
+  onListingClicked,
+  mapComponentRefreshToken
+) => {
+  const listingArraysInLocations = reducedToArray(groupedByCoordinates(listings));
+  const priceLabels = listingArraysInLocations.reverse().map(listingArr => {
+    const isActive = activeListingId
+      ? !!listingArr.find(l => activeListingId.uuid === l.id.uuid)
+      : false;
+
+    // If location contains only one listing, print price label
+    if (listingArr.length === 1) {
+      const listing = listingArr[0];
+      const infoCardOpenIds = Array.isArray(infoCardOpen)
+        ? infoCardOpen.map(l => l.id.uuid)
+        : infoCardOpen
+        ? [infoCardOpen.id.uuid]
+        : [];
+
+      // if the listing is open, don't print price label
+      if (infoCardOpen != null && infoCardOpenIds.includes(listing.id.uuid)) {
+        return null;
+      }
+
+      // Explicit type change to object literal for Google OverlayViews (geolocation is SDK type)
+      const { geolocation } = listing.attributes;
+
+      const key = listing.id.uuid;
+      return {
+        markerId: `price_${key}`,
+        location: geolocation,
+        type: 'price',
+        componentProps: {
+          key,
+          isActive,
+          className: LABEL_HANDLE,
+          listing,
+          onListingClicked,
+          mapComponentRefreshToken,
+        },
+      };
+    }
+
+    // Explicit type change to object literal for Google OverlayViews (geolocation is SDK type)
+    const firstListing = ensureListing(listingArr[0]);
+    const geolocation = firstListing.attributes.geolocation;
+
+    const key = listingArr[0].id.uuid;
+    return {
+      markerId: `group_${key}`,
+      location: geolocation,
+      type: 'group',
+      componentProps: {
+        key,
+        isActive,
+        className: LABEL_HANDLE,
+        listings: listingArr,
+        onListingClicked,
+        mapComponentRefreshToken,
+      },
+    };
+  });
+  return priceLabels;
+};
+
+/**
  * Return info card. This is a helper function for SearchMapWithMapbox component.
  */
 const infoCardComponent = (
