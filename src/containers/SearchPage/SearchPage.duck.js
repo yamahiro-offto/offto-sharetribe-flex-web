@@ -4,6 +4,8 @@ import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { convertUnitToSubUnit, unitDivisor } from '../../util/currency';
 import { formatDateStringToUTC, getExclusiveEndDate } from '../../util/dates';
 import config from '../../config';
+import { resolve } from 'url';
+import { rejects } from 'assert';
 
 // ================ Action types ================ //
 
@@ -161,17 +163,61 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
     per_page: perPage,
   };
 
-  return sdk.listings
-    .query(params)
-    .then(response => {
-      dispatch(addMarketplaceEntities(response));
-      dispatch(searchListingsSuccess(response));
-      return response;
-    })
-    .catch(e => {
-      dispatch(searchListingsError(storableError(e)));
-      throw e;
-    });
+  return (
+    sdk.listings
+      .query(params)
+      // when listings-query APIs executed, get call user-show APIs
+      .then(response => {
+        // rename response to distinguish two types of responses
+        const listingsResponse = response;
+        console.log('listingsResponse', listingsResponse);
+
+        // authorIds of each listing
+        const authorIds = listingsResponse.data.data.map(listing => {
+          return listing.relationships.author.data.id.uuid; // authorId
+        });
+        console.log('authorIds', authorIds);
+
+        // make SET to reduce the number of times to call SDK(API)
+        const authorIdSet = Array.from(new Set(authorIds));
+
+        // call SDK to get AuthorInfo
+        const userResponses = authorIdSet.map(authorId => {
+          return sdk.users.show({ id: authorId });
+        });
+
+        // return all the resonses(both of listings-query-API and user-show-APIs)
+        return Promise.all([listingsResponse, ...userResponses]);
+      })
+      // when user-show APIs executed, set AuthorInfo to data in listings
+      .then(responses => {
+        // set authorInfo to corresponding listingsResponses
+        const [listingsResponse, ...userResponses] = responses;
+
+        userResponses.forEach(userResponse => {
+          const authorId = userResponse.data.data.id.uuid;
+
+          listingsResponse.data.data
+            .filter(listing => {
+              // listings whose author is the same as user-show response
+              return listing.relationships.author.data.id.uuid == authorId;
+            })
+            .forEach(listing => {
+              // set AuthorInfo to data in listings
+              listing.relationships.author.data = userResponse.data.data;
+            });
+        });
+
+        // call action-creator, and dispatch the action to store
+        dispatch(addMarketplaceEntities(listingsResponse));
+        dispatch(searchListingsSuccess(listingsResponse));
+        return listingsResponse;
+      })
+      .catch(e => {
+        dispatch(searchListingsError(storableError(e)));
+        throw e;
+      })
+  );
 };
 
 export const setActiveListing = listingId => ({
