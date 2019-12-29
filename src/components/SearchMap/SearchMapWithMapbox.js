@@ -9,7 +9,12 @@ import { parse } from '../../util/urlHelpers';
 import { propTypes } from '../../util/types';
 import { ensureListing } from '../../util/data';
 import { sdkBoundsToFixedCoordinates, hasSameSDKBounds } from '../../util/maps';
-import { SearchMapInfoCard, SearchMapPriceLabel, SearchMapGroupLabel } from '../../components';
+import {
+  SearchMapInfoCard,
+  SearchMapPriceLabel,
+  SearchMapGroupLabel,
+  SearchMapShopLabel,
+} from '../../components';
 
 import { groupedByCoordinates, reducedToArray } from './SearchMap.helpers.js';
 import css from './SearchMapWithMapbox.css';
@@ -198,7 +203,7 @@ const priceLabelsInLocations = (
 };
 
 /**
- * Return price labels grouped by listing locations.
+ * Return shop labels grouped by listing author(= shop).
  * This is a helper function for SearchMapWithMapbox component.
  */
 const shopLabelsInLocations = (
@@ -208,65 +213,52 @@ const shopLabelsInLocations = (
   onListingClicked,
   mapComponentRefreshToken
 ) => {
-  const listingArraysInLocations = reducedToArray(groupedByCoordinates(listings));
-  const priceLabels = listingArraysInLocations.reverse().map(listingArr => {
+  // extract shops(authors) in listings
+  const shops = listings.reduce((shops, listing) => {
+    const authorId = listing.author.id.uuid;
+
+    // init shops[authorId] if not exists
+    shops[authorId] = shops[authorId] || {
+      author: listing.author, // this should be the same among corresponding listings
+      listings: [],
+    };
+
+    // add listing to the corresponding shop
+    shops[authorId].listings = [...shops[authorId].listings, listing];
+    return shops;
+  }, {});
+  console.log('shops', shops);
+
+  // convert shop-Info to Labels
+  const shopLabels = Object.keys(shops).sort().map(authorId => {
+    const shop = shops[authorId];
+    const { geolocation } = shop.listings[0].attributes;
+    const key = shop.author.id.uuid;
+
+    // shop is active when active-listing-id is in shop's listings
     const isActive = activeListingId
-      ? !!listingArr.find(l => activeListingId.uuid === l.id.uuid)
+      ? !!shop.listings.find(l => activeListingId.uuid === l.id.uuid)
       : false;
 
-    // If location contains only one listing, print price label
-    if (listingArr.length === 1) {
-      const listing = listingArr[0];
-      const infoCardOpenIds = Array.isArray(infoCardOpen)
-        ? infoCardOpen.map(l => l.id.uuid)
-        : infoCardOpen
-        ? [infoCardOpen.id.uuid]
-        : [];
-
-      // if the listing is open, don't print price label
-      if (infoCardOpen != null && infoCardOpenIds.includes(listing.id.uuid)) {
-        return null;
-      }
-
-      // Explicit type change to object literal for Google OverlayViews (geolocation is SDK type)
-      const { geolocation } = listing.attributes;
-
-      const key = listing.id.uuid;
-      return {
-        markerId: `price_${key}`,
-        location: geolocation,
-        type: 'price',
-        componentProps: {
-          key,
-          isActive,
-          className: LABEL_HANDLE,
-          listing,
-          onListingClicked,
-          mapComponentRefreshToken,
-        },
-      };
-    }
-
-    // Explicit type change to object literal for Google OverlayViews (geolocation is SDK type)
-    const firstListing = ensureListing(listingArr[0]);
-    const geolocation = firstListing.attributes.geolocation;
-
-    const key = listingArr[0].id.uuid;
-    return {
-      markerId: `group_${key}`,
+    const shopLabel = {
+      markerId: `shop_${authorId}`,
       location: geolocation,
-      type: 'group',
+      type: 'shop',
       componentProps: {
         key,
         isActive,
         className: LABEL_HANDLE,
-        listings: listingArr,
+        shop,
         onListingClicked,
         mapComponentRefreshToken,
       },
     };
+
+    return shopLabel;
   });
-  return priceLabels;
+  console.log('shopLabels', shopLabels);
+
+  return shopLabels;
 };
 
 /**
@@ -450,7 +442,16 @@ class SearchMapWithMapbox extends Component {
 
     if (this.map) {
       // Create markers out of price labels and grouped labels
-      const labels = priceLabelsInLocations(
+      const labels_ = priceLabelsInLocations(
+        listings,
+        activeListingId,
+        infoCardOpen,
+        onListingClicked,
+        mapComponentRefreshToken
+      );
+
+      // TODO: revise
+      const labels = shopLabelsInLocations(
         listings,
         activeListingId,
         infoCardOpen,
@@ -549,6 +550,11 @@ class SearchMapWithMapbox extends Component {
           } else if (isMapReadyForMarkers && m.type === 'group') {
             return ReactDOM.createPortal(
               <SearchMapGroupLabel {...m.componentProps} />,
+              portalDOMContainer
+            );
+          } else if (isMapReadyForMarkers && m.type === 'shop') {
+            return ReactDOM.createPortal(
+              <SearchMapShopLabel {...m.componentProps} />,
               portalDOMContainer
             );
           }
