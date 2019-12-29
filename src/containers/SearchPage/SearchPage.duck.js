@@ -4,8 +4,6 @@ import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { convertUnitToSubUnit, unitDivisor } from '../../util/currency';
 import { formatDateStringToUTC, getExclusiveEndDate } from '../../util/dates';
 import config from '../../config';
-import { resolve } from 'url';
-import { rejects } from 'assert';
 
 // ================ Action types ================ //
 
@@ -189,7 +187,7 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
         // return all the resonses(both of listings-query-API and user-show-APIs)
         return Promise.all([listingsResponse, ...userResponses]);
       })
-      // when user-show APIs executed, set AuthorInfo to data in listings
+      // when user-show APIs executed, set AuthorInfo to data in listingsRespose
       .then(responses => {
         // set authorInfo to corresponding listingsResponses
         const [listingsResponse, ...userResponses] = responses;
