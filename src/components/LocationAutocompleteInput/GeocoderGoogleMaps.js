@@ -45,6 +45,7 @@ class GeocoderGoogleMaps {
    * only relevant for the `getPlaceDetails` function below.
    */
   getPlacePredictions(search) {
+    console.log('search', search);
     const limitCountriesMaybe = config.maps.search.countryLimit
       ? {
           componentRestrictions: {
@@ -55,6 +56,7 @@ class GeocoderGoogleMaps {
 
     return getPlacePredictions(search, this.getSessionToken(), limitCountriesMaybe).then(
       results => {
+        console.log('results', results);
         return {
           search,
           predictions: results.predictions,
