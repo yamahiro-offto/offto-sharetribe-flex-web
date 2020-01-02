@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { clearCurrentUser, fetchCurrentUser } from './user.duck';
+import { USER_PUBLICDATA_ATTRIBUTES } from './user.duck';
 import { storableError } from '../util/errors';
 import * as log from '../util/log';
 
@@ -166,7 +167,7 @@ export const logout = () => (dispatch, getState, sdk) => {
     .catch(e => dispatch(logoutError(storableError(e))));
 };
 
-export const signup = params => (dispatch, getState, sdk) => {
+export const signup = params => (dispatch, getState, sdk, isSignupShop) => {
   if (authenticationInProgress(getState())) {
     return Promise.reject(new Error('Login or logout already in progress'));
   }
@@ -176,6 +177,11 @@ export const signup = params => (dispatch, getState, sdk) => {
   const createUserParams = isEmpty(rest)
     ? { email, password, firstName, lastName }
     : { email, password, firstName, lastName, protectedData: { ...rest } };
+
+  // add pubilcData to distinguish shop-user from costomer-user 
+  createUserParams.publicData = isSignupShop
+    ? { [USER_PUBLICDATA_ATTRIBUTES.TYPE.name]: USER_PUBLICDATA_ATTRIBUTES.TYPE.value.SHOP }
+    : { [USER_PUBLICDATA_ATTRIBUTES.TYPE.name]: USER_PUBLICDATA_ATTRIBUTES.TYPE.value.CUSTOMER }
 
   // We must login the user if signup succeeds since the API doesn't
   // do that automatically.
@@ -191,4 +197,9 @@ export const signup = params => (dispatch, getState, sdk) => {
         lastName: params.lastName,
       });
     });
+};
+
+export const signupShop = params => (dispatch, getState, sdk) => {
+  const isSignupShop = true;
+  signup(params)(dispatch, getState, sdk, isSignupShop);
 };
