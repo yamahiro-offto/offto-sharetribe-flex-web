@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { fakeIntl } from '../../util/test-data';
-import { AuthenticationPageComponent } from './AuthenticationPage';
+import { AuthenticationShopPageComponent } from './AuthenticationShopPage';
 
 const noop = () => null;
 
-describe('AuthenticationPageComponent', () => {
+describe('AuthenticationShopPageComponent', () => {
   it('matches snapshot', () => {
     const props = {
       history: { push: noop },
@@ -23,7 +23,7 @@ describe('AuthenticationPageComponent', () => {
       sendVerificationEmailInProgress: false,
       onResendVerificationEmail: noop,
     };
-    const tree = renderShallow(<AuthenticationPageComponent {...props} />);
+    const tree = renderShallow(<AuthenticationShopPageComponent {...props} />);
     expect(tree).toMatchSnapshot();
   });
 });

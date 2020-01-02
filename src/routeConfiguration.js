@@ -2,6 +2,7 @@ import React from 'react';
 import {
   AboutPage,
   AuthenticationPage,
+  AuthenticationShopPage,
   CheckoutPage,
   ContactDetailsPage,
   EditListingPage,
@@ -168,6 +169,11 @@ const routeConfiguration = () => {
       path: '/signup',
       name: 'SignupPage',
       component: props => <AuthenticationPage {...props} tab="signup" />,
+    },
+    {
+      path: '/signup-shop',
+      name: 'SignupShopPage',
+      component: props => <AuthenticationShopPage {...props} tab="signup" />,
     },
     {
       path: '/recover-password',

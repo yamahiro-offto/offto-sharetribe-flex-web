@@ -35,9 +35,9 @@ import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { sendVerificationEmail } from '../../ducks/user.duck';
 import { manageDisableScrolling } from '../../ducks/UI.duck';
 
-import css from './AuthenticationPage.css';
+import css from './AuthenticationShopPage.css';
 
-export class AuthenticationPageComponent extends Component {
+export class AuthenticationShopPageComponent extends Component {
   constructor(props) {
     super(props);
     this.state = { tosModalOpen: false };
@@ -81,16 +81,16 @@ export class AuthenticationPageComponent extends Component {
 
     const loginErrorMessage = (
       <div className={css.error}>
-        <FormattedMessage id="AuthenticationPage.loginFailed" />
+        <FormattedMessage id="AuthenticationShopPage.loginFailed" />
       </div>
     );
 
     const signupErrorMessage = (
       <div className={css.error}>
         {isSignupEmailTakenError(signupError) ? (
-          <FormattedMessage id="AuthenticationPage.signupFailedEmailAlreadyTaken" />
+          <FormattedMessage id="AuthenticationShopPage.signupFailedEmailAlreadyTaken" />
         ) : (
-          <FormattedMessage id="AuthenticationPage.signupFailed" />
+          <FormattedMessage id="AuthenticationShopPage.signupFailed" />
         )}
       </div>
     );
@@ -107,7 +107,7 @@ export class AuthenticationPageComponent extends Component {
       {
         text: (
           <h1 className={css.tab}>
-            <FormattedMessage id="AuthenticationPage.signupLinkText" />
+            <FormattedMessage id="AuthenticationShopPage.signupLinkText" />
           </h1>
         ),
         selected: !isLogin,
@@ -119,7 +119,7 @@ export class AuthenticationPageComponent extends Component {
       {
         text: (
           <h1 className={css.tab}>
-            <FormattedMessage id="AuthenticationPage.loginLinkText" />
+            <FormattedMessage id="AuthenticationShopPage.loginLinkText" />
           </h1>
         ),
         selected: isLogin,
@@ -158,20 +158,20 @@ export class AuthenticationPageComponent extends Component {
 
     const resendEmailLink = (
       <InlineTextButton rootClassName={css.modalHelperLink} onClick={onResendVerificationEmail}>
-        <FormattedMessage id="AuthenticationPage.resendEmailLinkText" />
+        <FormattedMessage id="AuthenticationShopPage.resendEmailLinkText" />
       </InlineTextButton>
     );
     const fixEmailLink = (
       <NamedLink className={css.modalHelperLink} name="ContactDetailsPage">
-        <FormattedMessage id="AuthenticationPage.fixEmailLinkText" />
+        <FormattedMessage id="AuthenticationShopPage.fixEmailLinkText" />
       </NamedLink>
     );
 
     const resendErrorTranslationId = isTooManyEmailVerificationRequestsError(
       sendVerificationEmailError
     )
-      ? 'AuthenticationPage.resendFailedTooManyRequests'
-      : 'AuthenticationPage.resendFailed';
+      ? 'AuthenticationShopPage.resendFailedTooManyRequests'
+      : 'AuthenticationShopPage.resendFailed';
     const resendErrorMessage = sendVerificationEmailError ? (
       <p className={css.error}>
         <FormattedMessage id={resendErrorTranslationId} />
@@ -182,29 +182,29 @@ export class AuthenticationPageComponent extends Component {
       <div className={css.content}>
         <NamedLink className={css.verifyClose} name="ProfileSettingsPage">
           <span className={css.closeText}>
-            <FormattedMessage id="AuthenticationPage.verifyEmailClose" />
+            <FormattedMessage id="AuthenticationShopPage.verifyEmailClose" />
           </span>
           <IconClose rootClassName={css.closeIcon} />
         </NamedLink>
         <IconEmailSent className={css.modalIcon} />
         <h1 className={css.modalTitle}>
-          <FormattedMessage id="AuthenticationPage.verifyEmailTitle" values={{ name }} />
+          <FormattedMessage id="AuthenticationShopPage.verifyEmailTitle" values={{ name }} />
         </h1>
         <p className={css.modalMessage}>
-          <FormattedMessage id="AuthenticationPage.verifyEmailText" values={{ email }} />
+          <FormattedMessage id="AuthenticationShopPage.verifyEmailText" values={{ email }} />
         </p>
         {resendErrorMessage}
 
         <div className={css.bottomWrapper}>
           <p className={css.modalHelperText}>
             {sendVerificationEmailInProgress ? (
-              <FormattedMessage id="AuthenticationPage.sendingEmail" />
+              <FormattedMessage id="AuthenticationShopPage.sendingEmail" />
             ) : (
-              <FormattedMessage id="AuthenticationPage.resendEmail" values={{ resendEmailLink }} />
+              <FormattedMessage id="AuthenticationShopPage.resendEmail" values={{ resendEmailLink }} />
             )}
           </p>
           <p className={css.modalHelperText}>
-            <FormattedMessage id="AuthenticationPage.fixEmail" values={{ fixEmailLink }} />
+            <FormattedMessage id="AuthenticationShopPage.fixEmail" values={{ fixEmailLink }} />
           </p>
         </div>
       </div>
@@ -212,8 +212,8 @@ export class AuthenticationPageComponent extends Component {
 
     const siteTitle = config.siteTitle;
     const schemaTitle = isLogin
-      ? intl.formatMessage({ id: 'AuthenticationPage.schemaTitleLogin' }, { siteTitle })
-      : intl.formatMessage({ id: 'AuthenticationPage.schemaTitleSignup' }, { siteTitle });
+      ? intl.formatMessage({ id: 'AuthenticationShopPage.schemaTitleLogin' }, { siteTitle })
+      : intl.formatMessage({ id: 'AuthenticationShopPage.schemaTitleSignup' }, { siteTitle });
 
     const topbarClasses = classNames({
       [css.hideOnMobile]: showEmailVerification,
@@ -238,14 +238,14 @@ export class AuthenticationPageComponent extends Component {
               {showEmailVerification ? emailVerificationContent : formContent}
             </div>
             <Modal
-              id="AuthenticationPage.tos"
+              id="AuthenticationShopPage.tos"
               isOpen={this.state.tosModalOpen}
               onClose={() => this.setState({ tosModalOpen: false })}
               onManageDisableScrolling={onManageDisableScrolling}
             >
               <div className={css.termsWrapper}>
                 <h2 className={css.termsHeading}>
-                  <FormattedMessage id="AuthenticationPage.termsHeading" />
+                  <FormattedMessage id="AuthenticationShopPage.termsHeading" />
                 </h2>
                 <TermsOfService />
               </div>
@@ -260,7 +260,7 @@ export class AuthenticationPageComponent extends Component {
   }
 }
 
-AuthenticationPageComponent.defaultProps = {
+AuthenticationShopPageComponent.defaultProps = {
   currentUser: null,
   loginError: null,
   signupError: null,
@@ -270,7 +270,7 @@ AuthenticationPageComponent.defaultProps = {
 
 const { bool, func, object, oneOf, shape } = PropTypes;
 
-AuthenticationPageComponent.propTypes = {
+AuthenticationShopPageComponent.propTypes = {
   authInProgress: bool.isRequired,
   currentUser: propTypes.currentUser,
   isAuthenticated: bool.isRequired,
@@ -322,13 +322,13 @@ const mapDispatchToProps = dispatch => ({
 // lifecycle hook.
 //
 // See: https://github.com/ReactTraining/react-router/issues/4671
-const AuthenticationPage = compose(
+const AuthenticationShopPage = compose(
   withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(AuthenticationPageComponent);
+)(AuthenticationShopPageComponent);
 
-export default AuthenticationPage;
+export default AuthenticationShopPage;

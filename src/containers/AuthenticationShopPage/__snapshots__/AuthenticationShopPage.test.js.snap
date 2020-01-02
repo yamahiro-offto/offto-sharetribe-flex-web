@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuthenticationPageComponent matches snapshot 1`] = `
+exports[`AuthenticationShopPageComponent matches snapshot 1`] = `
 <Page
   schema={
     Object {
       "@context": "http://schema.org",
       "@type": "WebPage",
-      "name": "AuthenticationPage.schemaTitleLogin",
+      "name": "AuthenticationShopPage.schemaTitleLogin",
     }
   }
   scrollingDisabled={false}
-  title="AuthenticationPage.schemaTitleLogin"
+  title="AuthenticationShopPage.schemaTitleLogin"
 >
   <LayoutSingleColumn
     className={null}
@@ -50,7 +50,7 @@ exports[`AuthenticationPageComponent matches snapshot 1`] = `
                   "selected": false,
                   "text": <h1>
                     <FormattedMessage
-                      id="AuthenticationPage.signupLinkText"
+                      id="AuthenticationShopPage.signupLinkText"
                       values={Object {}}
                     />
                   </h1>,
@@ -67,7 +67,7 @@ exports[`AuthenticationPageComponent matches snapshot 1`] = `
                   "selected": true,
                   "text": <h1>
                     <FormattedMessage
-                      id="AuthenticationPage.loginLinkText"
+                      id="AuthenticationShopPage.loginLinkText"
                       values={Object {}}
                     />
                   </h1>,
@@ -82,7 +82,7 @@ exports[`AuthenticationPageComponent matches snapshot 1`] = `
         </div>
       </div>
       <injectIntl(ModalComponent)
-        id="AuthenticationPage.tos"
+        id="AuthenticationShopPage.tos"
         isOpen={false}
         onClose={[Function]}
         onManageDisableScrolling={[Function]}
@@ -90,7 +90,7 @@ exports[`AuthenticationPageComponent matches snapshot 1`] = `
         <div>
           <h2>
             <FormattedMessage
-              id="AuthenticationPage.termsHeading"
+              id="AuthenticationShopPage.termsHeading"
               values={Object {}}
             />
           </h2>
