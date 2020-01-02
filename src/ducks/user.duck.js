@@ -6,6 +6,11 @@ import * as log from '../util/log';
 import { authInfo } from './Auth.duck';
 import { stripeAccountCreateSuccess } from './stripeConnectAccount.duck';
 
+// ================ const definitions ================ //
+export const USER_PUBLICDATA_ATTRIBUTES = {
+  TYPE: { name: 'type', type: 'enum', value: { CUSTOMER: 'customer', SHOP: 'shop' } },
+};
+
 // ================ Action types ================ //
 
 export const CURRENT_USER_SHOW_REQUEST = 'app/user/CURRENT_USER_SHOW_REQUEST';
