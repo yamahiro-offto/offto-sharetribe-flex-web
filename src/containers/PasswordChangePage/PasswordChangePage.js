@@ -43,6 +43,7 @@ export const PasswordChangePageComponent = props => {
         onChange={onChange}
         inProgress={changePasswordInProgress}
         ready={passwordChanged}
+        currentUser={currentUser}
       />
     ) : null;
 
@@ -57,9 +58,12 @@ export const PasswordChangePageComponent = props => {
             desktopClassName={css.desktopTopbar}
             mobileClassName={css.mobileTopbar}
           />
-          <UserNav selectedPageName="PasswordChangePage" />
+          <UserNav selectedPageName="PasswordChangePage" currentUser={currentUser} />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="PasswordChangePage" />
+        <LayoutWrapperAccountSettingsSideNav
+          currentTab="PasswordChangePage"
+          currentUser={currentUser}
+        />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>
