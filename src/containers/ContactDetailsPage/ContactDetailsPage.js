@@ -71,9 +71,12 @@ export const ContactDetailsPageComponent = props => {
             desktopClassName={css.desktopTopbar}
             mobileClassName={css.mobileTopbar}
           />
-          <UserNav selectedPageName="ContactDetailsPage" />
+          <UserNav selectedPageName="ContactDetailsPage" currentUser={currentUser} />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="ContactDetailsPage" />
+        <LayoutWrapperAccountSettingsSideNav
+          currentTab="ContactDetailsPage"
+          currentUser={currentUser}
+        />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>
