@@ -8,6 +8,8 @@ import { compose } from 'redux';
 import { FormattedMessage } from '../../util/reactIntl';
 import { withViewport } from '../../util/contextHelpers';
 import { LayoutWrapperSideNav } from '../../components';
+import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { propTypes } from '../../util/types';
 
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 
@@ -24,7 +26,7 @@ const scrollToTab = currentTab => {
 };
 
 const LayoutWrapperAccountSettingsSideNavComponent = props => {
-  const { currentTab, viewport } = props;
+  const { currentTab, viewport, currentUser } = props;
 
   let hasScrolledToTab = false;
 
@@ -42,40 +44,75 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
     hasScrolledToTab = true;
   }
 
-  const tabs = [
-    {
-      text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.contactDetailsTabTitle" />,
-      selected: currentTab === 'ContactDetailsPage',
-      id: 'ContactDetailsPageTab',
-      linkProps: {
-        name: 'ContactDetailsPage',
-      },
-    },
-    {
-      text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.passwordTabTitle" />,
-      selected: currentTab === 'PasswordChangePage',
-      id: 'PasswordChangePageTab',
-      linkProps: {
-        name: 'PasswordChangePage',
-      },
-    },
-    {
-      text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentsTabTitle" />,
-      selected: currentTab === 'StripePayoutPage',
-      id: 'StripePayoutPageTab',
-      linkProps: {
-        name: 'StripePayoutPage',
-      },
-    },
-    {
-      text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentMethodsTabTitle" />,
-      selected: currentTab === 'PaymentMethodsPage',
-      id: 'PaymentMethodsPageTab',
-      linkProps: {
-        name: 'PaymentMethodsPage',
-      },
-    },
-  ];
+  const tabs = USERTYPE_IS_SHOP(currentUser)
+    ? [
+        {
+          text: (
+            <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.contactDetailsTabTitle" />
+          ),
+          selected: currentTab === 'ContactDetailsPage',
+          id: 'ContactDetailsPageTab',
+          linkProps: {
+            name: 'ContactDetailsPage',
+          },
+        },
+        {
+          text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.passwordTabTitle" />,
+          selected: currentTab === 'PasswordChangePage',
+          id: 'PasswordChangePageTab',
+          linkProps: {
+            name: 'PasswordChangePage',
+          },
+        },
+        {
+          text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentsTabTitle" />,
+          selected: currentTab === 'StripePayoutPage',
+          id: 'StripePayoutPageTab',
+          linkProps: {
+            name: 'StripePayoutPage',
+          },
+        },
+        {
+          text: (
+            <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentMethodsTabTitle" />
+          ),
+          selected: currentTab === 'PaymentMethodsPage',
+          id: 'PaymentMethodsPageTab',
+          linkProps: {
+            name: 'PaymentMethodsPage',
+          },
+        },
+      ]
+    : [
+        {
+          text: (
+            <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.contactDetailsTabTitle" />
+          ),
+          selected: currentTab === 'ContactDetailsPage',
+          id: 'ContactDetailsPageTab',
+          linkProps: {
+            name: 'ContactDetailsPage',
+          },
+        },
+        {
+          text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.passwordTabTitle" />,
+          selected: currentTab === 'PasswordChangePage',
+          id: 'PasswordChangePageTab',
+          linkProps: {
+            name: 'PasswordChangePage',
+          },
+        },
+        {
+          text: (
+            <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.paymentMethodsTabTitle" />
+          ),
+          selected: currentTab === 'PaymentMethodsPage',
+          id: 'PaymentMethodsPageTab',
+          linkProps: {
+            name: 'PaymentMethodsPage',
+          },
+        },
+      ];
 
   return <LayoutWrapperSideNav tabs={tabs} />;
 };
@@ -85,6 +122,7 @@ LayoutWrapperAccountSettingsSideNavComponent.defaultProps = {
   rootClassName: null,
   children: null,
   currentTab: null,
+  currentUser: null,
 };
 
 LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
@@ -92,6 +130,7 @@ LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
   className: string,
   rootClassName: string,
   currentTab: string,
+  currentUser: propTypes.currentUser,
 
   // from withViewport
   viewport: shape({

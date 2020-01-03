@@ -15,6 +15,7 @@ import {
   NamedLink,
 } from '../../components';
 import { TopbarSearchForm } from '../../forms';
+import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
 
 import css from './TopbarDesktop.css';
 
@@ -84,8 +85,10 @@ const TopbarDesktop = props => {
             className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
             name="ManageListingsPage"
           >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+            {USERTYPE_IS_SHOP(currentUser) && ([
+              <span className={css.menuItemBorder} />,
+              <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+            ])}
           </NamedLink>
         </MenuItem>
         <MenuItem key="ProfileSettingsPage">
