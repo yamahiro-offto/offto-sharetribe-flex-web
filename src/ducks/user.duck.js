@@ -12,7 +12,6 @@ export const USER_PUBLICDATA_ATTRIBUTES = {
 };
 
 export const USERTYPE_IS_SHOP = currentUser => {
-  console.log('currentUser', currentUser);
   return (
     currentUser &&
     currentUser.attributes.profile.publicData.type &&
