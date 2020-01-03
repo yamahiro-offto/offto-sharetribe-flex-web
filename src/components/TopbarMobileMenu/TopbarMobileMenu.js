@@ -10,6 +10,7 @@ import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
+import { USER_PUBLICDATA_ATTRIBUTES } from '../../ducks/user.duck';
 
 import css from './TopbarMobileMenu.css';
 
@@ -92,12 +93,17 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
-        <NamedLink
-          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
-          name="ManageListingsPage"
-        >
-          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
-        </NamedLink>
+        {currentUser &&
+          currentUser.attributes.profile.publicData.type &&
+          currentUser.attributes.profile.publicData.type ===
+            USER_PUBLICDATA_ATTRIBUTES.TYPE.value.SHOP && (
+            <NamedLink
+              className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+              name="ManageListingsPage"
+            >
+              <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+            </NamedLink>
+          )}
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
           name="ProfileSettingsPage"
