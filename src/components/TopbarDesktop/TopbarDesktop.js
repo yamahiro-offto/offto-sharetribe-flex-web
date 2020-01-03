@@ -85,10 +85,10 @@ const TopbarDesktop = props => {
             className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
             name="ManageListingsPage"
           >
-            {USERTYPE_IS_SHOP(currentUser) && ([
+            {USERTYPE_IS_SHOP(currentUser) && [
               <span className={css.menuItemBorder} />,
-              <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-            ])}
+              <FormattedMessage id="TopbarDesktop.yourListingsLink" />,
+            ]}
           </NamedLink>
         </MenuItem>
         <MenuItem key="ProfileSettingsPage">
@@ -145,11 +145,13 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
-      <NamedLink className={css.createListingLink} name="NewListingPage">
-        <span className={css.createListing}>
-          <FormattedMessage id="TopbarDesktop.createListing" />
-        </span>
-      </NamedLink>
+      {USERTYPE_IS_SHOP(currentUser) && (
+        <NamedLink className={css.createListingLink} name="NewListingPage">
+          <span className={css.createListing}>
+            <FormattedMessage id="TopbarDesktop.createListing" />
+          </span>
+        </NamedLink>
+      )}
       {inboxLink}
       {profileMenu}
       {signupLink}
