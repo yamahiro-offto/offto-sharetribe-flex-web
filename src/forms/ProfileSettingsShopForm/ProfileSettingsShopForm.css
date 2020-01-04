@@ -10,8 +10,8 @@
     since browsers support CSS Properties already.
  */
 
-  --ProfileSettingsForm_avatarSize: 96px;
-  --ProfileSettingsForm_avatarSizeDesktop: 240px;
+  --ProfileSettingsShopForm_avatarSize: 96px;
+  --ProfileSettingsShopForm_avatarSizeDesktop: 240px;
 }
 
 .root {
@@ -76,9 +76,9 @@
 }
 
 .label {
-  width: var(--ProfileSettingsForm_avatarSize);
+  width: var(--ProfileSettingsShopForm_avatarSize);
   @media (--viewportMedium) {
-    width: var(--ProfileSettingsForm_avatarSizeDesktop);
+    width: var(--ProfileSettingsShopForm_avatarSizeDesktop);
   }
 }
 
@@ -86,8 +86,8 @@
 .avatarContainer {
   /* Dimension */
   position: relative;
-  width: var(--ProfileSettingsForm_avatarSize);
-  height: var(--ProfileSettingsForm_avatarSize);
+  width: var(--ProfileSettingsShopForm_avatarSize);
+  height: var(--ProfileSettingsShopForm_avatarSize);
 
   /* Center content */
   display: flex;
@@ -96,13 +96,13 @@
 
   /* Initial coloring */
   background-color: var(--matterColorBright);
-  border-radius: calc(var(--ProfileSettingsForm_avatarSize) / 2);
+  border-radius: calc(var(--ProfileSettingsShopForm_avatarSize) / 2);
   cursor: pointer;
 
   @media (--viewportMedium) {
-    width: var(--ProfileSettingsForm_avatarSizeDesktop);
-    height: var(--ProfileSettingsForm_avatarSizeDesktop);
-    border-radius: calc(var(--ProfileSettingsForm_avatarSizeDesktop) / 2);
+    width: var(--ProfileSettingsShopForm_avatarSizeDesktop);
+    height: var(--ProfileSettingsShopForm_avatarSizeDesktop);
+    border-radius: calc(var(--ProfileSettingsShopForm_avatarSizeDesktop) / 2);
   }
 }
 
@@ -202,13 +202,13 @@
 
 .uploadingImage {
   /* Dimensions */
-  width: var(--ProfileSettingsForm_avatarSize);
-  height: var(--ProfileSettingsForm_avatarSize);
+  width: var(--ProfileSettingsShopForm_avatarSize);
+  height: var(--ProfileSettingsShopForm_avatarSize);
 
   /* Image fitted to container */
   object-fit: cover;
   background-color: var(--matterColorNegative); /* Loading BG color */
-  border-radius: calc(var(--ProfileSettingsForm_avatarSize) / 2);
+  border-radius: calc(var(--ProfileSettingsShopForm_avatarSize) / 2);
   overflow: hidden;
 
   display: block;
@@ -216,9 +216,9 @@
   margin: 0;
 
   @media (--viewportMedium) {
-    width: var(--ProfileSettingsForm_avatarSizeDesktop);
-    height: var(--ProfileSettingsForm_avatarSizeDesktop);
-    border-radius: calc(var(--ProfileSettingsForm_avatarSizeDesktop) / 2);
+    width: var(--ProfileSettingsShopForm_avatarSizeDesktop);
+    height: var(--ProfileSettingsShopForm_avatarSizeDesktop);
+    border-radius: calc(var(--ProfileSettingsShopForm_avatarSizeDesktop) / 2);
   }
 }
 

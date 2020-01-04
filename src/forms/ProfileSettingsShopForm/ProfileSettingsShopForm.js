@@ -16,7 +16,7 @@ import css from './ProfileSettingsShopForm.css';
 const ACCEPT_IMAGES = 'image/*';
 const UPLOAD_CHANGE_DELAY = 2000; // Show spinner so that browser has time to load img srcset
 
-class ProfileSettingsFormComponent extends Component {
+class ProfileSettingsShopFormComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -67,34 +67,34 @@ class ProfileSettingsFormComponent extends Component {
 
           // First name
           const firstNameLabel = intl.formatMessage({
-            id: 'ProfileSettingsForm.firstNameLabel',
+            id: 'ProfileSettingsShopForm.firstNameLabel',
           });
           const firstNamePlaceholder = intl.formatMessage({
-            id: 'ProfileSettingsForm.firstNamePlaceholder',
+            id: 'ProfileSettingsShopForm.firstNamePlaceholder',
           });
           const firstNameRequiredMessage = intl.formatMessage({
-            id: 'ProfileSettingsForm.firstNameRequired',
+            id: 'ProfileSettingsShopForm.firstNameRequired',
           });
           const firstNameRequired = validators.required(firstNameRequiredMessage);
 
           // Last name
           const lastNameLabel = intl.formatMessage({
-            id: 'ProfileSettingsForm.lastNameLabel',
+            id: 'ProfileSettingsShopForm.lastNameLabel',
           });
           const lastNamePlaceholder = intl.formatMessage({
-            id: 'ProfileSettingsForm.lastNamePlaceholder',
+            id: 'ProfileSettingsShopForm.lastNamePlaceholder',
           });
           const lastNameRequiredMessage = intl.formatMessage({
-            id: 'ProfileSettingsForm.lastNameRequired',
+            id: 'ProfileSettingsShopForm.lastNameRequired',
           });
           const lastNameRequired = validators.required(lastNameRequiredMessage);
 
           // Bio
           const bioLabel = intl.formatMessage({
-            id: 'ProfileSettingsForm.bioLabel',
+            id: 'ProfileSettingsShopForm.bioLabel',
           });
           const bioPlaceholder = intl.formatMessage({
-            id: 'ProfileSettingsForm.bioPlaceholder',
+            id: 'ProfileSettingsShopForm.bioPlaceholder',
           });
 
           const uploadingOverlay =
@@ -148,23 +148,23 @@ class ProfileSettingsFormComponent extends Component {
                 {imageFromFile}
                 {avatarComponent}
                 <div className={css.changeAvatar}>
-                  <FormattedMessage id="ProfileSettingsForm.changeAvatar" />
+                  <FormattedMessage id="ProfileSettingsShopForm.changeAvatar" />
                 </div>
               </div>
             ) : (
               <div className={css.avatarPlaceholder}>
                 <div className={css.avatarPlaceholderText}>
-                  <FormattedMessage id="ProfileSettingsForm.addYourProfilePicture" />
+                  <FormattedMessage id="ProfileSettingsShopForm.addYourProfilePicture" />
                 </div>
                 <div className={css.avatarPlaceholderTextMobile}>
-                  <FormattedMessage id="ProfileSettingsForm.addYourProfilePictureMobile" />
+                  <FormattedMessage id="ProfileSettingsShopForm.addYourProfilePictureMobile" />
                 </div>
               </div>
             );
 
           const submitError = updateProfileError ? (
             <div className={css.error}>
-              <FormattedMessage id="ProfileSettingsForm.updateProfileFailed" />
+              <FormattedMessage id="ProfileSettingsShopForm.updateProfileFailed" />
             </div>
           ) : null;
 
@@ -185,7 +185,7 @@ class ProfileSettingsFormComponent extends Component {
             >
               <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.yourProfilePicture" />
+                  <FormattedMessage id="ProfileSettingsShopForm.yourProfilePicture" />
                 </h3>
                 <Field
                   accept={ACCEPT_IMAGES}
@@ -215,13 +215,13 @@ class ProfileSettingsFormComponent extends Component {
                     if (isUploadImageOverLimitError(uploadImageError)) {
                       error = (
                         <div className={css.error}>
-                          <FormattedMessage id="ProfileSettingsForm.imageUploadFailedFileTooLarge" />
+                          <FormattedMessage id="ProfileSettingsShopForm.imageUploadFailedFileTooLarge" />
                         </div>
                       );
                     } else if (uploadImageError) {
                       error = (
                         <div className={css.error}>
-                          <FormattedMessage id="ProfileSettingsForm.imageUploadFailed" />
+                          <FormattedMessage id="ProfileSettingsShopForm.imageUploadFailed" />
                         </div>
                       );
                     }
@@ -246,15 +246,15 @@ class ProfileSettingsFormComponent extends Component {
                   }}
                 </Field>
                 <div className={css.tip}>
-                  <FormattedMessage id="ProfileSettingsForm.tip" />
+                  <FormattedMessage id="ProfileSettingsShopForm.tip" />
                 </div>
                 <div className={css.fileInfo}>
-                  <FormattedMessage id="ProfileSettingsForm.fileInfo" />
+                  <FormattedMessage id="ProfileSettingsShopForm.fileInfo" />
                 </div>
               </div>
               <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.yourName" />
+                  <FormattedMessage id="ProfileSettingsShopForm.yourName" />
                 </h3>
                 <div className={css.nameContainer}>
                   <FieldTextInput
@@ -279,7 +279,7 @@ class ProfileSettingsFormComponent extends Component {
               </div>
               <div className={classNames(css.sectionContainer, css.lastSection)}>
                 <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsForm.bioHeading" />
+                  <FormattedMessage id="ProfileSettingsShopForm.bioHeading" />
                 </h3>
                 <FieldTextInput
                   type="textarea"
@@ -289,7 +289,7 @@ class ProfileSettingsFormComponent extends Component {
                   placeholder={bioPlaceholder}
                 />
                 <p className={css.bioInfo}>
-                  <FormattedMessage id="ProfileSettingsForm.bioInfo" />
+                  <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
                 </p>
               </div>
               {submitError}
@@ -300,7 +300,7 @@ class ProfileSettingsFormComponent extends Component {
                 disabled={submitDisabled}
                 ready={pristineSinceLastSubmit}
               >
-                <FormattedMessage id="ProfileSettingsForm.saveChanges" />
+                <FormattedMessage id="ProfileSettingsShopForm.saveChanges" />
               </Button>
             </Form>
           );
@@ -310,7 +310,7 @@ class ProfileSettingsFormComponent extends Component {
   }
 }
 
-ProfileSettingsFormComponent.defaultProps = {
+ProfileSettingsShopFormComponent.defaultProps = {
   rootClassName: null,
   className: null,
   uploadImageError: null,
@@ -318,7 +318,7 @@ ProfileSettingsFormComponent.defaultProps = {
   updateProfileReady: false,
 };
 
-ProfileSettingsFormComponent.propTypes = {
+ProfileSettingsShopFormComponent.propTypes = {
   rootClassName: string,
   className: string,
 
@@ -332,8 +332,8 @@ ProfileSettingsFormComponent.propTypes = {
   intl: intlShape.isRequired,
 };
 
-const ProfileSettingsForm = compose(injectIntl)(ProfileSettingsFormComponent);
+const ProfileSettingsShopForm = compose(injectIntl)(ProfileSettingsShopFormComponent);
 
-ProfileSettingsForm.displayName = 'ProfileSettingsForm';
+ProfileSettingsShopForm.displayName = 'ProfileSettingsShopForm';
 
-export default ProfileSettingsForm;
+export default ProfileSettingsShopForm;
