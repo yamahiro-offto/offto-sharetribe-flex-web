@@ -4,7 +4,7 @@ import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { LinkTabNavHorizontal } from '../../components';
-import { USERTYPE_IS_SHOP } from '../../util/offtoData.js';
+import { OfftoUser } from '../../util/offtoData';
 
 import css from './UserNav.css';
 import { propTypes } from '../../util/types';
@@ -39,7 +39,7 @@ const UserNav = props => {
     },
   ];
 
-  if (!USERTYPE_IS_SHOP(currentUser)) {
+  if (!OfftoUser.userIsShop(currentUser)) {
     tabs.splice(0,1);
   }
 
