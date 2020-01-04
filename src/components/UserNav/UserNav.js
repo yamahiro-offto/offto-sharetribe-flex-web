@@ -4,7 +4,7 @@ import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { LinkTabNavHorizontal } from '../../components';
-import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { USERTYPE_IS_SHOP } from '../../util/offtoData.js';
 
 import css from './UserNav.css';
 import { propTypes } from '../../util/types';

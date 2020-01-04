@@ -10,7 +10,7 @@ import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
-import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { USERTYPE_IS_SHOP } from '../../util/offtoData.js';
 
 import css from './TopbarMobileMenu.css';
 

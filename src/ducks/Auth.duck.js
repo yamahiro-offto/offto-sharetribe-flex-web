@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { clearCurrentUser, fetchCurrentUser } from './user.duck';
-import { USER_PUBLICDATA_ATTRIBUTES } from './user.duck';
+import { USER_PUBLICDATA_ATTRIBUTES } from '../util/offtoData.js';
 import { storableError } from '../util/errors';
 import * as log from '../util/log';
 
