@@ -39,8 +39,17 @@ const UserNav = props => {
     },
   ];
 
-  if (!OfftoUser.userIsShop(currentUser)) {
-    tabs.splice(0,1);
+  if (OfftoUser.userIsShop(currentUser)) {
+    tabs[1] = {
+      text: <FormattedMessage id="ManageListingsPage.profileSettings" />,
+      selected: selectedPageName === 'ProfileSettingsShopPage',
+      disabled: false,
+      linkProps: {
+        name: 'ProfileSettingsShopPage',
+      },
+    };
+  } else {
+    tabs.splice(0, 1);
   }
 
   return (
