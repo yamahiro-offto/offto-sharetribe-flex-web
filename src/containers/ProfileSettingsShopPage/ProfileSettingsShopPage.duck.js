@@ -4,15 +4,15 @@ import { currentUserShowSuccess } from '../../ducks/user.duck';
 
 // ================ Action types ================ //
 
-export const CLEAR_UPDATED_FORM = 'app/ProfileSettingsPage/CLEAR_UPDATED_FORM';
+export const CLEAR_UPDATED_FORM = 'app/ProfileSettingsShopPage/CLEAR_UPDATED_FORM';
 
-export const UPLOAD_IMAGE_REQUEST = 'app/ProfileSettingsPage/UPLOAD_IMAGE_REQUEST';
-export const UPLOAD_IMAGE_SUCCESS = 'app/ProfileSettingsPage/UPLOAD_IMAGE_SUCCESS';
-export const UPLOAD_IMAGE_ERROR = 'app/ProfileSettingsPage/UPLOAD_IMAGE_ERROR';
+export const UPLOAD_IMAGE_REQUEST = 'app/ProfileSettingsShopPage/UPLOAD_IMAGE_REQUEST';
+export const UPLOAD_IMAGE_SUCCESS = 'app/ProfileSettingsShopPage/UPLOAD_IMAGE_SUCCESS';
+export const UPLOAD_IMAGE_ERROR = 'app/ProfileSettingsShopPage/UPLOAD_IMAGE_ERROR';
 
-export const UPDATE_PROFILE_REQUEST = 'app/ProfileSettingsPage/UPDATE_PROFILE_REQUEST';
-export const UPDATE_PROFILE_SUCCESS = 'app/ProfileSettingsPage/UPDATE_PROFILE_SUCCESS';
-export const UPDATE_PROFILE_ERROR = 'app/ProfileSettingsPage/UPDATE_PROFILE_ERROR';
+export const UPDATE_PROFILE_REQUEST = 'app/ProfileSettingsShopPage/UPDATE_PROFILE_REQUEST';
+export const UPDATE_PROFILE_SUCCESS = 'app/ProfileSettingsShopPage/UPDATE_PROFILE_SUCCESS';
+export const UPDATE_PROFILE_ERROR = 'app/ProfileSettingsShopPage/UPDATE_PROFILE_ERROR';
 
 // ================ Reducer ================ //
 

@@ -1,14 +1,14 @@
 import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { fakeIntl } from '../../util/test-data';
-import { ProfileSettingsPageComponent } from './ProfileSettingsPage';
+import { ProfileSettingsShopPageComponent } from './ProfileSettingsShopPage';
 
 const noop = () => null;
 
 describe('ContactDetailsPage', () => {
   it('matches snapshot', () => {
     const tree = renderShallow(
-      <ProfileSettingsPageComponent
+      <ProfileSettingsShopPageComponent
         authInProgress={false}
         currentUserHasListings={false}
         history={{ push: noop }}

@@ -3,7 +3,7 @@
 exports[`ContactDetailsPage matches snapshot 1`] = `
 <Page
   scrollingDisabled={false}
-  title="ProfileSettingsPage.title"
+  title="ProfileSettingsShopPage.title"
 >
   <LayoutSingleColumn
     className={null}
@@ -14,12 +14,12 @@ exports[`ContactDetailsPage matches snapshot 1`] = `
       rootClassName={null}
     >
       <withRouter(Connect(TopbarContainerComponent))
-        currentPage="ProfileSettingsPage"
+        currentPage="ProfileSettingsShopPage"
       />
       <UserNav
         className={null}
         rootClassName={null}
-        selectedPageName="ProfileSettingsPage"
+        selectedPageName="ProfileSettingsShopPage"
       />
     </LayoutWrapperTopbar>
     <LayoutWrapperMain
@@ -30,7 +30,7 @@ exports[`ContactDetailsPage matches snapshot 1`] = `
         <div>
           <h1>
             <FormattedMessage
-              id="ProfileSettingsPage.heading"
+              id="ProfileSettingsShopPage.heading"
               values={Object {}}
             />
           </h1>

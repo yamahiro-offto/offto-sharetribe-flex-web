@@ -19,8 +19,8 @@ import {
 import { ProfileSettingsForm } from '../../forms';
 import { TopbarContainer } from '../../containers';
 
-import { updateProfile, uploadImage } from './ProfileSettingsPage.duck';
-import css from './ProfileSettingsPage.css';
+import { updateProfile, uploadImage } from './ProfileSettingsShopPage.duck';
+import css from './ProfileSettingsShopPage.css';
 
 const onImageUploadHandler = (values, fn) => {
   const { id, imageId, file } = values;
@@ -29,7 +29,7 @@ const onImageUploadHandler = (values, fn) => {
   }
 };
 
-export class ProfileSettingsPageComponent extends Component {
+export class ProfileSettingsShopPageComponent extends Component {
   render() {
     const {
       currentUser,
@@ -86,20 +86,20 @@ export class ProfileSettingsPageComponent extends Component {
       />
     ) : null;
 
-    const title = intl.formatMessage({ id: 'ProfileSettingsPage.title' });
+    const title = intl.formatMessage({ id: 'ProfileSettingsShopPage.title' });
 
     return (
       <Page className={css.root} title={title} scrollingDisabled={scrollingDisabled}>
         <LayoutSingleColumn>
           <LayoutWrapperTopbar>
-            <TopbarContainer currentPage="ProfileSettingsPage" />
-            <UserNav selectedPageName="ProfileSettingsPage" currentUser={currentUser}/>
+            <TopbarContainer currentPage="ProfileSettingsShopPage" />
+            <UserNav selectedPageName="ProfileSettingsShopPage" currentUser={currentUser}/>
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
             <div className={css.content}>
               <div className={css.headingContainer}>
                 <h1 className={css.heading}>
-                  <FormattedMessage id="ProfileSettingsPage.heading" />
+                  <FormattedMessage id="ProfileSettingsShopPage.heading" />
                 </h1>
                 {user.id ? (
                   <NamedLink
@@ -107,7 +107,7 @@ export class ProfileSettingsPageComponent extends Component {
                     name="ProfilePage"
                     params={{ id: user.id.uuid }}
                   >
-                    <FormattedMessage id="ProfileSettingsPage.viewProfileLink" />
+                    <FormattedMessage id="ProfileSettingsShopPage.viewProfileLink" />
                   </NamedLink>
                 ) : null}
               </div>
@@ -123,7 +123,7 @@ export class ProfileSettingsPageComponent extends Component {
   }
 }
 
-ProfileSettingsPageComponent.defaultProps = {
+ProfileSettingsShopPageComponent.defaultProps = {
   currentUser: null,
   uploadImageError: null,
   updateProfileError: null,
@@ -132,7 +132,7 @@ ProfileSettingsPageComponent.defaultProps = {
 
 const { bool, func, object, shape, string } = PropTypes;
 
-ProfileSettingsPageComponent.propTypes = {
+ProfileSettingsShopPageComponent.propTypes = {
   currentUser: propTypes.currentUser,
   image: shape({
     id: string,
@@ -160,7 +160,7 @@ const mapStateToProps = state => {
     uploadInProgress,
     updateInProgress,
     updateProfileError,
-  } = state.ProfileSettingsPage;
+  } = state.ProfileSettingsShopPage;
   return {
     currentUser,
     image,
@@ -177,12 +177,12 @@ const mapDispatchToProps = dispatch => ({
   onUpdateProfile: data => dispatch(updateProfile(data)),
 });
 
-const ProfileSettingsPage = compose(
+const ProfileSettingsShopPage = compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(ProfileSettingsPageComponent);
+)(ProfileSettingsShopPageComponent);
 
-export default ProfileSettingsPage;
+export default ProfileSettingsShopPage;
