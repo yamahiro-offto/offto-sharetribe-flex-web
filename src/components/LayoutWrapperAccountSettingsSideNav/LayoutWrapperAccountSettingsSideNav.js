@@ -8,7 +8,7 @@ import { compose } from 'redux';
 import { FormattedMessage } from '../../util/reactIntl';
 import { withViewport } from '../../util/contextHelpers';
 import { LayoutWrapperSideNav } from '../../components';
-import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { OfftoUser } from '../../util/offtoData';
 import { propTypes } from '../../util/types';
 
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -79,7 +79,7 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
     },
   ];
 
-  if (!USERTYPE_IS_SHOP(currentUser)) {
+  if (!OfftoUser.userIsShop(currentUser)) {
     tabs.splice(2,1);
   }
 

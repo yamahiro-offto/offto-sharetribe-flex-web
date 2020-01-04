@@ -94,6 +94,7 @@ export { default as FieldDateRangeInput } from './FieldDateRangeInput/FieldDateR
 export { default as FieldRadioButton } from './FieldRadioButton/FieldRadioButton';
 export { default as FieldReviewRating } from './FieldReviewRating/FieldReviewRating';
 export { default as FieldSelect } from './FieldSelect/FieldSelect';
+export { default as FieldSelectCustom } from './FieldSelectCustom/FieldSelectCustom';
 export { default as FieldTextInput } from './FieldTextInput/FieldTextInput';
 // Fields that use other Fields
 export { default as FieldBoolean } from './FieldBoolean/FieldBoolean';
