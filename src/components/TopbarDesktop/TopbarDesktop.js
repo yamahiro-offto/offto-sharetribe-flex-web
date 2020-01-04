@@ -15,7 +15,7 @@ import {
   NamedLink,
 } from '../../components';
 import { TopbarSearchForm } from '../../forms';
-import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { USERTYPE_IS_SHOP } from '../../util/offtoData.js';
 
 import css from './TopbarDesktop.css';
 

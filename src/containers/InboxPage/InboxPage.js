@@ -18,7 +18,7 @@ import { propTypes, DATE_TYPE_DATE } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
-import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { USERTYPE_IS_SHOP } from '../../util/offtoData.js';
 import {
   Avatar,
   BookingTimeInfo,

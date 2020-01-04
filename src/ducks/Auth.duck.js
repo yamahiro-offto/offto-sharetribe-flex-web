@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { clearCurrentUser, fetchCurrentUser } from './user.duck';
-import { USER_PUBLICDATA_ATTRIBUTES } from './user.duck';
+import { USER_PUBLICDATA_ATTRIBUTES } from '../util/offtoData.js';
 import { storableError } from '../util/errors';
 import * as log from '../util/log';
 
@@ -178,10 +178,16 @@ export const signup = params => (dispatch, getState, sdk, isSignupShop) => {
     ? { email, password, firstName, lastName }
     : { email, password, firstName, lastName, protectedData: { ...rest } };
 
-  // add pubilcData to distinguish shop-user from costomer-user 
+  // add pubilcData to distinguish shop-user from costomer-user
   createUserParams.publicData = isSignupShop
-    ? { [USER_PUBLICDATA_ATTRIBUTES.TYPE.name]: USER_PUBLICDATA_ATTRIBUTES.TYPE.value.SHOP }
-    : { [USER_PUBLICDATA_ATTRIBUTES.TYPE.name]: USER_PUBLICDATA_ATTRIBUTES.TYPE.value.CUSTOMER }
+    ? {
+        ...createUserParams.publicData,
+        [USER_PUBLICDATA_ATTRIBUTES.TYPE.name]: USER_PUBLICDATA_ATTRIBUTES.TYPE.values.SHOP,
+      }
+    : {
+        ...createUserParams.publicData,
+        [USER_PUBLICDATA_ATTRIBUTES.TYPE.name]: USER_PUBLICDATA_ATTRIBUTES.TYPE.values.CUSTOMER,
+      };
 
   // We must login the user if signup succeeds since the API doesn't
   // do that automatically.

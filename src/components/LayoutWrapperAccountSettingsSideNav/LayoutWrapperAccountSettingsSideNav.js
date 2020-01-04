@@ -8,7 +8,7 @@ import { compose } from 'redux';
 import { FormattedMessage } from '../../util/reactIntl';
 import { withViewport } from '../../util/contextHelpers';
 import { LayoutWrapperSideNav } from '../../components';
-import { USERTYPE_IS_SHOP } from '../../ducks/user.duck';
+import { USERTYPE_IS_SHOP } from '../../util/offtoData.js';
 import { propTypes } from '../../util/types';
 
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
