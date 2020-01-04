@@ -1,6 +1,6 @@
 import { types as sdkTypes } from './sdkLoader';
 import { plainToClass, classToPlain } from 'class-transformer';
-const { LatLng, LatLngBounds } = sdkTypes;
+const { LatLng, UUID } = sdkTypes;
 
 // ================ const definitions ================ //
 
@@ -33,18 +33,54 @@ export class BusinessDate {
 
 export class OfftoUserPublicData {
   type?: string = UserType.CUSTOMER;
-  geolocation?: { lat: string; lng: string } = LatLng(0, 0);
-  businessDate?: BusinessDate;
+  geolocation?: { lat: 0; lng: 0 } = { lat: 0, lng: 0 };
+  businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';
+
+  constructor(publicData?: any) {
+    this.type = !(publicData && publicData.type) ? this.type : publicData.type;
+    this.geolocation = !(publicData && publicData.geolocation)
+      ? this.geolocation
+      : publicData.geolocation;
+    this.businessDate = !(publicData && publicData.businessDate)
+      ? this.businessDate
+      : { ...classToPlain(this.businessDate), ...publicData.businessDate };
+    this.activity = !(publicData && publicData.activity) ? this.activity : publicData.activity;
+    this.phoneNumber = !(publicData && publicData.phoneNumber)
+      ? this.phoneNumber
+      : publicData.phoneNumber;
+  }
 
   static publicDataIsShop(publicData: any): boolean {
     return !!publicData.type && publicData.type === UserType.SHOP;
   }
+
+  static sanitize(publicData: any): Object {
+    const default_publicData = classToPlain(new OfftoUserPublicData());
+    const new_publicData = {
+      ...default_publicData,
+      ...publicData,
+    };
+
+    return new_publicData;
+  }
+
+  // toPlain(): any {
+  //   return classToPlain(this);
+  // }
 }
 
 export class OfftoUser {
-  publicData?: OfftoUserPublicData = new OfftoUserPublicData();
+  firstName: string = '';
+  lastName: string = '';
+  displayName: string = '';
+  abbreviatedName: string = '';
+  bio?: string = '';
+  publicData: OfftoUserPublicData = new OfftoUserPublicData();
+  protectedData: {} = {};
+  privateData: {} = {};
+  profileImageId: any = null;
 
   static userIsShop(user: any): boolean {
     return !!user && OfftoUserPublicData.publicDataIsShop(user.attributes.profile.publicData);
@@ -64,5 +100,9 @@ export class OfftoUser {
 
     // overwrite publicData
     return { ...createUserParams, publicData: publicData };
+  }
+
+  static sanitizePublicData(pubilcData: any) {
+    return OfftoUserPublicData.sanitize(pubilcData);
   }
 }

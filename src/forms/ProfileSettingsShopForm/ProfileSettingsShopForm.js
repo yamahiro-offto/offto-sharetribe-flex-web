@@ -9,7 +9,16 @@ import { ensureCurrentUser } from '../../util/data';
 import { propTypes } from '../../util/types';
 import * as validators from '../../util/validators';
 import { isUploadImageOverLimitError } from '../../util/errors';
-import { Form, Avatar, Button, ImageFromFile, IconSpinner, FieldTextInput } from '../../components';
+import * as offtoData from '../../util/offtoData';
+import {
+  Form,
+  Avatar,
+  Button,
+  ImageFromFile,
+  IconSpinner,
+  FieldTextInput,
+  FieldSelectCustom,
+} from '../../components';
 
 import css from './ProfileSettingsShopForm.css';
 
@@ -183,6 +192,7 @@ class ProfileSettingsShopFormComponent extends Component {
                 handleSubmit(e);
               }}
             >
+              {/* Profile Image */}
               <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsShopForm.yourProfilePicture" />
@@ -252,6 +262,7 @@ class ProfileSettingsShopFormComponent extends Component {
                   <FormattedMessage id="ProfileSettingsShopForm.fileInfo" />
                 </div>
               </div>
+              {/* 氏名 */}
               <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsShopForm.yourName" />
@@ -277,7 +288,22 @@ class ProfileSettingsShopFormComponent extends Component {
                   />
                 </div>
               </div>
-              <div className={classNames(css.sectionContainer, css.lastSection)}>
+              {/* ショップ名 */}
+              <div className={css.sectionContainer}>
+                <h3 className={css.sectionTitle}>
+                  {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
+                  {'Your shop name'}
+                </h3>
+                <FieldTextInput
+                  type="text"
+                  id="displayName"
+                  name="displayName"
+                  label={'shop name'}
+                  placeholder={'shop name here..'}
+                />
+              </div>
+              {/* 紹介文 */}
+              <div className={css.sectionContainer}>
                 <h3 className={css.sectionTitle}>
                   <FormattedMessage id="ProfileSettingsShopForm.bioHeading" />
                 </h3>
@@ -285,13 +311,59 @@ class ProfileSettingsShopFormComponent extends Component {
                   type="textarea"
                   id="bio"
                   name="bio"
-                  label={bioLabel}
-                  placeholder={bioPlaceholder}
+                  label={'your shop introduction'}
+                  placeholder={'shop name here..'}
+                />
+              </div>
+              {/* タイプ */}
+              <div className={css.sectionContainer}>
+                <h3 className={css.sectionTitle}>
+                  {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
+                  {'shop type'}
+                </h3>
+                <FieldSelectCustom
+                  id="publicData.type"
+                  name="publicData.type" // values の key
+                  label={'publicData type'}
+                  placeholder={'placeholder'}
+                  validate=""
+                  // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+                  options={Object.keys(offtoData.UserType).map(usertype => {
+                    return {
+                      key: offtoData.UserType[usertype],
+                      label: offtoData.UserType[usertype],
+                    };
+                  })}
                 />
                 <p className={css.bioInfo}>
                   <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
                 </p>
               </div>
+              {/* 種類 */}
+              <div className={css.sectionContainer}>
+                <h3 className={css.sectionTitle}>
+                  {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
+                  {'Yout Shop activity'}
+                </h3>
+                <FieldSelectCustom
+                  id="publicData.activity"
+                  name="publicData.activity" // values の key
+                  label={'activity'}
+                  placeholder={'placeholder'}
+                  validate=""
+                  // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+                  options={Object.keys(offtoData.Activity).map(activity => {
+                    return {
+                      key: offtoData.Activity[activity],
+                      label: offtoData.Activity[activity],
+                    };
+                  })}
+                />
+                <p className={css.bioInfo}>
+                  <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
+                </p>
+              </div>
+              <div className={css.lastSection} />
               {submitError}
               <Button
                 className={css.submitButton}

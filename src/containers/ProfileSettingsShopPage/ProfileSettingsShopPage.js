@@ -6,6 +6,7 @@ import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
+import * as offtoData from '../../util/offtoData';
 import {
   Page,
   UserNav,
@@ -45,20 +46,13 @@ export class ProfileSettingsShopPageComponent extends Component {
     } = this.props;
 
     const handleSubmit = values => {
-      const { firstName, lastName, bio: rawBio } = values;
+      const { profileImage, ...profile } = values;
 
-      // Ensure that the optional bio is a string
-      const bio = rawBio || '';
-
-      const profile = {
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        bio,
-      };
-      const uploadedImage = this.props.image;
+      profile.publicData = offtoData.OfftoUser.sanitizePublicData(profile.publicData);
 
       // Update profileImage only if file system has been accessed
-      const updatedValues =
+      const uploadedImage = this.props.image;
+      const {abbreviatedName, ...updatedValues} =
         uploadedImage && uploadedImage.imageId && uploadedImage.file
           ? { ...profile, profileImageId: uploadedImage.imageId }
           : profile;
@@ -67,7 +61,6 @@ export class ProfileSettingsShopPageComponent extends Component {
     };
 
     const user = ensureCurrentUser(currentUser);
-    const { firstName, lastName, bio } = user.attributes.profile;
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
 
@@ -75,7 +68,7 @@ export class ProfileSettingsShopPageComponent extends Component {
       <ProfileSettingsShopForm
         className={css.form}
         currentUser={currentUser}
-        initialValues={{ firstName, lastName, bio, profileImage: user.profileImage }}
+        initialValues={{ ...user.attributes.profile, profileImage: user.profileImage }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
         uploadInProgress={uploadInProgress}
@@ -93,7 +86,7 @@ export class ProfileSettingsShopPageComponent extends Component {
         <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer currentPage="ProfileSettingsShopPage" />
-            <UserNav selectedPageName="ProfileSettingsShopPage" currentUser={currentUser}/>
+            <UserNav selectedPageName="ProfileSettingsShopPage" currentUser={currentUser} />
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
             <div className={css.content}>
