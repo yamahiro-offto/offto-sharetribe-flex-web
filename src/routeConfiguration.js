@@ -20,6 +20,7 @@ import {
   PrivacyPolicyPage,
   ProfilePage,
   ProfileSettingsPage,
+  ProfileSettingsShopPage,
   SearchPage,
   StyleguidePage,
   TermsOfServicePage,
@@ -159,6 +160,13 @@ const routeConfiguration = () => {
       auth: true,
       authPage: 'LoginPage',
       component: props => <ProfileSettingsPage {...props} />,
+    },
+    {
+      path: '/profile-settings-shop',
+      name: 'ProfileSettingsShopPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: props => <ProfileSettingsShopPage {...props} />,
     },
     {
       path: '/login',
