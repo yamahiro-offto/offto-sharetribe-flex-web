@@ -378,6 +378,7 @@ class EditListingWizard extends Component {
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}
                 handlePublishListing={this.handlePublishListing}
                 fetchInProgress={fetchInProgress}
+                isLastTab={tab === TABS[TABS.length-1]}
               />
             );
           })}

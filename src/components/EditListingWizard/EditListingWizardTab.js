@@ -98,6 +98,7 @@ const EditListingWizardTab = props => {
     onChange,
     updatedTab,
     updateInProgress,
+    isLastTab,
     intl,
   } = props;
 
@@ -164,7 +165,9 @@ const EditListingWizardTab = props => {
   switch (tab) {
     case DESCRIPTION: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewDescription'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewDescription'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditDescription';
       return (
         <EditListingDescriptionPanel
@@ -178,7 +181,9 @@ const EditListingWizardTab = props => {
     }
     case FEATURES: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewFeatures'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewFeatures'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditFeatures';
       return (
         <EditListingFeaturesPanel
@@ -192,7 +197,9 @@ const EditListingWizardTab = props => {
     }
     case POLICY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewPolicies'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewPolicies'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditPolicies';
       return (
         <EditListingPoliciesPanel
@@ -206,7 +213,9 @@ const EditListingWizardTab = props => {
     }
     case LOCATION: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewLocation'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewLocation'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditLocation';
       return (
         <EditListingLocationPanel
@@ -220,7 +229,9 @@ const EditListingWizardTab = props => {
     }
     case PRICING: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewPricing'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewPricing'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditPricing';
       return (
         <EditListingPricingPanel
@@ -234,7 +245,9 @@ const EditListingWizardTab = props => {
     }
     case AVAILABILITY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewAvailability'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewAvailability'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditAvailability';
       return (
         <EditListingAvailabilityPanel
@@ -249,7 +262,9 @@ const EditListingWizardTab = props => {
     }
     case PHOTOS: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewPhotos'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewPhotos'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditPhotos';
 
       return (
@@ -268,7 +283,9 @@ const EditListingWizardTab = props => {
     }
     case ACTIVITY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewActivity'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewActivity'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditActivity';
       return (
         <EditListingActivityPanel
