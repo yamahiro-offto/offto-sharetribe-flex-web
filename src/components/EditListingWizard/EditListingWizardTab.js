@@ -21,7 +21,12 @@ import {
 } from '../../components';
 
 import css from './EditListingWizard.css';
+import { stringifyDateToISO8601 } from '../../util/dates';
 
+// All chars must be lower case.
+// EditListingWizard.tabLabel{*} in src/translation/--.json must be the same
+// with first charactor uppercased (captalized).
+// (related in src/components/EditListingWizard/EditListingWizardTab.js > createNextButtonText())
 export const AVAILABILITY = 'availability';
 export const DESCRIPTION = 'description';
 export const FEATURES = 'features';
@@ -29,7 +34,6 @@ export const POLICY = 'policy';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
-
 export const ACTIVITY = 'activity';
 
 // EditListingWizardTab component supports these tabs
@@ -114,7 +118,7 @@ const EditListingWizardTab = props => {
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
     // Normalize images for API call
-    updateValues = {title: '(no title)', ...updateValues};
+    updateValues = { title: '(no title)', ...updateValues };
     const { images: updatedImages, ...otherValues } = updateValues;
     const imageProperty =
       typeof updatedImages !== 'undefined' ? { images: imageIds(updatedImages) } : {};
@@ -163,17 +167,46 @@ const EditListingWizardTab = props => {
     };
   };
 
+  const createNextButtonText = (tab, marketplaceTabs, isNewListingFlow, isLastTab) => {
+    const capitalizeFirstLetter = str => {
+      return str && str.length > 0 ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+    };
+    const tabLabel = intl.formatMessage({
+      id: `EditListingWizard.tabLabel${capitalizeFirstLetter(tab)}`,
+    });
+
+    if (isNewListingFlow) {
+      if (!isLastTab) {
+        const nextTab = marketplaceTabs[marketplaceTabs.indexOf(tab) + 1];
+        const nextTabLabel = intl.formatMessage({
+          id: `EditListingWizard.tabLabel${capitalizeFirstLetter(nextTab)}`,
+        });
+
+        // In creating a new listing, and editing not last tab, "Next {nextTabLebel}"
+        return intl.formatMessage(
+          {
+            id: 'EditListingWizard.saveNewNotLastTab',
+          },
+          {
+            nextTabLabel,
+          }
+        );
+      } else {
+        // In creating a new listing, and editing the last tab, "Publish listing"
+        return intl.formatMessage({ id: 'EditListingWizard.saveNewLastTab' });
+      }
+    } else {
+      // In creating a already-exist listing, "Save {tabLabel}"
+      return intl.formatMessage({ id: 'EditListingWizard.saveEditTab' }, { tabLabel: tabLabel });
+    }
+  };
+
   switch (tab) {
     case DESCRIPTION: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewDescription'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditDescription';
       return (
         <EditListingDescriptionPanel
           {...panelProps(DESCRIPTION)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
@@ -181,15 +214,10 @@ const EditListingWizardTab = props => {
       );
     }
     case FEATURES: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewFeatures'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditFeatures';
       return (
         <EditListingFeaturesPanel
           {...panelProps(FEATURES)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
@@ -197,15 +225,10 @@ const EditListingWizardTab = props => {
       );
     }
     case POLICY: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewPolicies'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditPolicies';
       return (
         <EditListingPoliciesPanel
           {...panelProps(POLICY)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
@@ -213,15 +236,10 @@ const EditListingWizardTab = props => {
       );
     }
     case LOCATION: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewLocation'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditLocation';
       return (
         <EditListingLocationPanel
           {...panelProps(LOCATION)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
@@ -229,15 +247,10 @@ const EditListingWizardTab = props => {
       );
     }
     case PRICING: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewPricing'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditPricing';
       return (
         <EditListingPricingPanel
           {...panelProps(PRICING)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
@@ -245,16 +258,11 @@ const EditListingWizardTab = props => {
       );
     }
     case AVAILABILITY: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewAvailability'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditAvailability';
       return (
         <EditListingAvailabilityPanel
           {...panelProps(AVAILABILITY)}
           availability={availability}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}
@@ -262,16 +270,10 @@ const EditListingWizardTab = props => {
       );
     }
     case PHOTOS: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewPhotos'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditPhotos';
-
       return (
         <EditListingPhotosPanel
           {...panelProps(PHOTOS)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           images={images}
           onImageUpload={onImageUpload}
           onRemoveImage={onRemoveImage}
@@ -283,15 +285,10 @@ const EditListingWizardTab = props => {
       );
     }
     case ACTIVITY: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? !isLastTab
-          ? 'EditListingWizard.saveNewActivity'
-          : 'EditListingWizard.saveNewLastTab'
-        : 'EditListingWizard.saveEditActivity';
       return (
         <EditListingActivityPanel
           {...panelProps(ACTIVITY)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
           }}

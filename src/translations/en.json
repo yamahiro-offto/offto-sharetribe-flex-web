@@ -258,6 +258,8 @@
   "EditListingWizard.saveNewPhotos": "Next: Activity",
   "EditListingWizard.saveNewPolicies": "Next: Location",
   "EditListingWizard.saveNewPricing": "Next: Availability",
+  "EditListingWizard.saveEditTab": "Save {tabLabel}",
+  "EditListingWizard.saveNewNotLastTab": "Next: {nextTabLabel}",
   "EditListingWizard.saveNewLastTab": "Publish listing",
   "EditListingWizard.tabLabelDescription": "Description",
   "EditListingWizard.tabLabelFeatures": "Amenities",
