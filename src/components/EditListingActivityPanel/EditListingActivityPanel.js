@@ -27,7 +27,7 @@ const EditListingActivityPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
-  const { description, title, publicData } = currentListing.attributes;
+  const { publicData } = currentListing.attributes;
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
@@ -44,14 +44,12 @@ const EditListingActivityPanel = props => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingActivityForm
         className={css.form}
-        initialValues={{ title, description, category: publicData.category }}
+        initialValues={{ activity: publicData.activity }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, category } = values;
+          const { activity } = values;
           const updateValues = {
-            title: title.trim(),
-            description,
-            publicData: { category },
+            publicData: { activity },
           };
 
           onSubmit(updateValues);

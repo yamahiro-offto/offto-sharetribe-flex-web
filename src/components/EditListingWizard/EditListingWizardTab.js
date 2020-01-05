@@ -114,6 +114,7 @@ const EditListingWizardTab = props => {
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
     // Normalize images for API call
+    updateValues = {title: '(no title)', ...updateValues};
     const { images: updatedImages, ...otherValues } = updateValues;
     const imageProperty =
       typeof updatedImages !== 'undefined' ? { images: imageIds(updatedImages) } : {};
@@ -289,7 +290,7 @@ const EditListingWizardTab = props => {
         : 'EditListingWizard.saveEditActivity';
       return (
         <EditListingActivityPanel
-          {...panelProps(DESCRIPTION)}
+          {...panelProps(ACTIVITY)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);

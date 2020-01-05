@@ -37,6 +37,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
 export const TABS = [
+  ACTIVITY,
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -44,8 +45,6 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
-
-  ACTIVITY,
 ];
 
 // Tabs are horizontal in small screens
@@ -67,7 +66,7 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
-  } else {
+  } else if (tab === ACTIVITY) {
     key = 'EditListingWizard.tabLabelActivity';
   }
 
@@ -109,7 +108,7 @@ const tabCompleted = (tab, listing) => {
     case PHOTOS:
       return images && images.length > 0;
     case ACTIVITY:
-      return !!availabilityPlan;
+      return !!(publicData && publicData.activity);
     default:
       return false;
   }

@@ -6,8 +6,8 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
-import { Form, Button, FieldTextInput } from '../../components';
-import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
+import * as offtoData from '../../util/offtoData';
+import { Form, Button, FieldSelectCustom } from '../../components';
 
 import css from './EditListingActivityForm.css';
 
@@ -82,39 +82,36 @@ const EditListingActivityFormComponent = props => (
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
+      const formDivs = {};
+      formDivs.activity = (
+        <div className={css.sectionContainer}>
+          <FieldSelectCustom
+            id="activity"
+            name="activity" // values の key
+            label={'activity'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Activity).map(activity => {
+              return {
+                key: offtoData.Activity[activity],
+                label: offtoData.Activity[activity],
+              };
+            })}
+          />
+          <p className={css.bioInfo}>
+            <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
+          </p>
+        </div>
+      );
+
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessageCreateListingDraft}
           {errorMessageUpdateListing}
           {errorMessageShowListing}
-          <FieldTextInput
-            id="title"
-            name="title"
-            className={css.title}
-            type="text"
-            label={titleMessage}
-            placeholder={titlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
-            autoFocus
-          />
 
-          <FieldTextInput
-            id="description"
-            name="description"
-            className={css.description}
-            type="textarea"
-            label={descriptionMessage}
-            placeholder={descriptionPlaceholderMessage}
-            validate={composeValidators(required(descriptionRequiredMessage))}
-          />
-
-          <CustomCategorySelectFieldMaybe
-            id="category"
-            name="category"
-            categories={categories}
-            intl={intl}
-          />
+          {formDivs.activity}
 
           <Button
             className={css.submitButton}
