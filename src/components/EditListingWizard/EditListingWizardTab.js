@@ -18,6 +18,7 @@ import {
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
+  EditListingRentalstylePanel,
 } from '../../components';
 
 import css from './EditListingWizard.css';
@@ -35,6 +36,7 @@ export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 export const ACTIVITY = 'activity';
+export const RENTALSTYLE = 'rentalstyle';
 
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
@@ -45,8 +47,8 @@ export const SUPPORTED_TABS = [
   PRICING,
   AVAILABILITY,
   PHOTOS,
-
   ACTIVITY,
+  RENTALSTYLE,
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -288,6 +290,17 @@ const EditListingWizardTab = props => {
       return (
         <EditListingActivityPanel
           {...panelProps(ACTIVITY)}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    case RENTALSTYLE: {
+      return (
+        <EditListingRentalstylePanel
+          {...panelProps(RENTALSTYLE)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);
