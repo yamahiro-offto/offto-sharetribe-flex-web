@@ -2,19 +2,19 @@ import React from 'react';
 import { required } from '../../util/validators';
 import { FieldSelect } from '../../components';
 
-import css from './EditListingDescriptionForm.css';
+import css from './EditListingActivityForm.css';
 
 const CustomCategorySelectFieldMaybe = props => {
   const { name, id, categories, intl } = props;
   const categoryLabel = intl.formatMessage({
-    id: 'EditListingDescriptionForm.categoryLabel',
+    id: 'EditListingActivityForm.categoryLabel',
   });
   const categoryPlaceholder = intl.formatMessage({
-    id: 'EditListingDescriptionForm.categoryPlaceholder',
+    id: 'EditListingActivityForm.categoryPlaceholder',
   });
   const categoryRequired = required(
     intl.formatMessage({
-      id: 'EditListingDescriptionForm.categoryRequired',
+      id: 'EditListingActivityForm.categoryRequired',
     })
   );
   return categories ? (

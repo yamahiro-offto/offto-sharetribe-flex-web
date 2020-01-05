@@ -10,6 +10,7 @@ import {
 import { ensureListing } from '../../util/data';
 import { createResourceLocatorString } from '../../util/routes';
 import {
+  EditListingActivityPanel,
   EditListingAvailabilityPanel,
   EditListingDescriptionPanel,
   EditListingFeaturesPanel,
@@ -267,12 +268,11 @@ const EditListingWizardTab = props => {
     }
     case ACTIVITY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewAvailability'
-        : 'EditListingWizard.saveEditAvailability';
+        ? 'EditListingWizard.saveNewActivity'
+        : 'EditListingWizard.saveEditActivity';
       return (
-        <EditListingAvailabilityPanel
-          {...panelProps(AVAILABILITY)}
-          availability={availability}
+        <EditListingActivityPanel
+          {...panelProps(DESCRIPTION)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);

@@ -1,11 +1,12 @@
 import React from 'react';
-import { bool, func, object, shape, string } from 'prop-types';
+import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
 import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
+import { ListingLink } from '../../components';
 import { LISTING_STATE_DRAFT } from '../../util/types';
-import { ListingLink } from '..';
-import { EditListingAvailabilityForm } from '../../forms';
+import { EditListingActivityForm } from '../../forms';
+import config from '../../config';
 
 import css from './EditListingActivityPanel.css';
 
@@ -14,7 +15,6 @@ const EditListingActivityPanel = props => {
     className,
     rootClassName,
     listing,
-    availability,
     disabled,
     ready,
     onSubmit,
@@ -27,53 +27,42 @@ const EditListingActivityPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
+  const { description, title, publicData } = currentListing.attributes;
+
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
-  const defaultAvailabilityPlan = {
-    type: 'availability-plan/day',
-    entries: [
-      { dayOfWeek: 'mon', seats: 1 },
-      { dayOfWeek: 'tue', seats: 1 },
-      { dayOfWeek: 'wed', seats: 1 },
-      { dayOfWeek: 'thu', seats: 1 },
-      { dayOfWeek: 'fri', seats: 1 },
-      { dayOfWeek: 'sat', seats: 1 },
-      { dayOfWeek: 'sun', seats: 1 },
-    ],
-  };
-  const availabilityPlan = currentListing.attributes.availabilityPlan || defaultAvailabilityPlan;
+  const panelTitle = isPublished ? (
+    <FormattedMessage
+      id="EditListingActivityPanel.title"
+      values={{ listingTitle: <ListingLink listing={listing} /> }}
+    />
+  ) : (
+    <FormattedMessage id="EditListingActivityPanel.createListingTitle" />
+  );
 
   return (
     <div className={classes}>
-      <h1 className={css.title}>
-        {isPublished ? (
-          <FormattedMessage
-            id="EditListingActivityPanel.title"
-            values={{ listingTitle: <ListingLink listing={listing} /> }}
-          />
-        ) : (
-          <FormattedMessage id="EditListingActivityPanel.createListingTitle" />
-        )}
-      </h1>
-      <EditListingAvailabilityForm
+      <h1 className={css.title}>{panelTitle}</h1>
+      <EditListingActivityForm
         className={css.form}
-        listingId={currentListing.id}
-        initialValues={{ availabilityPlan }}
-        availability={availability}
-        availabilityPlan={availabilityPlan}
-        onSubmit={() => {
-          // We save the default availability plan
-          // I.e. this listing is available every night.
-          // Exceptions are handled with live edit through a calendar,
-          // which is visible on this panel.
-          onSubmit({ availabilityPlan });
+        initialValues={{ title, description, category: publicData.category }}
+        saveActionMsg={submitButtonText}
+        onSubmit={values => {
+          const { title, description, category } = values;
+          const updateValues = {
+            title: title.trim(),
+            description,
+            publicData: { category },
+          };
+
+          onSubmit(updateValues);
         }}
         onChange={onChange}
-        saveActionMsg={submitButtonText}
         disabled={disabled}
         ready={ready}
         updated={panelUpdated}
-        updateError={errors.updateListingError}
         updateInProgress={updateInProgress}
+        fetchErrors={errors}
+        categories={config.custom.categories}
       />
     </div>
   );
@@ -82,6 +71,7 @@ const EditListingActivityPanel = props => {
 EditListingActivityPanel.defaultProps = {
   className: null,
   rootClassName: null,
+  errors: null,
   listing: null,
 };
 
@@ -92,12 +82,6 @@ EditListingActivityPanel.propTypes = {
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
-  availability: shape({
-    calendar: object.isRequired,
-    onFetchAvailabilityExceptions: func.isRequired,
-    onCreateAvailabilityException: func.isRequired,
-    onDeleteAvailabilityException: func.isRequired,
-  }).isRequired,
   disabled: bool.isRequired,
   ready: bool.isRequired,
   onSubmit: func.isRequired,
