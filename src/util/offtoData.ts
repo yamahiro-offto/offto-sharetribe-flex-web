@@ -30,7 +30,7 @@ export class BusinessDate {
   tuesday: BusinessHour = new BusinessHour();
   wednesday: BusinessHour = new BusinessHour();
   thursday: BusinessHour = new BusinessHour();
-  fricday: BusinessHour = new BusinessHour();
+  friday: BusinessHour = new BusinessHour();
   saturday: BusinessHour = new BusinessHour();
 }
 
