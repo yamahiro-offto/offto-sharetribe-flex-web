@@ -10,6 +10,7 @@ import {
 import { ensureListing } from '../../util/data';
 import { createResourceLocatorString } from '../../util/routes';
 import {
+  EditListingActivityPanel,
   EditListingAvailabilityPanel,
   EditListingDescriptionPanel,
   EditListingFeaturesPanel,
@@ -29,6 +30,8 @@ export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 
+export const ACTIVITY = 'activity';
+
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
   DESCRIPTION,
@@ -38,6 +41,8 @@ export const SUPPORTED_TABS = [
   PRICING,
   AVAILABILITY,
   PHOTOS,
+
+  ACTIVITY,
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -93,6 +98,7 @@ const EditListingWizardTab = props => {
     onChange,
     updatedTab,
     updateInProgress,
+    isLastTab,
     intl,
   } = props;
 
@@ -108,6 +114,7 @@ const EditListingWizardTab = props => {
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
     // Normalize images for API call
+    updateValues = {title: '(no title)', ...updateValues};
     const { images: updatedImages, ...otherValues } = updateValues;
     const imageProperty =
       typeof updatedImages !== 'undefined' ? { images: imageIds(updatedImages) } : {};
@@ -159,7 +166,9 @@ const EditListingWizardTab = props => {
   switch (tab) {
     case DESCRIPTION: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewDescription'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewDescription'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditDescription';
       return (
         <EditListingDescriptionPanel
@@ -173,7 +182,9 @@ const EditListingWizardTab = props => {
     }
     case FEATURES: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewFeatures'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewFeatures'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditFeatures';
       return (
         <EditListingFeaturesPanel
@@ -187,7 +198,9 @@ const EditListingWizardTab = props => {
     }
     case POLICY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewPolicies'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewPolicies'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditPolicies';
       return (
         <EditListingPoliciesPanel
@@ -201,7 +214,9 @@ const EditListingWizardTab = props => {
     }
     case LOCATION: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewLocation'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewLocation'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditLocation';
       return (
         <EditListingLocationPanel
@@ -215,7 +230,9 @@ const EditListingWizardTab = props => {
     }
     case PRICING: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewPricing'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewPricing'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditPricing';
       return (
         <EditListingPricingPanel
@@ -229,7 +246,9 @@ const EditListingWizardTab = props => {
     }
     case AVAILABILITY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewAvailability'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewAvailability'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditAvailability';
       return (
         <EditListingAvailabilityPanel
@@ -244,7 +263,9 @@ const EditListingWizardTab = props => {
     }
     case PHOTOS: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewPhotos'
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewPhotos'
+          : 'EditListingWizard.saveNewLastTab'
         : 'EditListingWizard.saveEditPhotos';
 
       return (
@@ -258,6 +279,22 @@ const EditListingWizardTab = props => {
             onCompleteEditListingWizardTab(tab, values);
           }}
           onUpdateImageOrder={onUpdateImageOrder}
+        />
+      );
+    }
+    case ACTIVITY: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? !isLastTab
+          ? 'EditListingWizard.saveNewActivity'
+          : 'EditListingWizard.saveNewLastTab'
+        : 'EditListingWizard.saveEditActivity';
+      return (
+        <EditListingActivityPanel
+          {...panelProps(ACTIVITY)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
         />
       );
     }

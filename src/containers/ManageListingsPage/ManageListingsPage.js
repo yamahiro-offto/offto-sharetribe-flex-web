@@ -17,6 +17,7 @@ import {
   LayoutWrapperFooter,
   Footer,
 } from '../../components';
+import { TABS } from '../../components/EditListingWizard/EditListingWizard';
 import { TopbarContainer } from '../../containers';
 
 import {
@@ -64,6 +65,7 @@ export class ManageListingsPageComponent extends Component {
 
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
+    const editListingLinkTab = !TABS ? '' : TABS[0];
 
     const loadingResults = (
       <h2>
@@ -147,6 +149,7 @@ export class ManageListingsPageComponent extends Component {
                     hasOpeningError={openingErrorListingId.uuid === l.id.uuid}
                     hasClosingError={closingErrorListingId.uuid === l.id.uuid}
                     renderSizes={renderSizes}
+                    editListingLinkTab={editListingLinkTab}
                   />
                 ))}
               </div>

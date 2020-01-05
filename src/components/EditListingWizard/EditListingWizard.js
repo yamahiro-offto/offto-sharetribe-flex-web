@@ -25,6 +25,7 @@ import EditListingWizardTab, {
   LOCATION,
   PRICING,
   PHOTOS,
+  ACTIVITY,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
 
@@ -36,6 +37,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
 export const TABS = [
+  ACTIVITY,
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -64,6 +66,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
+  } else if (tab === ACTIVITY) {
+    key = 'EditListingWizard.tabLabelActivity';
   }
 
   return intl.formatMessage({ id: key });
@@ -103,6 +107,8 @@ const tabCompleted = (tab, listing) => {
       return !!availabilityPlan;
     case PHOTOS:
       return images && images.length > 0;
+    case ACTIVITY:
+      return !!(publicData && publicData.activity);
     default:
       return false;
   }
@@ -371,6 +377,7 @@ class EditListingWizard extends Component {
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}
                 handlePublishListing={this.handlePublishListing}
                 fetchInProgress={fetchInProgress}
+                isLastTab={tab === TABS[TABS.length-1]}
               />
             );
           })}
