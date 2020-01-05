@@ -184,8 +184,8 @@ class ProfileSettingsShopFormComponent extends Component {
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
 
-          const formJSXs = {};
-          formJSXs.profileImage = (
+          const formDivs = {};
+          formDivs.profileImage = (
             <div className={css.sectionContainer}>
               <h3 className={css.sectionTitle}>
                 <FormattedMessage id="ProfileSettingsShopForm.yourProfilePicture" />
@@ -256,7 +256,7 @@ class ProfileSettingsShopFormComponent extends Component {
               </div>
             </div>
           );
-          formJSXs.name = (
+          formDivs.name = (
             <div className={css.sectionContainer}>
               <h3 className={css.sectionTitle}>
                 <FormattedMessage id="ProfileSettingsShopForm.yourName" />
@@ -283,7 +283,7 @@ class ProfileSettingsShopFormComponent extends Component {
               </div>
             </div>
           );
-          formJSXs.shopName = (
+          formDivs.shopName = (
             <div className={css.sectionContainer}>
               <h3 className={css.sectionTitle}>
                 {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
@@ -298,7 +298,7 @@ class ProfileSettingsShopFormComponent extends Component {
               />
             </div>
           );
-          formJSXs.intro = (
+          formDivs.intro = (
             <div className={css.sectionContainer}>
               <h3 className={css.sectionTitle}>
                 <FormattedMessage id="ProfileSettingsShopForm.bioHeading" />
@@ -312,7 +312,7 @@ class ProfileSettingsShopFormComponent extends Component {
               />
             </div>
           );
-          formJSXs.userType = (
+          formDivs.userType = (
             <div className={css.sectionContainer}>
               <h3 className={css.sectionTitle}>
                 {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
@@ -337,7 +337,7 @@ class ProfileSettingsShopFormComponent extends Component {
               </p>
             </div>
           );
-          formJSXs.activity = (
+          formDivs.activity = (
             <div className={css.sectionContainer}>
               <h3 className={css.sectionTitle}>
                 {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
@@ -371,12 +371,12 @@ class ProfileSettingsShopFormComponent extends Component {
                 handleSubmit(e);
               }}
             >
-              {formJSXs.profileImage}
-              {formJSXs.name}
-              {formJSXs.shopName}
-              {formJSXs.intro}
-              {formJSXs.userType}
-              {formJSXs.activity}
+              {formDivs.profileImage}
+              {/* {formDivs.name} */}
+              {formDivs.shopName}
+              {formDivs.intro}
+              {/* {formDivs.userType} */}
+              {formDivs.activity}
               {/* (余白) */}
               <div className={css.lastSection} />
               {submitError}
