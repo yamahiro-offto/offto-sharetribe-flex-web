@@ -18,6 +18,11 @@ export enum Activity {
   OTHER = 'other',
 }
 
+export enum RentalStyle {
+  CUSTOMER_SELECT = 'customer_select',
+  SHOP_RECOMMEND = 'shop_recommend',
+}
+
 export class BusinessHour {
   isRegularHoliday: boolean = false;
   startTime: string = '0';
@@ -37,6 +42,7 @@ export class BusinessDate {
 export class OfftoUserPublicData {
   type?: string = UserType.CUSTOMER;
   geolocation?: C_LatLng = new LatLng(0, 0);
+  rentalStyle?: string = RentalStyle.CUSTOMER_SELECT;
   businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';

@@ -83,19 +83,19 @@ const EditListingRentalstyleFormComponent = props => (
       const submitDisabled = invalid || disabled || submitInProgress;
 
       const formDivs = {};
-      formDivs.activity = (
+      formDivs.rentalStyle = (
         <div className={css.sectionContainer}>
           <FieldSelectCustom
-            id="activity"
-            name="activity" // values の key
-            label={'activity'}
+            id="rentalStyle"
+            name="rentalStyle" // values の key
+            label={'rentalStyle'}
             placeholder={'placeholder'}
             validate=""
             // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Activity).map(activity => {
+            options={Object.keys(offtoData.RentalStyle).map(rentalStyle => {
               return {
-                key: offtoData.Activity[activity],
-                label: offtoData.Activity[activity],
+                key: offtoData.RentalStyle[rentalStyle],
+                label: offtoData.RentalStyle[rentalStyle],
               };
             })}
           />
@@ -111,7 +111,7 @@ const EditListingRentalstyleFormComponent = props => (
           {errorMessageUpdateListing}
           {errorMessageShowListing}
 
-          {formDivs.activity}
+          {formDivs.rentalStyle}
 
           <Button
             className={css.submitButton}

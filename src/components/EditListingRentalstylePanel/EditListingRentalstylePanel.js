@@ -44,12 +44,12 @@ const EditListingRentalstylePanel = props => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingRentalstyleForm
         className={css.form}
-        initialValues={{ activity: publicData.activity }}
+        initialValues={{ rentalStyle: publicData.rentalStyle }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { activity } = values;
+          const { rentalStyle } = values;
           const updateValues = {
-            publicData: { activity },
+            publicData: { rentalStyle },
           };
 
           onSubmit(updateValues);

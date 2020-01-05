@@ -114,7 +114,7 @@ const tabCompleted = (tab, listing) => {
     case ACTIVITY:
       return !!(publicData && publicData.activity);
     case RENTALSTYLE:
-      return !!(publicData && publicData.activity);
+      return !!(publicData && publicData.rentalStyle);
     default:
       return false;
   }
