@@ -154,6 +154,8 @@
   "DateInput.closeDatePicker": "Close",
   "DateInput.defaultPlaceholder": "Date input",
   "DateInput.screenReaderInputMessage": "Date input",
+  "EditListingActivityPanel.title": "Edit the availability of {listingTitle}",
+  "EditListingActivityPanel.createListingTitle": "When is it available?",
   "EditListingAvailabilityForm.fetchMonthDataFailed": "Oops, couldn't load data for {month}, please try again.",
   "EditListingAvailabilityForm.availableDay": "Available",
   "EditListingAvailabilityForm.blockedDay": "Not available",

@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
 import { LISTING_STATE_DRAFT } from '../../util/types';
-import { ListingLink } from '../../components';
+import { ListingLink } from '..';
 import { EditListingAvailabilityForm } from '../../forms';
 
-import css from './EditListingAvailabilityPanel.css';
+import css from './EditListingActivityPanel.css';
 
-const EditListingAvailabilityPanel = props => {
+const EditListingActivityPanel = props => {
   const {
     className,
     rootClassName,
@@ -47,11 +47,11 @@ const EditListingAvailabilityPanel = props => {
       <h1 className={css.title}>
         {isPublished ? (
           <FormattedMessage
-            id="EditListingAvailabilityPanel.title"
+            id="EditListingActivityPanel.title"
             values={{ listingTitle: <ListingLink listing={listing} /> }}
           />
         ) : (
-          <FormattedMessage id="EditListingAvailabilityPanel.createListingTitle" />
+          <FormattedMessage id="EditListingActivityPanel.createListingTitle" />
         )}
       </h1>
       <EditListingAvailabilityForm
@@ -79,13 +79,13 @@ const EditListingAvailabilityPanel = props => {
   );
 };
 
-EditListingAvailabilityPanel.defaultProps = {
+EditListingActivityPanel.defaultProps = {
   className: null,
   rootClassName: null,
   listing: null,
 };
 
-EditListingAvailabilityPanel.propTypes = {
+EditListingActivityPanel.propTypes = {
   className: string,
   rootClassName: string,
 
@@ -108,4 +108,4 @@ EditListingAvailabilityPanel.propTypes = {
   errors: object.isRequired,
 };
 
-export default EditListingAvailabilityPanel;
+export default EditListingActivityPanel;
