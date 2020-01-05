@@ -1,6 +1,9 @@
 import { types as sdkTypes } from './sdkLoader';
 import { plainToClass, classToPlain } from 'class-transformer';
-const { LatLng, UUID } = sdkTypes;
+const { LatLng, UUID, Money } = sdkTypes;
+type C_UUID = typeof UUID;
+type C_LatLng = typeof LatLng;
+type C_Money = typeof Money;
 
 // ================ const definitions ================ //
 
@@ -27,13 +30,13 @@ export class BusinessDate {
   tuesday: BusinessHour = new BusinessHour();
   wednesday: BusinessHour = new BusinessHour();
   thursday: BusinessHour = new BusinessHour();
-  fricday: BusinessHour = new BusinessHour();
+  friday: BusinessHour = new BusinessHour();
   saturday: BusinessHour = new BusinessHour();
 }
 
 export class OfftoUserPublicData {
   type?: string = UserType.CUSTOMER;
-  geolocation?: { lat: 0; lng: 0 } = { lat: 0, lng: 0 };
+  geolocation?: C_LatLng = new LatLng(0, 0);
   businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';
@@ -53,7 +56,7 @@ export class OfftoUserPublicData {
   }
 
   static publicDataIsShop(publicData: any): boolean {
-    return !!publicData.type && publicData.type === UserType.SHOP;
+    return !!publicData && !!publicData.type && publicData.type === UserType.SHOP;
   }
 
   static sanitize(publicData: any): Object {
@@ -80,10 +83,14 @@ export class OfftoUser {
   publicData: OfftoUserPublicData = new OfftoUserPublicData();
   protectedData: {} = {};
   privateData: {} = {};
-  profileImageId: any = null;
+  profileImageId: C_UUID = new UUID();
 
   static userIsShop(user: any): boolean {
-    return !!user && OfftoUserPublicData.publicDataIsShop(user.attributes.profile.publicData);
+    return (
+      !!user &&
+      !!user.attributes.profile.publicData &&
+      OfftoUserPublicData.publicDataIsShop(user.attributes.profile.publicData)
+    );
   }
 
   static createUserParam(createUserParams: any, isShop: boolean = false) {

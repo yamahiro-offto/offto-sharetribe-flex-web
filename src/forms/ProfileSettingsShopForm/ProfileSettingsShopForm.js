@@ -184,6 +184,185 @@ class ProfileSettingsShopFormComponent extends Component {
           const submitDisabled =
             invalid || pristine || pristineSinceLastSubmit || uploadInProgress || submitInProgress;
 
+          const formDivs = {};
+          formDivs.profileImage = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                <FormattedMessage id="ProfileSettingsShopForm.yourProfilePicture" />
+              </h3>
+              <Field
+                accept={ACCEPT_IMAGES}
+                id="profileImage"
+                name="profileImage"
+                label={chooseAvatarLabel}
+                type="file"
+                form={null}
+                uploadImageError={uploadImageError}
+                disabled={uploadInProgress}
+              >
+                {fieldProps => {
+                  const { accept, id, input, label, disabled, uploadImageError } = fieldProps;
+                  const { name, type } = input;
+                  const onChange = e => {
+                    const file = e.target.files[0];
+                    form.change(`profileImage`, file);
+                    form.blur(`profileImage`);
+                    if (file != null) {
+                      const tempId = `${file.name}_${Date.now()}`;
+                      onImageUpload({ id: tempId, file });
+                    }
+                  };
+
+                  let error = null;
+
+                  if (isUploadImageOverLimitError(uploadImageError)) {
+                    error = (
+                      <div className={css.error}>
+                        <FormattedMessage id="ProfileSettingsShopForm.imageUploadFailedFileTooLarge" />
+                      </div>
+                    );
+                  } else if (uploadImageError) {
+                    error = (
+                      <div className={css.error}>
+                        <FormattedMessage id="ProfileSettingsShopForm.imageUploadFailed" />
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className={css.uploadAvatarWrapper}>
+                      <label className={css.label} htmlFor={id}>
+                        {label}
+                      </label>
+                      <input
+                        accept={accept}
+                        id={id}
+                        name={name}
+                        className={css.uploadAvatarInput}
+                        disabled={disabled}
+                        onChange={onChange}
+                        type={type}
+                      />
+                      {error}
+                    </div>
+                  );
+                }}
+              </Field>
+              <div className={css.tip}>
+                <FormattedMessage id="ProfileSettingsShopForm.tip" />
+              </div>
+              <div className={css.fileInfo}>
+                <FormattedMessage id="ProfileSettingsShopForm.fileInfo" />
+              </div>
+            </div>
+          );
+          formDivs.name = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                <FormattedMessage id="ProfileSettingsShopForm.yourName" />
+              </h3>
+              <div className={css.nameContainer}>
+                <FieldTextInput
+                  className={css.firstName}
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  label={firstNameLabel}
+                  placeholder={firstNamePlaceholder}
+                  validate={firstNameRequired}
+                />
+                <FieldTextInput
+                  className={css.lastName}
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  label={lastNameLabel}
+                  placeholder={lastNamePlaceholder}
+                  validate={lastNameRequired}
+                />
+              </div>
+            </div>
+          );
+          formDivs.shopName = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
+                {'Your shop name'}
+              </h3>
+              <FieldTextInput
+                type="text"
+                id="displayName"
+                name="displayName"
+                label={'shop name'}
+                placeholder={'shop name here..'}
+              />
+            </div>
+          );
+          formDivs.intro = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                <FormattedMessage id="ProfileSettingsShopForm.bioHeading" />
+              </h3>
+              <FieldTextInput
+                type="textarea"
+                id="bio"
+                name="bio"
+                label={'your shop introduction'}
+                placeholder={'shop name here..'}
+              />
+            </div>
+          );
+          formDivs.userType = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
+                {'shop type'}
+              </h3>
+              <FieldSelectCustom
+                id="publicData.type"
+                name="publicData.type" // values の key
+                label={'publicData type'}
+                placeholder={'placeholder'}
+                validate=""
+                // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+                options={Object.keys(offtoData.UserType).map(usertype => {
+                  return {
+                    key: offtoData.UserType[usertype],
+                    label: offtoData.UserType[usertype],
+                  };
+                })}
+              />
+              <p className={css.bioInfo}>
+                <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
+              </p>
+            </div>
+          );
+          formDivs.activity = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
+                {'Yout Shop activity'}
+              </h3>
+              <FieldSelectCustom
+                id="publicData.activity"
+                name="publicData.activity" // values の key
+                label={'activity'}
+                placeholder={'placeholder'}
+                validate=""
+                // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+                options={Object.keys(offtoData.Activity).map(activity => {
+                  return {
+                    key: offtoData.Activity[activity],
+                    label: offtoData.Activity[activity],
+                  };
+                })}
+              />
+              <p className={css.bioInfo}>
+                <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
+              </p>
+            </div>
+          );
+
           return (
             <Form
               className={classes}
@@ -192,177 +371,13 @@ class ProfileSettingsShopFormComponent extends Component {
                 handleSubmit(e);
               }}
             >
-              {/* Profile Image */}
-              <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsShopForm.yourProfilePicture" />
-                </h3>
-                <Field
-                  accept={ACCEPT_IMAGES}
-                  id="profileImage"
-                  name="profileImage"
-                  label={chooseAvatarLabel}
-                  type="file"
-                  form={null}
-                  uploadImageError={uploadImageError}
-                  disabled={uploadInProgress}
-                >
-                  {fieldProps => {
-                    const { accept, id, input, label, disabled, uploadImageError } = fieldProps;
-                    const { name, type } = input;
-                    const onChange = e => {
-                      const file = e.target.files[0];
-                      form.change(`profileImage`, file);
-                      form.blur(`profileImage`);
-                      if (file != null) {
-                        const tempId = `${file.name}_${Date.now()}`;
-                        onImageUpload({ id: tempId, file });
-                      }
-                    };
-
-                    let error = null;
-
-                    if (isUploadImageOverLimitError(uploadImageError)) {
-                      error = (
-                        <div className={css.error}>
-                          <FormattedMessage id="ProfileSettingsShopForm.imageUploadFailedFileTooLarge" />
-                        </div>
-                      );
-                    } else if (uploadImageError) {
-                      error = (
-                        <div className={css.error}>
-                          <FormattedMessage id="ProfileSettingsShopForm.imageUploadFailed" />
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <div className={css.uploadAvatarWrapper}>
-                        <label className={css.label} htmlFor={id}>
-                          {label}
-                        </label>
-                        <input
-                          accept={accept}
-                          id={id}
-                          name={name}
-                          className={css.uploadAvatarInput}
-                          disabled={disabled}
-                          onChange={onChange}
-                          type={type}
-                        />
-                        {error}
-                      </div>
-                    );
-                  }}
-                </Field>
-                <div className={css.tip}>
-                  <FormattedMessage id="ProfileSettingsShopForm.tip" />
-                </div>
-                <div className={css.fileInfo}>
-                  <FormattedMessage id="ProfileSettingsShopForm.fileInfo" />
-                </div>
-              </div>
-              {/* 氏名 */}
-              <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsShopForm.yourName" />
-                </h3>
-                <div className={css.nameContainer}>
-                  <FieldTextInput
-                    className={css.firstName}
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    label={firstNameLabel}
-                    placeholder={firstNamePlaceholder}
-                    validate={firstNameRequired}
-                  />
-                  <FieldTextInput
-                    className={css.lastName}
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    label={lastNameLabel}
-                    placeholder={lastNamePlaceholder}
-                    validate={lastNameRequired}
-                  />
-                </div>
-              </div>
-              {/* ショップ名 */}
-              <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
-                  {'Your shop name'}
-                </h3>
-                <FieldTextInput
-                  type="text"
-                  id="displayName"
-                  name="displayName"
-                  label={'shop name'}
-                  placeholder={'shop name here..'}
-                />
-              </div>
-              {/* 紹介文 */}
-              <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  <FormattedMessage id="ProfileSettingsShopForm.bioHeading" />
-                </h3>
-                <FieldTextInput
-                  type="textarea"
-                  id="bio"
-                  name="bio"
-                  label={'your shop introduction'}
-                  placeholder={'shop name here..'}
-                />
-              </div>
-              {/* タイプ */}
-              <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
-                  {'shop type'}
-                </h3>
-                <FieldSelectCustom
-                  id="publicData.type"
-                  name="publicData.type" // values の key
-                  label={'publicData type'}
-                  placeholder={'placeholder'}
-                  validate=""
-                  // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-                  options={Object.keys(offtoData.UserType).map(usertype => {
-                    return {
-                      key: offtoData.UserType[usertype],
-                      label: offtoData.UserType[usertype],
-                    };
-                  })}
-                />
-                <p className={css.bioInfo}>
-                  <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
-                </p>
-              </div>
-              {/* 種類 */}
-              <div className={css.sectionContainer}>
-                <h3 className={css.sectionTitle}>
-                  {/* <FormattedMessage id="ProfileSettingsShopForm.bioHeading" /> */}
-                  {'Yout Shop activity'}
-                </h3>
-                <FieldSelectCustom
-                  id="publicData.activity"
-                  name="publicData.activity" // values の key
-                  label={'activity'}
-                  placeholder={'placeholder'}
-                  validate=""
-                  // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-                  options={Object.keys(offtoData.Activity).map(activity => {
-                    return {
-                      key: offtoData.Activity[activity],
-                      label: offtoData.Activity[activity],
-                    };
-                  })}
-                />
-                <p className={css.bioInfo}>
-                  <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
-                </p>
-              </div>
+              {formDivs.profileImage}
+              {/* {formDivs.name} */}
+              {formDivs.shopName}
+              {formDivs.intro}
+              {/* {formDivs.userType} */}
+              {formDivs.activity}
+              {/* (余白) */}
               <div className={css.lastSection} />
               {submitError}
               <Button
