@@ -5,12 +5,12 @@ import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
 import { ListingLink } from '../../components';
 import { LISTING_STATE_DRAFT } from '../../util/types';
-import { EditListingActivityForm } from '../../forms';
+import { EditListingRentalstyleForm } from '../../forms';
 import config from '../../config';
 
-import css from './EditListingActivityPanel.css';
+import css from './EditListingRentalstylePanel.css';
 
-const EditListingActivityPanel = props => {
+const EditListingRentalstylePanel = props => {
   const {
     className,
     rootClassName,
@@ -32,17 +32,17 @@ const EditListingActivityPanel = props => {
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
     <FormattedMessage
-      id="EditListingActivityPanel.title"
+      id="EditListingRentalstylePanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingActivityPanel.createListingTitle" />
+    <FormattedMessage id="EditListingRentalstylePanel.createListingTitle" />
   );
 
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <EditListingActivityForm
+      <EditListingRentalstyleForm
         className={css.form}
         initialValues={{ activity: publicData.activity }}
         saveActionMsg={submitButtonText}
@@ -66,14 +66,14 @@ const EditListingActivityPanel = props => {
   );
 };
 
-EditListingActivityPanel.defaultProps = {
+EditListingRentalstylePanel.defaultProps = {
   className: null,
   rootClassName: null,
   errors: null,
   listing: null,
 };
 
-EditListingActivityPanel.propTypes = {
+EditListingRentalstylePanel.propTypes = {
   className: string,
   rootClassName: string,
 
@@ -90,4 +90,4 @@ EditListingActivityPanel.propTypes = {
   errors: object.isRequired,
 };
 
-export default EditListingActivityPanel;
+export default EditListingRentalstylePanel;

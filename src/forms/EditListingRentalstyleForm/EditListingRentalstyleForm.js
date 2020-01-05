@@ -9,11 +9,11 @@ import { maxLength, required, composeValidators } from '../../util/validators';
 import * as offtoData from '../../util/offtoData';
 import { Form, Button, FieldSelectCustom } from '../../components';
 
-import css from './EditListingActivityForm.css';
+import css from './EditListingRentalstyleForm.css';
 
 const TITLE_MAX_LENGTH = 60;
 
-const EditListingActivityFormComponent = props => (
+const EditListingRentalstyleFormComponent = props => (
   <FinalForm
     {...props}
     render={formRenderProps => {
@@ -32,48 +32,48 @@ const EditListingActivityFormComponent = props => (
         fetchErrors,
       } = formRenderProps;
 
-      const titleMessage = intl.formatMessage({ id: 'EditListingActivityForm.title' });
+      const titleMessage = intl.formatMessage({ id: 'EditListingRentalstyleForm.title' });
       const titlePlaceholderMessage = intl.formatMessage({
-        id: 'EditListingActivityForm.titlePlaceholder',
+        id: 'EditListingRentalstyleForm.titlePlaceholder',
       });
       const titleRequiredMessage = intl.formatMessage({
-        id: 'EditListingActivityForm.titleRequired',
+        id: 'EditListingRentalstyleForm.titleRequired',
       });
       const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingActivityForm.maxLength' },
+        { id: 'EditListingRentalstyleForm.maxLength' },
         {
           maxLength: TITLE_MAX_LENGTH,
         }
       );
 
       const descriptionMessage = intl.formatMessage({
-        id: 'EditListingActivityForm.description',
+        id: 'EditListingRentalstyleForm.description',
       });
       const descriptionPlaceholderMessage = intl.formatMessage({
-        id: 'EditListingActivityForm.descriptionPlaceholder',
+        id: 'EditListingRentalstyleForm.descriptionPlaceholder',
       });
       const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
       const descriptionRequiredMessage = intl.formatMessage({
-        id: 'EditListingActivityForm.descriptionRequired',
+        id: 'EditListingRentalstyleForm.descriptionRequired',
       });
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
         <p className={css.error}>
-          <FormattedMessage id="EditListingActivityForm.updateFailed" />
+          <FormattedMessage id="EditListingRentalstyleForm.updateFailed" />
         </p>
       ) : null;
 
       // This error happens only on first tab (of EditListingWizard)
       const errorMessageCreateListingDraft = createListingDraftError ? (
         <p className={css.error}>
-          <FormattedMessage id="EditListingActivityForm.createListingDraftError" />
+          <FormattedMessage id="EditListingRentalstyleForm.createListingDraftError" />
         </p>
       ) : null;
 
       const errorMessageShowListing = showListingsError ? (
         <p className={css.error}>
-          <FormattedMessage id="EditListingActivityForm.showListingFailed" />
+          <FormattedMessage id="EditListingRentalstyleForm.showListingFailed" />
         </p>
       ) : null;
 
@@ -128,9 +128,9 @@ const EditListingActivityFormComponent = props => (
   />
 );
 
-EditListingActivityFormComponent.defaultProps = { className: null, fetchErrors: null };
+EditListingRentalstyleFormComponent.defaultProps = { className: null, fetchErrors: null };
 
-EditListingActivityFormComponent.propTypes = {
+EditListingRentalstyleFormComponent.propTypes = {
   className: string,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
@@ -152,4 +152,4 @@ EditListingActivityFormComponent.propTypes = {
   ),
 };
 
-export default compose(injectIntl)(EditListingActivityFormComponent);
+export default compose(injectIntl)(EditListingRentalstyleFormComponent);
