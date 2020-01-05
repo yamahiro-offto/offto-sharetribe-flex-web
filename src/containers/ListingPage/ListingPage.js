@@ -209,7 +209,7 @@ export class ListingPageComponent extends Component {
       : LISTING_PAGE_PARAM_TYPE_EDIT;
     console.log('isDraftVariant', isDraftVariant);
 
-    const listingTab = TABS ? '' : isDraftVariant ? TABS[TABS.length - 1] : TABS[0];
+    const listingTab = !TABS ? '-' : isDraftVariant ? TABS[TABS.length - 1] : TABS[0];
 
     const isApproved =
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_PENDING_APPROVAL;
