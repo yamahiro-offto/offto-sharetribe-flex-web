@@ -124,6 +124,7 @@ export const ManageListingCardComponent = props => {
     onToggleMenu,
     renderSizes,
     availabilityEnabled,
+    editListingLinkTab
   } = props;
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
@@ -331,7 +332,7 @@ export const ManageListingCardComponent = props => {
           <NamedLink
             className={css.manageLink}
             name="EditListingPage"
-            params={{ id, slug, type: editListingLinkType, tab: 'description' }}
+            params={{ id, slug, type: editListingLinkType, tab: editListingLinkTab }}
           >
             <FormattedMessage id="ManageListingCard.editListing" />
           </NamedLink>
@@ -361,6 +362,7 @@ ManageListingCardComponent.defaultProps = {
   actionsInProgressListingId: null,
   renderSizes: null,
   availabilityEnabled: config.enableAvailability,
+  editListingLinkTab: '',
 };
 
 const { bool, func, shape, string } = PropTypes;
@@ -378,6 +380,7 @@ ManageListingCardComponent.propTypes = {
   onOpenListing: func.isRequired,
   onToggleMenu: func.isRequired,
   availabilityEnabled: bool,
+  editListingLinkTab: string,
 
   // Responsive image sizes hint
   renderSizes: string,
