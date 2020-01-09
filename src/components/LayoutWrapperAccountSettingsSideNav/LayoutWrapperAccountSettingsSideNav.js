@@ -8,6 +8,8 @@ import { compose } from 'redux';
 import { FormattedMessage } from '../../util/reactIntl';
 import { withViewport } from '../../util/contextHelpers';
 import { LayoutWrapperSideNav } from '../../components';
+import { OfftoUser } from '../../util/offtoData';
+import { propTypes } from '../../util/types';
 
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 
@@ -24,7 +26,7 @@ const scrollToTab = currentTab => {
 };
 
 const LayoutWrapperAccountSettingsSideNavComponent = props => {
-  const { currentTab, viewport } = props;
+  const { currentTab, viewport, currentUser } = props;
 
   let hasScrolledToTab = false;
 
@@ -77,6 +79,10 @@ const LayoutWrapperAccountSettingsSideNavComponent = props => {
     },
   ];
 
+  if (!OfftoUser.userIsShop(currentUser)) {
+    tabs.splice(2,1);
+  }
+
   return <LayoutWrapperSideNav tabs={tabs} />;
 };
 
@@ -85,6 +91,7 @@ LayoutWrapperAccountSettingsSideNavComponent.defaultProps = {
   rootClassName: null,
   children: null,
   currentTab: null,
+  currentUser: null,
 };
 
 LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
@@ -92,6 +99,7 @@ LayoutWrapperAccountSettingsSideNavComponent.propTypes = {
   className: string,
   rootClassName: string,
   currentTab: string,
+  currentUser: propTypes.currentUser,
 
   // from withViewport
   viewport: shape({

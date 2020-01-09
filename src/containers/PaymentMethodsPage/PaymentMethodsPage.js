@@ -153,9 +153,12 @@ const PaymentMethodsPageComponent = props => {
             desktopClassName={css.desktopTopbar}
             mobileClassName={css.mobileTopbar}
           />
-          <UserNav selectedPageName="PaymentMethodsPage" />
+          <UserNav selectedPageName="PaymentMethodsPage" currentUser={currentUser} />
         </LayoutWrapperTopbar>
-        <LayoutWrapperAccountSettingsSideNav currentTab="PaymentMethodsPage" />
+        <LayoutWrapperAccountSettingsSideNav
+          currentTab="PaymentMethodsPage"
+          currentUser={currentUser}
+        />
         <LayoutWrapperMain>
           <div className={css.content}>
             <h1 className={css.title}>

@@ -221,6 +221,17 @@ export const mapInputsToStripeAccountKeys = (country, values) => {
         ),
         account_number: cleanedString(values[ACCOUNT_NUMBER]),
       };
+    case 'JP':
+      return {
+        routing_number: cleanedString(values[BANK_CODE]) + cleanedString(values[BRANCH_CODE]), // '-' not needed for Japan
+        bank_name: cleanedString(values[BANK_NAME]),
+        bank_code: cleanedString(values[BANK_CODE]),
+        branch_name: cleanedString(values[BRANCH_NAME]),
+        branch_code: cleanedString(values[BRANCH_CODE]),
+        account_holder_name: cleanedString(values[ACCOUNT_OWNER_NAME]),
+        account_holder_type: 'individual', // Stripe supports only 'individual' (not for 'company')
+        account_number: cleanedString(values[ACCOUNT_NUMBER]),
+      };
 
     default:
       throw new Error(`Not supported country (${country}) given to validator`);

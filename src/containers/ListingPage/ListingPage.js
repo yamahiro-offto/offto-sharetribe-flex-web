@@ -39,6 +39,7 @@ import {
   Footer,
   BookingPanel,
 } from '../../components';
+import { TABS } from '../../components/EditListingWizard/EditListingWizard';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
 import { sendEnquiry, loadData, setInitialValues } from './ListingPage.duck';
@@ -206,7 +207,9 @@ export class ListingPageComponent extends Component {
     const listingType = isDraftVariant
       ? LISTING_PAGE_PARAM_TYPE_DRAFT
       : LISTING_PAGE_PARAM_TYPE_EDIT;
-    const listingTab = isDraftVariant ? 'photos' : 'description';
+    console.log('isDraftVariant', isDraftVariant);
+
+    const listingTab = !TABS ? '-' : isDraftVariant ? TABS[TABS.length - 1] : TABS[0];
 
     const isApproved =
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_PENDING_APPROVAL;

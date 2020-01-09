@@ -18,6 +18,7 @@ import { propTypes, DATE_TYPE_DATE } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
+import { OfftoUser } from '../../util/offtoData';
 import {
   Avatar,
   BookingTimeInfo,
@@ -354,6 +355,13 @@ export const InboxPageComponent = props => {
       },
     },
   ];
+
+  if (OfftoUser.userIsShop(currentUser)) {
+    tabs.splice(0, 1);
+  } else {
+    tabs.splice(1, 1);
+  }
+
   const nav = <TabNav rootClassName={css.tabs} tabRootClassName={css.tab} tabs={tabs} />;
 
   return (

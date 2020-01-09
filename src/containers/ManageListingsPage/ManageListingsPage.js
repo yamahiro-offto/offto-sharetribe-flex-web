@@ -17,6 +17,7 @@ import {
   LayoutWrapperFooter,
   Footer,
 } from '../../components';
+import { TABS } from '../../components/EditListingWizard/EditListingWizard';
 import { TopbarContainer } from '../../containers';
 
 import {
@@ -58,11 +59,13 @@ export class ManageListingsPageComponent extends Component {
       queryListingsError,
       queryParams,
       scrollingDisabled,
+      currentUser,
       intl,
     } = this.props;
 
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
+    const editListingLinkTab = !TABS ? '' : TABS[0];
 
     const loadingResults = (
       <h2>
@@ -125,7 +128,7 @@ export class ManageListingsPageComponent extends Component {
         <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer currentPage="ManageListingsPage" />
-            <UserNav selectedPageName="ManageListingsPage" />
+            <UserNav selectedPageName="ManageListingsPage" currentUser={currentUser} />
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
             {queryInProgress ? loadingResults : null}
@@ -146,6 +149,7 @@ export class ManageListingsPageComponent extends Component {
                     hasOpeningError={openingErrorListingId.uuid === l.id.uuid}
                     hasClosingError={closingErrorListingId.uuid === l.id.uuid}
                     renderSizes={renderSizes}
+                    editListingLinkTab={editListingLinkTab}
                   />
                 ))}
               </div>
@@ -170,6 +174,7 @@ ManageListingsPageComponent.defaultProps = {
   closingListingError: null,
   openingListing: null,
   openingListingError: null,
+  currentUser: null,
 };
 
 const { arrayOf, bool, func, object, shape, string } = PropTypes;
@@ -193,6 +198,7 @@ ManageListingsPageComponent.propTypes = {
   queryListingsError: propTypes.error,
   queryParams: object,
   scrollingDisabled: bool.isRequired,
+  currentUser: propTypes.currentUser.isRequired,
 
   // from injectIntl
   intl: intlShape.isRequired,
@@ -210,6 +216,9 @@ const mapStateToProps = state => {
     closingListing,
     closingListingError,
   } = state.ManageListingsPage;
+
+  const { currentUser } = state.user;
+
   const listings = getOwnListingsById(state, currentPageResultIds);
   return {
     currentPageResultIds,
@@ -223,6 +232,7 @@ const mapStateToProps = state => {
     openingListingError,
     closingListing,
     closingListingError,
+    currentUser,
   };
 };
 

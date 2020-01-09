@@ -2,6 +2,7 @@ import React from 'react';
 import {
   AboutPage,
   AuthenticationPage,
+  AuthenticationShopPage,
   CheckoutPage,
   ContactDetailsPage,
   EditListingPage,
@@ -19,6 +20,7 @@ import {
   PrivacyPolicyPage,
   ProfilePage,
   ProfileSettingsPage,
+  ProfileSettingsShopPage,
   SearchPage,
   StyleguidePage,
   TermsOfServicePage,
@@ -160,6 +162,13 @@ const routeConfiguration = () => {
       component: props => <ProfileSettingsPage {...props} />,
     },
     {
+      path: '/profile-settings-shop',
+      name: 'ProfileSettingsShopPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: props => <ProfileSettingsShopPage {...props} />,
+    },
+    {
       path: '/login',
       name: 'LoginPage',
       component: props => <AuthenticationPage {...props} tab="login" />,
@@ -168,6 +177,11 @@ const routeConfiguration = () => {
       path: '/signup',
       name: 'SignupPage',
       component: props => <AuthenticationPage {...props} tab="signup" />,
+    },
+    {
+      path: '/signup-shop',
+      name: 'SignupShopPage',
+      component: props => <AuthenticationShopPage {...props} tab="signup" />,
     },
     {
       path: '/recover-password',

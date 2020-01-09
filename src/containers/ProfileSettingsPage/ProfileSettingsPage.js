@@ -93,7 +93,7 @@ export class ProfileSettingsPageComponent extends Component {
         <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer currentPage="ProfileSettingsPage" />
-            <UserNav selectedPageName="ProfileSettingsPage" />
+            <UserNav selectedPageName="ProfileSettingsPage" currentUser={currentUser}/>
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
             <div className={css.content}>

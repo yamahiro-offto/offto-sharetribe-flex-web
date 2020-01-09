@@ -1,5 +1,6 @@
 export { default as AboutPage } from './AboutPage/AboutPage';
 export { default as AuthenticationPage } from './AuthenticationPage/AuthenticationPage';
+export { default as AuthenticationShopPage } from './AuthenticationShopPage/AuthenticationShopPage';
 export { default as CheckoutPage } from './CheckoutPage/CheckoutPage';
 export { default as ContactDetailsPage } from './ContactDetailsPage/ContactDetailsPage';
 export { default as EditListingPage } from './EditListingPage/EditListingPage';
@@ -17,6 +18,7 @@ export { default as StripePayoutPage } from './StripePayoutPage/StripePayoutPage
 export { default as PrivacyPolicyPage } from './PrivacyPolicyPage/PrivacyPolicyPage';
 export { default as ProfilePage } from './ProfilePage/ProfilePage';
 export { default as ProfileSettingsPage } from './ProfileSettingsPage/ProfileSettingsPage';
+export { default as ProfileSettingsShopPage } from './ProfileSettingsShopPage/ProfileSettingsShopPage';
 export { default as SearchPage } from './SearchPage/SearchPage';
 export { default as StaticPage } from './StaticPage/StaticPage';
 export { default as StyleguidePage } from './StyleguidePage/StyleguidePage';

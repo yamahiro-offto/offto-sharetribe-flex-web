@@ -15,6 +15,7 @@ import {
   NamedLink,
 } from '../../components';
 import { TopbarSearchForm } from '../../forms';
+import { OfftoUser } from '../../util/offtoData';
 
 import css from './TopbarDesktop.css';
 
@@ -84,8 +85,10 @@ const TopbarDesktop = props => {
             className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
             name="ManageListingsPage"
           >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+            {OfftoUser.userIsShop(currentUser) && [
+              <span className={css.menuItemBorder} />,
+              <FormattedMessage id="TopbarDesktop.yourListingsLink" />,
+            ]}
           </NamedLink>
         </MenuItem>
         <MenuItem key="ProfileSettingsPage">
@@ -142,11 +145,13 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
-      <NamedLink className={css.createListingLink} name="NewListingPage">
-        <span className={css.createListing}>
-          <FormattedMessage id="TopbarDesktop.createListing" />
-        </span>
-      </NamedLink>
+      {OfftoUser.userIsShop(currentUser) && (
+        <NamedLink className={css.createListingLink} name="NewListingPage">
+          <span className={css.createListing}>
+            <FormattedMessage id="TopbarDesktop.createListing" />
+          </span>
+        </NamedLink>
+      )}
       {inboxLink}
       {profileMenu}
       {signupLink}

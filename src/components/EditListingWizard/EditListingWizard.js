@@ -25,6 +25,8 @@ import EditListingWizardTab, {
   LOCATION,
   PRICING,
   PHOTOS,
+  ACTIVITY,
+  RENTALSTYLE,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
 
@@ -36,6 +38,8 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
 export const TABS = [
+  ACTIVITY,
+  RENTALSTYLE,
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -64,6 +68,10 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
+  } else if (tab === ACTIVITY) {
+    key = 'EditListingWizard.tabLabelActivity';
+  } else if (tab === RENTALSTYLE) {
+    key = 'EditListingWizard.tabLabelRentalstyle';
   }
 
   return intl.formatMessage({ id: key });
@@ -103,6 +111,10 @@ const tabCompleted = (tab, listing) => {
       return !!availabilityPlan;
     case PHOTOS:
       return images && images.length > 0;
+    case ACTIVITY:
+      return !!(publicData && publicData.activity);
+    case RENTALSTYLE:
+      return !!(publicData && publicData.rentalStyle);
     default:
       return false;
   }
@@ -371,6 +383,7 @@ class EditListingWizard extends Component {
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}
                 handlePublishListing={this.handlePublishListing}
                 fetchInProgress={fetchInProgress}
+                isLastTab={tab === TABS[TABS.length - 1]}
               />
             );
           })}

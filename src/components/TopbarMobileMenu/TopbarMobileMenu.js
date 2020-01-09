@@ -10,6 +10,7 @@ import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
 import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
+import { OfftoUser } from '../../util/offtoData';
 
 import css from './TopbarMobileMenu.css';
 
@@ -92,12 +93,14 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
-        <NamedLink
-          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
-          name="ManageListingsPage"
-        >
-          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
-        </NamedLink>
+        {OfftoUser.userIsShop(currentUser) && (
+          <NamedLink
+            className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+            name="ManageListingsPage"
+          >
+            <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+          </NamedLink>
+        )}
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
           name="ProfileSettingsPage"

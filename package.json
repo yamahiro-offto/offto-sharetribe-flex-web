@@ -13,6 +13,7 @@
     "autosize": "^4.0.0",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
+    "class-transformer": "^0.2.3",
     "classnames": "^2.2.6",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
@@ -50,11 +51,13 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "reflect-metadata": "^0.1.13",
     "seedrandom": "^3.0.3",
     "sharetribe-flex-sdk": "^1.8.0",
     "sharetribe-scripts": "3.1.1",
     "smoothscroll-polyfill": "^0.4.0",
     "source-map-support": "^0.5.9",
+    "typescript": "^3.7.4",
     "url": "^0.11.0"
   },
   "devDependencies": {
