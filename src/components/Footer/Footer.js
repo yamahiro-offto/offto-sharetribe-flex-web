@@ -38,7 +38,7 @@ const renderSocialMediaLinks = intl => {
     >
       <IconSocialMediaTwitter />
     </ExternalLink>
-  ) : null;
+  ) : null; 
 
   const instragramLink = siteInstagramPage ? (
     <ExternalLink
@@ -82,19 +82,16 @@ const Footer = props => {
             <div className={css.infoLinks}>
               <ul className={css.list}>
                 <li className={css.listItem}>
-                  <NamedLink name="NewListingPage" className={css.link}>
-                    <FormattedMessage id="Footer.toNewListingPage" />
-                  </NamedLink>
-                </li>
-                <li className={css.listItem}>
-                  <NamedLink name="AboutPage" className={css.link}>
+                   <ExternalLink href="https://www.offto.jp/about-us" className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />
-                  </NamedLink>
+                    </ExternalLink>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
+               
+                  <ExternalLink href="https://www.notion.so/offto/offto-FAQs-506326c928974b85ab9fa681ebf5b340" className={css.link}>
                     <FormattedMessage id="Footer.toFAQPage" />
-                  </NamedLink>
+                   </ExternalLink>
+             
                 </li>
                 <li className={css.listItem}>
                   <NamedLink name="LandingPage" className={css.link}>
@@ -119,7 +116,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchHelsinki" />
+                    <FormattedMessage id="Footer.searchSnow" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
@@ -131,7 +128,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchTurku" />
+                    <FormattedMessage id="Footer.searchBike" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
@@ -143,7 +140,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchTampere" />
+                    <FormattedMessage id="Footer.searchSurf" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
@@ -155,7 +152,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchOulu" />
+                    <FormattedMessage id="Footer.searchClimbing" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
@@ -167,7 +164,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchRuka" />
+                    <FormattedMessage id="Footer.searchCarCamp" />
                   </NamedLink>
                 </li>
               </ul>
@@ -183,7 +180,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchKuopio" />
+                    <FormattedMessage id="Footer.searchNagano" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
@@ -195,7 +192,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchMikkeli" />
+                    <FormattedMessage id="Footer.searchTokyo" />
                   </NamedLink>
                 </li>
                 <li className={css.listItem}>
@@ -207,31 +204,7 @@ const Footer = props => {
                     }}
                     className={css.link}
                   >
-                    <FormattedMessage id="Footer.searchEspoo" />
-                  </NamedLink>
-                </li>
-                <li className={css.listItem}>
-                  <NamedLink
-                    name="SearchPage"
-                    to={{
-                      search:
-                        '?address=Vantaa%2C%20Finland&bounds=60.40113659999999%2C25.19306240000003%2C60.23714200000001%2C24.746512199999984&origin=60.29335239999999%2C25.037768599999936',
-                    }}
-                    className={css.link}
-                  >
-                    <FormattedMessage id="Footer.searchVantaa" />
-                  </NamedLink>
-                </li>
-                <li className={css.listItem}>
-                  <NamedLink
-                    name="SearchPage"
-                    to={{
-                      search:
-                        '?address=Ahvenanmaan%20saaristo%2C%20Åland%20Islands&bounds=60.87664400000001%2C21.34532850000005%2C59.45425059999999%2C19.94061499999998&origin=59.8994405%2C20.593996100000027',
-                    }}
-                    className={css.link}
-                  >
-                    <FormattedMessage id="Footer.searchAhvenanmaa" />
+                    <FormattedMessage id="Footer.searchKanagawa" />
                   </NamedLink>
                 </li>
               </ul>
