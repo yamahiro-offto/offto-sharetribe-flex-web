@@ -35,7 +35,7 @@ const AboutPage = () => {
         </LayoutWrapperTopbar>
 
         <LayoutWrapperMain className={css.staticPageWrapper}>
-          <h1 className={css.pageTitle}>Experience the unique Finnish home sauna.</h1>
+          <h1 className={css.pageTitle}>To create a new lifestyle that transitions seamlessly between city and nature.</h1>
           <img className={css.coverImage} src={image} alt="My first ice cream." />
 
           <div className={css.contentWrapper}>
