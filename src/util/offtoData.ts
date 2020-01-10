@@ -1,5 +1,7 @@
 import { types as sdkTypes } from './sdkLoader';
 import { plainToClass, classToPlain } from 'class-transformer';
+import { LabelHTMLAttributes } from 'react';
+import { Decimal } from 'decimal.js';
 const { LatLng, UUID, Money } = sdkTypes;
 type C_UUID = typeof UUID;
 type C_LatLng = typeof LatLng;
@@ -23,6 +25,57 @@ export enum RentalStyle {
   SHOP_RECOMMEND = 'shop_recommend',
 }
 
+export enum Size {
+  XL = 'xl',
+  L = 'l',
+  M = 'm',
+  S = 's',
+  XS = 'xs',
+}
+
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+  // UNISEX = 'unisex',
+}
+
+export enum Age {
+  ADULT = 'adult',
+  CHILD = 'child',
+  // ALL_AGE = 'all_age',
+}
+
+export enum Skill {
+  BEGINNER = 'beginner',
+  INTERMEDIATE = 'intermediate',
+  ADVANCED = 'advanced',
+}
+
+export enum Color {
+  BLACK = 'black',
+  GRAY = 'gray',
+  WHITE = 'white',
+  RED = 'red',
+  ORANGE = 'orange',
+  YELLOW = 'yellow',
+  GREEN = 'green',
+  BLUE = 'blue',
+  PURPLE = 'purple',
+  PINK = 'pink',
+  LIGHT_BLUE = 'light_blue',
+  YELLOW_GREEN = 'yellow_green',
+  SILVER = 'silver',
+  GOLD = 'gold',
+}
+
+export enum Condition {
+  LIKELY_NEW = 'likely_new',
+  LITTLE_DAMAGED = 'lettle_damaged',
+  SOME_DAMAGED = 'some_daaged',
+}
+
+// ================ class definitions ================ //
+
 export class BusinessHour {
   isRegularHoliday: boolean = false;
   startTime: string = '0';
@@ -42,7 +95,6 @@ export class BusinessDate {
 export class OfftoUserPublicData {
   type?: string = UserType.CUSTOMER;
   geolocation?: C_LatLng = new LatLng(0, 0);
-  rentalStyle?: string = RentalStyle.CUSTOMER_SELECT;
   businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';
@@ -79,6 +131,32 @@ export class OfftoUserPublicData {
   //   return classToPlain(this);
   // }
 }
+
+export interface OfftoListingDetailInfo {}
+
+export class OfftoListingDetailInfoSkiSnowboard implements OfftoListingDetailInfo {
+  length: Decimal = new Decimal(0); // cm
+  radius: Decimal = new Decimal(0); // m
+  headWidth: Decimal = new Decimal(0); // cm
+  waistWidth: Decimal = new Decimal(0); // cm
+  tailWidth: Decimal = new Decimal(0); // cm
+  binding: any = {};
+  modelYear: string = '';
+}
+
+export class OfftoListingDetailInfoOther implements OfftoListingDetailInfo {}
+
+export class OfftoListingPubilcData {
+  activity: Activity = Activity.OTHER;
+  rentalStyle: RentalStyle = RentalStyle.CUSTOMER_SELECT;
+  gearId: string = '';
+  color: Color = Color.WHITE;
+  condition: Condition = Condition.LIKELY_NEW;
+  desc = '';
+  detailInfo?: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
+}
+
+// ================ class definitions ================ //
 
 export class OfftoUser {
   firstName: string = '';
@@ -118,4 +196,12 @@ export class OfftoUser {
   static sanitizePublicData(pubilcData: any) {
     return OfftoUserPublicData.sanitize(pubilcData);
   }
+}
+
+export class OfftoListingAttributes {
+  title: string = '(no title)';
+  description: string = '';
+  geolocation: C_LatLng = new LatLng(0, 0);
+  price: C_Money = new Money(0, 'JPY');
+  publicData: OfftoListingPubilcData = new OfftoListingPubilcData();
 }
