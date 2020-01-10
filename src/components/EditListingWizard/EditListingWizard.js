@@ -27,6 +27,7 @@ import EditListingWizardTab, {
   PHOTOS,
   ACTIVITY,
   RENTALSTYLE,
+  // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
 
@@ -47,6 +48,7 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
+  // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
 // Tabs are horizontal in small screens
@@ -72,6 +74,7 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelActivity';
   } else if (tab === RENTALSTYLE) {
     key = 'EditListingWizard.tabLabelRentalstyle';
+    // [ADD_TABLABEL_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
   }
 
   return intl.formatMessage({ id: key });
@@ -115,6 +118,7 @@ const tabCompleted = (tab, listing) => {
       return !!(publicData && publicData.activity);
     case RENTALSTYLE:
       return !!(publicData && publicData.rentalStyle);
+    // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
   }
