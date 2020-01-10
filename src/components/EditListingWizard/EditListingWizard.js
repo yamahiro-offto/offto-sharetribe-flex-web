@@ -27,6 +27,7 @@ import EditListingWizardTab, {
   PHOTOS,
   ACTIVITY,
   RENTALSTYLE,
+  BASICINFO,  // id added
   // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
@@ -48,6 +49,7 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
+  BASICINFO,   // tab added
   // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
@@ -74,6 +76,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelActivity';
   } else if (tab === RENTALSTYLE) {
     key = 'EditListingWizard.tabLabelRentalstyle';
+  } else if (tab === BASICINFO) {
+    key = 'EditListingWizard.tabLabelBasicinfo';
     // [ADD_TABLABEL_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
   }
 
@@ -118,6 +122,8 @@ const tabCompleted = (tab, listing) => {
       return !!(publicData && publicData.activity);
     case RENTALSTYLE:
       return !!(publicData && publicData.rentalStyle);
+    case BASICINFO:
+      return !!(publicData && publicData.activity) // TODO: revise;
     // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
