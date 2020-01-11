@@ -1,6 +1,7 @@
 import { types as sdkTypes } from './sdkLoader';
 import { plainToClass, classToPlain } from 'class-transformer';
 import { LabelHTMLAttributes } from 'react';
+import { propTypes } from './types';
 import { Decimal } from 'decimal.js';
 const { LatLng, UUID, Money } = sdkTypes;
 type C_UUID = typeof UUID;
@@ -71,7 +72,27 @@ export enum Color {
 export enum Condition {
   LIKELY_NEW = 'likely_new',
   LITTLE_DAMAGED = 'lettle_damaged',
-  SOME_DAMAGED = 'some_daaged',
+  SOME_DAMAGED = 'some_damaged',
+}
+
+export enum ActivityTypeSnow {
+  ALL_MOUNTAIN = 'all_mountain',
+  BACK_COUNTRY = 'back_country',
+}
+
+export enum ActivityTypeCycle {
+
+}
+
+export enum ActivityTypeOther {
+  NONE = 'none',
+}
+
+export type ActivityType = ActivityTypeSnow | ActivityTypeCycle | ActivityTypeOther;
+export const ACTIVITYTYPE_TABLE = {
+  [Activity.SKI_SNOWBOARD]: ActivityTypeSnow,
+  [Activity.CYCLE]: ActivityTypeCycle,
+  [Activity.OTHER]: ActivityTypeOther,
 }
 
 // ================ class definitions ================ //
@@ -132,27 +153,33 @@ export class OfftoUserPublicData {
   // }
 }
 
-export interface OfftoListingDetailInfo {}
-
-export class OfftoListingDetailInfoSkiSnowboard implements OfftoListingDetailInfo {
+export class OfftoListingDetailInfoSkiSnowboard {
+  brand: string = '';
   length: Decimal = new Decimal(0); // cm
   radius: Decimal = new Decimal(0); // m
   headWidth: Decimal = new Decimal(0); // cm
   waistWidth: Decimal = new Decimal(0); // cm
   tailWidth: Decimal = new Decimal(0); // cm
-  binding: any = {};
+  binding: string = '';
   modelYear: string = '';
 }
 
-export class OfftoListingDetailInfoOther implements OfftoListingDetailInfo {}
+export class OfftoListingDetailInfoOther {}
+
+type OfftoListingDetailInfo = OfftoListingDetailInfoSkiSnowboard | OfftoListingDetailInfoOther;
 
 export class OfftoListingPubilcData {
   activity: Activity = Activity.OTHER;
   rentalStyle: RentalStyle = RentalStyle.CUSTOMER_SELECT;
   gearId: string = '';
+  activityType: ActivityType = ActivityTypeOther.NONE;
+  size: Size = Size.M;
+  skill: Skill = Skill.BEGINNER; 
+  age: Age = Age.ADULT;
+  gender: Gender = Gender.FEMALE;
   color: Color = Color.WHITE;
   condition: Condition = Condition.LIKELY_NEW;
-  desc = '';
+  description: string = '';
   detailInfo?: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
 }
 
@@ -204,4 +231,11 @@ export class OfftoListingAttributes {
   geolocation: C_LatLng = new LatLng(0, 0);
   price: C_Money = new Money(0, 'JPY');
   publicData: OfftoListingPubilcData = new OfftoListingPubilcData();
+
+  constructor(attributes: any){
+    console.log(attributes);
+    if(attributes){
+      Object.assign(this, attributes);
+    }
+  }
 }
