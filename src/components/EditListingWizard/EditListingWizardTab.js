@@ -19,6 +19,8 @@ import {
   EditListingPoliciesPanel,
   EditListingPricingPanel,
   EditListingRentalstylePanel,
+  EditListingBasicinfoPanel,
+  // [ADD_EDITLISTINGPANEL_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from '../../components';
 
 import css from './EditListingWizard.css';
@@ -37,6 +39,8 @@ export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 export const ACTIVITY = 'activity';
 export const RENTALSTYLE = 'rentalstyle';
+export const BASICINFO = 'basicinfo';
+// [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
@@ -49,6 +53,8 @@ export const SUPPORTED_TABS = [
   PHOTOS,
   ACTIVITY,
   RENTALSTYLE,
+  BASICINFO,
+  // [ADD_SUPPORTEDTAB_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -308,6 +314,18 @@ const EditListingWizardTab = props => {
         />
       );
     }
+    case BASICINFO: {
+      return (
+        <EditListingBasicinfoPanel
+          {...panelProps(BASICINFO)}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    // [ADD_TABCASE_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return null;
   }

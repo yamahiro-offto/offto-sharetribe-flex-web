@@ -27,6 +27,8 @@ import EditListingWizardTab, {
   PHOTOS,
   ACTIVITY,
   RENTALSTYLE,
+  BASICINFO,  // id added
+  // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
 
@@ -40,6 +42,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 export const TABS = [
   ACTIVITY,
   RENTALSTYLE,
+  BASICINFO,   // tab added
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -47,6 +50,7 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
+  // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
 // Tabs are horizontal in small screens
@@ -72,6 +76,9 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelActivity';
   } else if (tab === RENTALSTYLE) {
     key = 'EditListingWizard.tabLabelRentalstyle';
+  } else if (tab === BASICINFO) {
+    key = 'EditListingWizard.tabLabelBasicinfo';
+    // [ADD_TABLABEL_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
   }
 
   return intl.formatMessage({ id: key });
@@ -115,6 +122,9 @@ const tabCompleted = (tab, listing) => {
       return !!(publicData && publicData.activity);
     case RENTALSTYLE:
       return !!(publicData && publicData.rentalStyle);
+    case BASICINFO:
+      return !!(publicData && publicData.activity) // TODO: revise;
+    // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
   }

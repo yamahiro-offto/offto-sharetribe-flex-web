@@ -98,7 +98,7 @@
 }
 
 .heroButton {
-  @apply --marketplaceButtonStyles;
+  @apply --marketplaceButtonStylesSecondary;
   @apply --SectionHero_animation;
 
   animation-delay: 0.8s;
