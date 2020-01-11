@@ -42,6 +42,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 export const TABS = [
   ACTIVITY,
   RENTALSTYLE,
+  BASICINFO,   // tab added
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -49,7 +50,6 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
-  BASICINFO,   // tab added
   // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 

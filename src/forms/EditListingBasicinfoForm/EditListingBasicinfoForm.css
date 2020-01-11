@@ -49,7 +49,7 @@
   flex-shrink: 0;
 }
 
-.category {
+.selectCustom {
   @apply --EditListingBasicinfoForm_formMargins;
 }
 
@@ -62,5 +62,44 @@
     display: inline-block;
     width: 241px;
     margin-top: 100px;
+  }
+}
+
+.sectionContainer {
+  padding: 0;
+  margin-bottom: 36px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+    margin-bottom: 56px;
+  }
+}
+
+.sectionTitle {
+  /* Font */
+  color: var(--matterColorAnti);
+
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 24px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+
+.lastSection {
+  margin-bottom: 69px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 111px;
+
+    & .sectionTitle {
+      margin-bottom: 16px;
+    }
   }
 }

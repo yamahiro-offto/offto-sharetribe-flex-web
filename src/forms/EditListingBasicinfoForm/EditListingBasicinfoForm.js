@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
 import * as offtoData from '../../util/offtoData';
-import { Form, Button, FieldSelectCustom } from '../../components';
+import { Form, Button, FieldTextInput, FieldSelectCustom } from '../../components';
 
 import css from './EditListingBasicinfoForm.css';
 
@@ -20,6 +20,7 @@ const EditListingBasicinfoFormComponent = props => (
       const {
         categories,
         className,
+        currentListing,
         disabled,
         ready,
         handleSubmit,
@@ -82,26 +83,196 @@ const EditListingBasicinfoFormComponent = props => (
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
-      const formDivs = {};
-      formDivs.activity = (
-        <div className={css.sectionContainer}>
+      // HTMLs to be displayed in this form
+      const formDivs = [];
+
+      const activityType =
+        offtoData.ACTIVITYTYPE_TABLE[currentListing.attributes.publicData.activity];
+
+      // title
+      formDivs.push(
+        <FieldTextInput
+          id="title"
+          name="title"
+          className={css.title}
+          type="text"
+          label={'Gear Name'}
+          placeholder={'title of your gear'}
+          validate={composeValidators(required('title is required'))}
+        />
+      );
+
+      // gearId
+      formDivs.push(
+        <FieldTextInput
+          id="gearId"
+          name="gearId"
+          className={css.title}
+          type="text"
+          label={'Gear Id'}
+          placeholder={'Id of this gear in your shop'}
+          validate={composeValidators(required('title is required'))}
+        />
+      );
+
+      // activityType
+      formDivs.push(
+        <div className={css.selectCustom}>
           <FieldSelectCustom
-            id="activity"
-            name="activity" // values の key
-            label={'activity'}
+            id="activityType"
+            name="activityType" // values の key
+            label={'activityType'}
             placeholder={'placeholder'}
             validate=""
             // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Activity).map(activity => {
+            options={Object.keys(activityType).map(activityTypeEnum => {
               return {
-                key: offtoData.Activity[activity],
-                label: offtoData.Activity[activity],
+                key: activityType[activityTypeEnum],
+                label: activityType[activityTypeEnum],
               };
             })}
           />
-          <p className={css.bioInfo}>
-            <FormattedMessage id="ProfileSettingsShopForm.bioInfo" />
-          </p>
+        </div>
+      );
+
+      // size
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="size"
+            name="size" // values の key
+            label={'size'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Size).map(size => {
+              return {
+                key: offtoData.Size[size],
+                label: offtoData.Size[size],
+              };
+            })}
+          />
+        </div>
+      );
+
+      // skill
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="skill"
+            name="skill" // values の key
+            label={'skill'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Skill).map(skill => {
+              return {
+                key: offtoData.Skill[skill],
+                label: offtoData.Skill[skill],
+              };
+            })}
+          />
+        </div>
+      );
+
+      // age
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="age"
+            name="age" // values の key
+            label={'age'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Age).map(age => {
+              return {
+                key: offtoData.Age[age],
+                label: offtoData.Age[age],
+              };
+            })}
+          />
+        </div>
+      );
+
+      // gender
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="gender"
+            name="gender" // values の key
+            label={'gender'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Gender).map(gender => {
+              return {
+                key: offtoData.Gender[gender],
+                label: offtoData.Gender[gender],
+              };
+            })}
+          />
+        </div>
+      );
+
+      // color
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="color"
+            name="color" // values の key
+            label={'color'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Color).map(color => {
+              return {
+                key: offtoData.Color[color],
+                label: offtoData.Color[color],
+              };
+            })}
+          />
+        </div>
+      );
+
+      // condition
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="condition"
+            name="condition" // values の key
+            label={'condition'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Condition).map(condition => {
+              return {
+                key: offtoData.Condition[condition],
+                label: offtoData.Condition[condition],
+              };
+            })}
+          />
+        </div>
+      );
+
+      // description
+      formDivs.push(
+        <div className={css.title}>
+          <FieldTextInput
+            id="description"
+            name="description"
+            className={css.title}
+            type="textarea"
+            label={'description'}
+            placeholder={'explain your gear'}
+            validate={composeValidators(required('description is required'))}
+          />
         </div>
       );
 
@@ -111,7 +282,7 @@ const EditListingBasicinfoFormComponent = props => (
           {errorMessageUpdateListing}
           {errorMessageShowListing}
 
-          {formDivs.activity}
+          {formDivs}
 
           <Button
             className={css.submitButton}
@@ -132,6 +303,7 @@ EditListingBasicinfoFormComponent.defaultProps = { className: null, fetchErrors:
 
 EditListingBasicinfoFormComponent.propTypes = {
   className: string,
+  currentListing: propTypes.currentListing,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,

@@ -7,6 +7,7 @@ import { ListingLink } from '../../components';
 import { LISTING_STATE_DRAFT } from '../../util/types';
 import { EditListingBasicinfoForm } from '../../forms';
 import config from '../../config';
+import * as offtoData from '../../util/offtoData';
 
 import css from './EditListingBasicinfoPanel.css';
 
@@ -27,7 +28,6 @@ const EditListingBasicinfoPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
-  const { publicData } = currentListing.attributes;
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
@@ -39,18 +39,36 @@ const EditListingBasicinfoPanel = props => {
     <FormattedMessage id="EditListingBasicinfoPanel.createListingTitle" />
   );
 
+  const _currentListingAttributes = new offtoData.OfftoListingAttributes(currentListing.attributes);
+  console.log('currentListing.attributes', currentListing.attributes);
+  console.log('_currentListingAttributes', _currentListingAttributes);
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingBasicinfoForm
         className={css.form}
-        initialValues={{ activity: publicData.activity }}
+        currentListing={currentListing}
+        initialValues={{
+          title: _currentListingAttributes.title,
+          gearId: _currentListingAttributes.publicData.gearId,
+          activityType: _currentListingAttributes.publicData.activityType,
+          size: _currentListingAttributes.publicData.size,
+          skill: _currentListingAttributes.publicData.skill,
+          age: _currentListingAttributes.publicData.age,
+          gender: _currentListingAttributes.publicData.gender,
+          color: _currentListingAttributes.publicData.color,
+          condition: _currentListingAttributes.publicData.condition,
+          description: _currentListingAttributes.description,
+        }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { activity } = values;
+          const { title, description, ...publicDataAttributes } = values;
           const updateValues = {
-            publicData: { activity },
+            title,
+            description,
+            publicData: { ...publicDataAttributes },
           };
+          console.log('updateValues', updateValues);
 
           onSubmit(updateValues);
         }}
