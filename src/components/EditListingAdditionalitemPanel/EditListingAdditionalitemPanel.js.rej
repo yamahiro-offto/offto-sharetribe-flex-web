@@ -1,0 +1,10 @@
+diff a/src/components/EditListingAdditionalitemPanel/EditListingAdditionalitemPanel.js b/src/components/EditListingAdditionalitemPanel/EditListingAdditionalitemPanel.js	(rejected hunks)
+@@ -56,6 +56,8 @@
+         saveActionMsg={submitButtonText}
+         onSubmit={values => {
+           const { additionalItem } = values;
++          console.log('values', values);
++          console.log('additionalItem', additionalItem);
+           const updateValues = {
+             publicData: {
+               additionalItem,

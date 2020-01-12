@@ -65,7 +65,7 @@
   }
 }
 
-.additionalItem {
+.additionalItems {
   margin-bottom: 24px;
 
   @media (--viewportMedium) {
