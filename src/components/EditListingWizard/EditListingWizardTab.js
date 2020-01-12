@@ -21,6 +21,7 @@ import {
   EditListingRentalstylePanel,
   EditListingBasicinfoPanel,
   EditListingDetailinfoPanel,
+  EditListingAdditionalitemPanel,
   // [ADD_EDITLISTINGPANEL_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from '../../components';
 
@@ -42,6 +43,7 @@ export const ACTIVITY = 'activity';
 export const RENTALSTYLE = 'rentalstyle';
 export const BASICINFO = 'basicinfo';
 export const DETAILINFO = 'detailinfo';
+export const ADDITIONALITEM = 'additionalitem';
 // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 
 // EditListingWizardTab component supports these tabs
@@ -57,6 +59,7 @@ export const SUPPORTED_TABS = [
   RENTALSTYLE,
   BASICINFO,
   DETAILINFO,
+  ADDITIONALITEM,
   // [ADD_SUPPORTEDTAB_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
@@ -332,6 +335,17 @@ const EditListingWizardTab = props => {
       return (
         <EditListingDetailinfoPanel
           {...panelProps(DETAILINFO)}
+          submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    case ADDITIONALITEM: {
+      return (
+        <EditListingAdditionalitemPanel
+          {...panelProps(ADDITIONALITEM)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
             onCompleteEditListingWizardTab(tab, values);

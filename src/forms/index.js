@@ -3,6 +3,7 @@ export { default as ContactDetailsForm } from './ContactDetailsForm/ContactDetai
 export { default as EditListingActivityForm } from './EditListingActivityForm/EditListingActivityForm';
 export { default as EditListingBasicinfoForm } from './EditListingBasicinfoForm/EditListingBasicinfoForm';
 export { default as EditListingDetailinfoForm } from './EditListingDetailinfoForm/EditListingDetailinfoForm';
+export { default as EditListingAdditionalitemForm } from './EditListingAdditionalitemForm/EditListingAdditionalitemForm';
 export { default as EditListingAvailabilityForm } from './EditListingAvailabilityForm/EditListingAvailabilityForm';
 export { default as EditListingDescriptionForm } from './EditListingDescriptionForm/EditListingDescriptionForm';
 export { default as EditListingFeaturesForm } from './EditListingFeaturesForm/EditListingFeaturesForm';
