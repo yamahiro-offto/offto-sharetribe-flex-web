@@ -29,6 +29,7 @@ import EditListingWizardTab, {
   RENTALSTYLE,
   BASICINFO,  // id added
   DETAILINFO,  // id added
+  ADDITIONALITEM,  // id added
   // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
@@ -45,6 +46,7 @@ export const TABS = [
   RENTALSTYLE,
   BASICINFO,   // tab added
   DETAILINFO,   // tab added
+  ADDITIONALITEM,   // tab added
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -82,6 +84,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelBasicinfo';
   } else if (tab === DETAILINFO) {
     key = 'EditListingWizard.tabLabelDetailinfo';
+  } else if (tab === ADDITIONALITEM) {
+    key = 'EditListingWizard.tabLabelAdditionalitem';
     // [ADD_TABLABEL_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
   }
 
@@ -130,6 +134,8 @@ const tabCompleted = (tab, listing) => {
       return !!(publicData && publicData.activity) // TODO: revise;
     case DETAILINFO:
       return !!(publicData && publicData.detailInfo) // TODO: revise;
+    case ADDITIONALITEM:
+      return !!(publicData && publicData.additionalItem) // TODO: revise;
     // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
@@ -394,6 +400,7 @@ class EditListingWizard extends Component {
                 intl={intl}
                 params={params}
                 listing={listing}
+                currentUser={currentUser}
                 marketplaceTabs={TABS}
                 errors={errors}
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}

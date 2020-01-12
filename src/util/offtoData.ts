@@ -187,6 +187,13 @@ export const OFFTOLISTING_DETAILINFO_TABLE = {
   [Activity.OTHER]: OfftoListingDetailInfoOther,
 };
 
+export class AdditionalItem {
+  id: string = '';
+  key: string = '';
+  label: string = '';
+  price: C_Money = new Money(0, 'JPY');
+}
+
 export class OfftoListingPubilcData {
   activity: Activity = Activity.OTHER;
   rentalStyle: RentalStyle = RentalStyle.CUSTOMER_SELECT;
@@ -199,6 +206,7 @@ export class OfftoListingPubilcData {
   color: Color = Color.WHITE;
   condition: Condition = Condition.LIKELY_NEW;
   description: string = '';
+  additionalItems: AdditionalItem[] = [];
   detailInfo: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
 
   constructor(publicData?: any) {

@@ -160,6 +160,7 @@ export { default as TermsOfService } from './TermsOfService/TermsOfService';
 export { default as EditListingActivityPanel } from './EditListingActivityPanel/EditListingActivityPanel';
 export { default as EditListingBasicinfoPanel } from './EditListingBasicinfoPanel/EditListingBasicinfoPanel';
 export { default as EditListingDetailinfoPanel } from './EditListingDetailinfoPanel/EditListingDetailinfoPanel';
+export { default as EditListingAdditionalitemPanel } from './EditListingAdditionalitemPanel/EditListingAdditionalitemPanel';
 export { default as EditListingAvailabilityPanel } from './EditListingAvailabilityPanel/EditListingAvailabilityPanel';
 export { default as EditListingDescriptionPanel } from './EditListingDescriptionPanel/EditListingDescriptionPanel';
 export { default as EditListingFeaturesPanel } from './EditListingFeaturesPanel/EditListingFeaturesPanel';
