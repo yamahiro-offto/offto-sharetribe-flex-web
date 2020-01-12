@@ -65,6 +65,15 @@
   }
 }
 
+.additionalItem {
+  margin-bottom: 24px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 32px;
+  }
+}
+
+
 .sectionContainer {
   padding: 0;
   margin-bottom: 36px;

@@ -46,6 +46,7 @@ export const TABS = [
   RENTALSTYLE,
   BASICINFO,   // tab added
   DETAILINFO,   // tab added
+  ADDITIONALITEM,   // tab added
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -53,7 +54,6 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
-  ADDITIONALITEM,   // tab added
   // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
@@ -135,7 +135,7 @@ const tabCompleted = (tab, listing) => {
     case DETAILINFO:
       return !!(publicData && publicData.detailInfo) // TODO: revise;
     case ADDITIONALITEM:
-      return !!(publicData && publicData.detailinfo) // TODO: revise;
+      return !!(publicData && publicData.additionalItem) // TODO: revise;
     // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
@@ -400,6 +400,7 @@ class EditListingWizard extends Component {
                 intl={intl}
                 params={params}
                 listing={listing}
+                currentUser={currentUser}
                 marketplaceTabs={TABS}
                 errors={errors}
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}

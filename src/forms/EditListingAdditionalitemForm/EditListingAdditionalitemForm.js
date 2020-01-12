@@ -2,25 +2,35 @@ import React from 'react';
 import { arrayOf, bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
 import * as offtoData from '../../util/offtoData';
-import { Form, Button, FieldTextInput, FieldSelectCustom } from '../../components';
+import {
+  Form,
+  Button,
+  FieldCheckboxGroup,
+  FieldTextInput,
+  FieldSelectCustom,
+} from '../../components';
 
 import css from './EditListingAdditionalitemForm.css';
+import { currentUserShowSuccess } from '../../ducks/user.duck';
 
 const TITLE_MAX_LENGTH = 60;
 
 const EditListingAdditionalitemFormComponent = props => (
   <FinalForm
     {...props}
+    mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
         categories,
         className,
         currentListing,
+        currentUser,
         disabled,
         ready,
         handleSubmit,
@@ -86,110 +96,30 @@ const EditListingAdditionalitemFormComponent = props => (
       // HTMLs to be displayed in this form
       const formDivs = [];
 
-      const activityType =
-        offtoData.ACTIVITYTYPE_TABLE[currentListing.attributes.publicData.activity];
-
-      // brand
+      // additional items
+      const additionalItems =
+        currentUser &&
+        currentUser.attributes.profile.publicData &&
+        currentUser.attributes.profile.publicData.additionalItems;
+      console.log(currentUser);
       formDivs.push(
-        <FieldTextInput
-          id="brand"
-          name="brand"
-          className={css.title}
-          type="text"
-          label={'brand'}
-          placeholder={'brand of your gear'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // length
-      formDivs.push(
-        <FieldTextInput
-          id="length"
-          name="length"
-          className={css.title}
-          type="text"
-          label={'length'}
-          placeholder={'Id of this gear in your shop'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // radius
-      formDivs.push(
-        <FieldTextInput
-          id="radius"
-          name="radius"
-          className={css.title}
-          type="text"
-          label={'radius'}
-          placeholder={'Id of this gear in your shop'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // widthHead
-      formDivs.push(
-        <FieldTextInput
-          id="widthHead"
-          name="widthHead"
-          className={css.title}
-          type="text"
-          label={'widthHead'}
-          placeholder={'Id of this gear in your shop'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // widthWaist
-      formDivs.push(
-        <FieldTextInput
-          id="widthWaist"
-          name="widthWaist"
-          className={css.title}
-          type="text"
-          label={'widthWaist'}
-          placeholder={'Id of this gear in your shop'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // widthTail
-      formDivs.push(
-        <FieldTextInput
-          id="widthTail"
-          name="widthTail"
-          className={css.title}
-          type="text"
-          label={'widthTail'}
-          placeholder={'Id of this gear in your shop'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // binding
-      formDivs.push(
-        <FieldTextInput
-          id="binding"
-          name="binding"
-          className={css.title}
-          type="text"
-          label={'binding'}
-          placeholder={'name of binding'}
-          validate={composeValidators(required('title is required'))}
-        />
-      );
-
-      // modelYear
-      formDivs.push(
-        <FieldTextInput
-          id="modelYear"
-          name="modelYear"
-          className={css.title}
-          type="text"
-          label={'Model Year'}
-          placeholder={'title of your gear'}
-          validate={composeValidators(required('title is required'))}
+        <FieldCheckboxGroup
+          className={css.additionalItems}
+          id={'additionalItems'}
+          name={'additionalItems'}
+          options={
+            additionalItems
+              ? additionalItems.map(item => {
+                  return {
+                    key: item.key,
+                    label:
+                      item.price.currency === 'JPY'
+                        ? `${item.label}　　${item.price.amount}円`
+                        : `${item.label}　　${item.price.amount} ${item.price.amount} [${item.price.currency}]`,
+                  };
+                })
+              : []
+          }
         />
       );
 
@@ -221,6 +151,7 @@ EditListingAdditionalitemFormComponent.defaultProps = { className: null, fetchEr
 EditListingAdditionalitemFormComponent.propTypes = {
   className: string,
   currentListing: propTypes.currentListing,
+  currentUser: propTypes.currentUser,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,

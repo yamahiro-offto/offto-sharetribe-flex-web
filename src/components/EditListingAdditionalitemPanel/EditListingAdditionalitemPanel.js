@@ -17,6 +17,7 @@ const EditListingAdditionalitemPanel = props => {
     className,
     rootClassName,
     listing,
+    currentUser,
     disabled,
     ready,
     onSubmit,
@@ -48,23 +49,18 @@ const EditListingAdditionalitemPanel = props => {
       <EditListingAdditionalitemForm
         className={css.form}
         currentListing={currentListing}
+        currentUser={currentUser}
         initialValues={{
-          ..._currentListingAttributes.publicData.detailInfo,
+          additionalItem: _currentListingAttributes.publicData.additionalItem || [],
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { ...detailInfo } = values;
+          const { additionalItem } = values;
+          console.log('values', values);
+          console.log('additionalItem', additionalItem);
           const updateValues = {
             publicData: {
-              detailInfo: {
-                ...detailInfo,
-                length: new Number(detailInfo.length),
-                radius: new Number(detailInfo.radius),
-                widthHead: new Number(detailInfo.widthHead),
-                widthWaist: new Number(detailInfo.widthWaist),
-                widthTail: new Number(detailInfo.widthTail),
-                modelYear: new Number(detailInfo.modelYear),
-              },
+              additionalItem,
             },
           };
           console.log('updateValues', updateValues);
