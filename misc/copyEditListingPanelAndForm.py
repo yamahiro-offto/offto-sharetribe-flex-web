@@ -3,8 +3,8 @@ import shutil
 import pathlib
 import os
 
-ORIGINAL_ITEMNAME = f'Activity'
-TARGET_ITEMNAME = f'Basicinfo'
+ORIGINAL_ITEMNAME = f'Basicinfo'
+TARGET_ITEMNAME = f'Detailinfo'
 
 
 ORIGINAL_PANEL = f'../src/components/EditListing{ORIGINAL_ITEMNAME}Panel/'
