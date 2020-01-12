@@ -3,8 +3,8 @@ import shutil
 import pathlib
 import os
 
-ORIGINAL_ITEMNAME = f'Activity'
-TARGET_ITEMNAME = f'Basicinfo'
+ORIGINAL_ITEMNAME = f'Detailinfo'
+TARGET_ITEMNAME = f'Additionalitem'
 
 
 ORIGINAL_PANEL = f'../src/components/EditListing{ORIGINAL_ITEMNAME}Panel/'
@@ -229,15 +229,3 @@ LINE_TO_ADD = f"""    case {TARGET_ITEMNAME.upper()}:
 
 addLineToTaggedFile(WIZARD_FILEPATH, TAG, LINE_TO_ADD)
 
-
-print("")
-print("remaining todos:")
-print("  In src/components/EditListingWizard/EditListingWizard.js")
-print("  - Add intl Id of tabLabel like below...")
-print(f"      }} else if (tab === {TARGET_ITEMNAME.upper()}) {{")
-print(
-    f"        key = 'EditListingWizard.tabLabel{TARGET_ITEMNAME.capitalize()}';")
-print(f"      }}")
-print("  - Add tabCombplete below...")
-print(f"          case {TARGET_ITEMNAME.upper()}:")
-print(f"            return !!(publicData && publicData.activity); // TODO: 修正")

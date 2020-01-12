@@ -1,21 +1,23 @@
 import React from 'react';
 import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
+import { Decimal } from 'decimal.js';
 import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
 import { ListingLink } from '../../components';
 import { LISTING_STATE_DRAFT } from '../../util/types';
-import { EditListingBasicinfoForm } from '../../forms';
+import { EditListingAdditionalitemForm } from '../../forms';
 import config from '../../config';
 import * as offtoData from '../../util/offtoData';
 
-import css from './EditListingBasicinfoPanel.css';
+import css from './EditListingAdditionalitemPanel.css';
 
-const EditListingBasicinfoPanel = props => {
+const EditListingAdditionalitemPanel = props => {
   const {
     className,
     rootClassName,
     listing,
+    currentUser,
     disabled,
     ready,
     onSubmit,
@@ -32,39 +34,34 @@ const EditListingBasicinfoPanel = props => {
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
     <FormattedMessage
-      id="EditListingBasicinfoPanel.title"
+      id="EditListingAdditionalitemPanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingBasicinfoPanel.createListingTitle" />
+    <FormattedMessage id="EditListingAdditionalitemPanel.createListingTitle" />
   );
 
   const _currentListingAttributes = new offtoData.OfftoListingAttributes(currentListing.attributes);
+  console.log('_currentListingAttributes', _currentListingAttributes);
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <EditListingBasicinfoForm
+      <EditListingAdditionalitemForm
         className={css.form}
         currentListing={currentListing}
+        currentUser={currentUser}
         initialValues={{
-          title: _currentListingAttributes.title,
-          gearId: _currentListingAttributes.publicData.gearId,
-          activityType: _currentListingAttributes.publicData.activityType,
-          size: _currentListingAttributes.publicData.size,
-          skill: _currentListingAttributes.publicData.skill,
-          age: _currentListingAttributes.publicData.age,
-          gender: _currentListingAttributes.publicData.gender,
-          color: _currentListingAttributes.publicData.color,
-          condition: _currentListingAttributes.publicData.condition,
-          description: _currentListingAttributes.description,
+          additionalItem: _currentListingAttributes.publicData.additionalItem || [],
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, ...publicDataAttributes } = values;
+          const { additionalItem } = values;
+          console.log('values', values);
+          console.log('additionalItem', additionalItem);
           const updateValues = {
-            title,
-            description,
-            publicData: { ...publicDataAttributes },
+            publicData: {
+              additionalItem,
+            },
           };
           console.log('updateValues', updateValues);
 
@@ -82,14 +79,14 @@ const EditListingBasicinfoPanel = props => {
   );
 };
 
-EditListingBasicinfoPanel.defaultProps = {
+EditListingAdditionalitemPanel.defaultProps = {
   className: null,
   rootClassName: null,
   errors: null,
   listing: null,
 };
 
-EditListingBasicinfoPanel.propTypes = {
+EditListingAdditionalitemPanel.propTypes = {
   className: string,
   rootClassName: string,
 
@@ -106,4 +103,4 @@ EditListingBasicinfoPanel.propTypes = {
   errors: object.isRequired,
 };
 
-export default EditListingBasicinfoPanel;
+export default EditListingAdditionalitemPanel;

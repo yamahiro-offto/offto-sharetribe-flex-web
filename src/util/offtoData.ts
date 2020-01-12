@@ -80,9 +80,7 @@ export enum ActivityTypeSnow {
   BACK_COUNTRY = 'back_country',
 }
 
-export enum ActivityTypeCycle {
-
-}
+export enum ActivityTypeCycle {}
 
 export enum ActivityTypeOther {
   NONE = 'none',
@@ -93,7 +91,7 @@ export const ACTIVITYTYPE_TABLE = {
   [Activity.SKI_SNOWBOARD]: ActivityTypeSnow,
   [Activity.CYCLE]: ActivityTypeCycle,
   [Activity.OTHER]: ActivityTypeOther,
-}
+};
 
 // ================ class definitions ================ //
 
@@ -155,18 +153,46 @@ export class OfftoUserPublicData {
 
 export class OfftoListingDetailInfoSkiSnowboard {
   brand: string = '';
-  length: Decimal = new Decimal(0); // cm
-  radius: Decimal = new Decimal(0); // m
-  headWidth: Decimal = new Decimal(0); // cm
-  waistWidth: Decimal = new Decimal(0); // cm
-  tailWidth: Decimal = new Decimal(0); // cm
+  length: number = 180; // cm
+  radius: number = 20; // m
+  widthHead: number = 20; // cm
+  widthWaist: number = 15; // cm
+  widthTail: number = 20; // cm
   binding: string = '';
   modelYear: string = '';
+
+  constructor(params?: any) {
+    if (params) {
+      Object.assign(this, params);
+    }
+  }
 }
 
-export class OfftoListingDetailInfoOther {}
+export class OfftoListingDetailInfoCycle {
+  constructor(params?: any) {}
+}
+export class OfftoListingDetailInfoOther {
+  constructor(params?: any) {}
+}
 
-type OfftoListingDetailInfo = OfftoListingDetailInfoSkiSnowboard | OfftoListingDetailInfoOther;
+export type OfftoListingDetailInfo =
+  | OfftoListingDetailInfoSkiSnowboard
+  | OfftoListingDetailInfoCycle
+  | OfftoListingDetailInfoOther;
+
+// export const OFFTOLISTING_DETAILINFO_TABLE: { [key: string]: OfftoListingDetailInfo } = {
+export const OFFTOLISTING_DETAILINFO_TABLE = {
+  [Activity.SKI_SNOWBOARD]: OfftoListingDetailInfoSkiSnowboard,
+  [Activity.CYCLE]: OfftoListingDetailInfoCycle,
+  [Activity.OTHER]: OfftoListingDetailInfoOther,
+};
+
+export class AdditionalItem {
+  id: string = '';
+  key: string = '';
+  label: string = '';
+  price: C_Money = new Money(0, 'JPY');
+}
 
 export class OfftoListingPubilcData {
   activity: Activity = Activity.OTHER;
@@ -174,13 +200,23 @@ export class OfftoListingPubilcData {
   gearId: string = '';
   activityType: ActivityType = ActivityTypeOther.NONE;
   size: Size = Size.M;
-  skill: Skill = Skill.BEGINNER; 
+  skill: Skill = Skill.BEGINNER;
   age: Age = Age.ADULT;
   gender: Gender = Gender.FEMALE;
   color: Color = Color.WHITE;
   condition: Condition = Condition.LIKELY_NEW;
   description: string = '';
-  detailInfo?: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
+  additionalItems: AdditionalItem[] = [];
+  detailInfo: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
+
+  constructor(publicData?: any) {
+    if (publicData) {
+      Object.assign(this, publicData);
+      const activity = this.activity;
+      const detailInfoType = OFFTOLISTING_DETAILINFO_TABLE[activity];
+      this.detailInfo = new detailInfoType(detailInfoType);
+    }
+  }
 }
 
 // ================ class definitions ================ //
@@ -232,9 +268,8 @@ export class OfftoListingAttributes {
   price: C_Money = new Money(0, 'JPY');
   publicData: OfftoListingPubilcData = new OfftoListingPubilcData();
 
-  constructor(attributes: any){
-    console.log(attributes);
-    if(attributes){
+  constructor(attributes: any) {
+    if (attributes) {
       Object.assign(this, attributes);
     }
   }
