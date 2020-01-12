@@ -40,8 +40,6 @@ const EditListingBasicinfoPanel = props => {
   );
 
   const _currentListingAttributes = new offtoData.OfftoListingAttributes(currentListing.attributes);
-  console.log('currentListing.attributes', currentListing.attributes);
-  console.log('_currentListingAttributes', _currentListingAttributes);
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
