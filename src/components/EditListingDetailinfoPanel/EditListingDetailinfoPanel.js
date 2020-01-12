@@ -63,6 +63,7 @@ const EditListingDetailinfoPanel = props => {
                 widthHead: new Number(detailInfo.widthHead),
                 widthWaist: new Number(detailInfo.widthWaist),
                 widthTail: new Number(detailInfo.widthTail),
+                modelYear: new Number(detailInfo.modelYear),
               },
             },
           };
