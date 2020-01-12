@@ -135,7 +135,7 @@ const tabCompleted = (tab, listing) => {
     case DETAILINFO:
       return !!(publicData && publicData.detailInfo) // TODO: revise;
     case ADDITIONALITEM:
-      return !!(publicData && publicData.additionalItem) // TODO: revise;
+      return !!(publicData && publicData.additionalItems) // TODO: revise;
     // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;

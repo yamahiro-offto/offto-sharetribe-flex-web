@@ -51,16 +51,16 @@ const EditListingAdditionalitemPanel = props => {
         currentListing={currentListing}
         currentUser={currentUser}
         initialValues={{
-          additionalItem: _currentListingAttributes.publicData.additionalItem || [],
+          additionalItems: _currentListingAttributes.publicData.additionalItems || [],
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { additionalItem } = values;
+          const { additionalItems } = values;
           console.log('values', values);
-          console.log('additionalItem', additionalItem);
+          console.log('additionalItems', additionalItems);
           const updateValues = {
             publicData: {
-              additionalItem,
+              additionalItems,
             },
           };
           console.log('updateValues', updateValues);
