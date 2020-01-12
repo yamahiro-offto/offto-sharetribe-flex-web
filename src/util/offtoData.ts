@@ -233,7 +233,6 @@ export class OfftoListingAttributes {
   publicData: OfftoListingPubilcData = new OfftoListingPubilcData();
 
   constructor(attributes: any){
-    console.log(attributes);
     if(attributes){
       Object.assign(this, attributes);
     }
