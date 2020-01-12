@@ -1,6 +1,7 @@
 import React from 'react';
 import { bool, func, object, string } from 'prop-types';
 import classNames from 'classnames';
+import { Decimal } from 'decimal.js';
 import { FormattedMessage } from '../../util/reactIntl';
 import { ensureOwnListing } from '../../util/data';
 import { ListingLink } from '../../components';
@@ -40,6 +41,7 @@ const EditListingDetailinfoPanel = props => {
   );
 
   const _currentListingAttributes = new offtoData.OfftoListingAttributes(currentListing.attributes);
+  console.log('_currentListingAttributes', _currentListingAttributes);
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
@@ -47,24 +49,22 @@ const EditListingDetailinfoPanel = props => {
         className={css.form}
         currentListing={currentListing}
         initialValues={{
-          title: _currentListingAttributes.title,
-          gearId: _currentListingAttributes.publicData.gearId,
-          activityType: _currentListingAttributes.publicData.activityType,
-          size: _currentListingAttributes.publicData.size,
-          skill: _currentListingAttributes.publicData.skill,
-          age: _currentListingAttributes.publicData.age,
-          gender: _currentListingAttributes.publicData.gender,
-          color: _currentListingAttributes.publicData.color,
-          condition: _currentListingAttributes.publicData.condition,
-          description: _currentListingAttributes.description,
+          ..._currentListingAttributes.publicData.detailInfo,
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, ...publicDataAttributes } = values;
+          const { ...detailInfo } = values;
           const updateValues = {
-            title,
-            description,
-            publicData: { ...publicDataAttributes },
+            publicData: {
+              detailInfo: {
+                ...detailInfo,
+                length: new Number(detailInfo.length),
+                radius: new Number(detailInfo.radius),
+                widthHead: new Number(detailInfo.widthHead),
+                widthWaist: new Number(detailInfo.widthWaist),
+                widthTail: new Number(detailInfo.widthTail),
+              },
+            },
           };
           console.log('updateValues', updateValues);
 

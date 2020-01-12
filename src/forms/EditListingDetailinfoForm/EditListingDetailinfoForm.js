@@ -89,191 +89,108 @@ const EditListingDetailinfoFormComponent = props => (
       const activityType =
         offtoData.ACTIVITYTYPE_TABLE[currentListing.attributes.publicData.activity];
 
-      // title
+      // brand
       formDivs.push(
         <FieldTextInput
-          id="title"
-          name="title"
+          id="brand"
+          name="brand"
           className={css.title}
           type="text"
-          label={'Gear Name'}
-          placeholder={'title of your gear'}
+          label={'brand'}
+          placeholder={'brand of your gear'}
           validate={composeValidators(required('title is required'))}
         />
       );
 
-      // gearId
+      // length
       formDivs.push(
         <FieldTextInput
-          id="gearId"
-          name="gearId"
+          id="length"
+          name="length"
           className={css.title}
           type="text"
-          label={'Gear Id'}
+          label={'length'}
           placeholder={'Id of this gear in your shop'}
           validate={composeValidators(required('title is required'))}
         />
       );
 
-      // activityType
+      // radius
       formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            id="activityType"
-            name="activityType" // values の key
-            label={'activityType'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(activityType).map(activityTypeEnum => {
-              return {
-                key: activityType[activityTypeEnum],
-                label: activityType[activityTypeEnum],
-              };
-            })}
-          />
-        </div>
+        <FieldTextInput
+          id="radius"
+          name="radius"
+          className={css.title}
+          type="text"
+          label={'radius'}
+          placeholder={'Id of this gear in your shop'}
+          validate={composeValidators(required('title is required'))}
+        />
       );
 
-      // size
+      // widthHead
       formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            classname={css.selectCustom}
-            id="size"
-            name="size" // values の key
-            label={'size'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Size).map(size => {
-              return {
-                key: offtoData.Size[size],
-                label: offtoData.Size[size],
-              };
-            })}
-          />
-        </div>
+        <FieldTextInput
+          id="widthHead"
+          name="widthHead"
+          className={css.title}
+          type="text"
+          label={'widthHead'}
+          placeholder={'Id of this gear in your shop'}
+          validate={composeValidators(required('title is required'))}
+        />
       );
 
-      // skill
+      // widthWaist
       formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            classname={css.selectCustom}
-            id="skill"
-            name="skill" // values の key
-            label={'skill'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Skill).map(skill => {
-              return {
-                key: offtoData.Skill[skill],
-                label: offtoData.Skill[skill],
-              };
-            })}
-          />
-        </div>
+        <FieldTextInput
+          id="widthWaist"
+          name="widthWaist"
+          className={css.title}
+          type="text"
+          label={'widthWaist'}
+          placeholder={'Id of this gear in your shop'}
+          validate={composeValidators(required('title is required'))}
+        />
       );
 
-      // age
+      // widthTail
       formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            classname={css.selectCustom}
-            id="age"
-            name="age" // values の key
-            label={'age'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Age).map(age => {
-              return {
-                key: offtoData.Age[age],
-                label: offtoData.Age[age],
-              };
-            })}
-          />
-        </div>
+        <FieldTextInput
+          id="widthTail"
+          name="widthTail"
+          className={css.title}
+          type="text"
+          label={'widthTail'}
+          placeholder={'Id of this gear in your shop'}
+          validate={composeValidators(required('title is required'))}
+        />
       );
 
-      // gender
+      // binding
       formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            classname={css.selectCustom}
-            id="gender"
-            name="gender" // values の key
-            label={'gender'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Gender).map(gender => {
-              return {
-                key: offtoData.Gender[gender],
-                label: offtoData.Gender[gender],
-              };
-            })}
-          />
-        </div>
+        <FieldTextInput
+          id="binding"
+          name="binding"
+          className={css.title}
+          type="text"
+          label={'binding'}
+          placeholder={'name of binding'}
+          validate={composeValidators(required('title is required'))}
+        />
       );
 
-      // color
+      // modelYear
       formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            classname={css.selectCustom}
-            id="color"
-            name="color" // values の key
-            label={'color'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Color).map(color => {
-              return {
-                key: offtoData.Color[color],
-                label: offtoData.Color[color],
-              };
-            })}
-          />
-        </div>
-      );
-
-      // condition
-      formDivs.push(
-        <div className={css.selectCustom}>
-          <FieldSelectCustom
-            classname={css.selectCustom}
-            id="condition"
-            name="condition" // values の key
-            label={'condition'}
-            placeholder={'placeholder'}
-            validate=""
-            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
-            options={Object.keys(offtoData.Condition).map(condition => {
-              return {
-                key: offtoData.Condition[condition],
-                label: offtoData.Condition[condition],
-              };
-            })}
-          />
-        </div>
-      );
-
-      // description
-      formDivs.push(
-        <div className={css.title}>
-          <FieldTextInput
-            id="description"
-            name="description"
-            className={css.title}
-            type="textarea"
-            label={'description'}
-            placeholder={'explain your gear'}
-            validate={composeValidators(required('description is required'))}
-          />
-        </div>
+        <FieldTextInput
+          id="modelYear"
+          name="modelYear"
+          className={css.title}
+          type="text"
+          label={'Model Year'}
+          placeholder={'title of your gear'}
+          validate={composeValidators(required('title is required'))}
+        />
       );
 
       return (
