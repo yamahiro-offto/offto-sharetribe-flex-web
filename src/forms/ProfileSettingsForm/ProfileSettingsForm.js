@@ -164,7 +164,7 @@ class ProfileSettingsFormComponent extends Component {
 
           const submitError = updateProfileError ? (
             <div className={css.error}>
-              <FormattedMessage id="ProfileSettingsForm.updateProfileFailed" />
+              <FormattedMessage id="ProfileSformettingsForm.updateProfileFailed" />
             </div>
           ) : null;
 

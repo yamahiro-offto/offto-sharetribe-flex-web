@@ -1,0 +1,121 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+
+  --ProfileSettingsForm_avatarSize: 96px;
+  --ProfileSettingsForm_avatarSizeDesktop: 240px;
+}
+
+.root {
+  margin-top: 24px;
+
+  @media (--viewportMedium) {
+    margin-top: 32px;
+  }
+}
+
+.error {
+  /* Font */
+  @apply --marketplaceH4FontStyles;
+  color: var(--failColor);
+  margin-top: 18px;
+  margin-bottom: 0;
+
+  @media (--viewportMedium) {
+    margin-top: 22px;
+    margin-bottom: 2px;
+  }
+}
+
+.uploadingImageOverlay {
+  /* Cover everything (overlay) */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* Overlay style */
+  background-color: var(--matterColorLight);
+  opacity: 0.8;
+
+  /* Center content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.additionalItemDiv {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.additionalItemInfo {
+  margin-right: 20px;
+}
+
+.additionalItemInfoMargin {
+  flex-grow: 1;
+}
+
+.editItemButton {
+  display: inline;
+  padding: 10px 20px 10px 20px;
+  margin: 0px 5px 0px 5px;
+  width: fit-content;
+}
+
+.deleteItemButton {
+  display: inline;
+  padding: 10px 10px 10px 10px;
+  margin: 0px 5px 0px 5px;
+  background-color: #ffaaaa;
+  width: fit-content;
+}
+
+.addItemButton {
+  display: inline;
+  padding: 10px 10px 10px 10px;
+  margin: 0px 5px 0px 20px;
+  width: fit-content;
+}
+
+.addItemFieldsDiv{
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.addItemLabelField {
+  width: 40%;
+  /* display: inline; */
+  padding: 10px 10px 10px 10px;
+  margin: 0px 0px 0px 0px;
+  /* width: fit-content; */
+}
+
+.addItemPriceAmountField {
+  width: 20%;
+  min-width: 100px;
+  /* display: inline; */
+  padding: 10px 10px 10px 10px;
+  margin: 0px 5px 0px 5px;
+  /* width: fit-content; */
+}
+
+.submitButton {
+  margin-top: 120px;
+}

@@ -8,6 +8,7 @@ export { default as EmailVerificationPage } from './EmailVerificationPage/EmailV
 export { default as InboxPage } from './InboxPage/InboxPage';
 export { default as LandingPage } from './LandingPage/LandingPage';
 export { default as ListingPage } from './ListingPage/ListingPage';
+export { default as ManageAdditionalItemsPage } from './ManageAdditionalItemsPage/ManageAdditionalItemsPage';
 export { default as ManageListingsPage } from './ManageListingsPage/ManageListingsPage';
 export { default as NotFoundPage } from './NotFoundPage/NotFoundPage';
 export { default as PasswordChangePage } from './PasswordChangePage/PasswordChangePage';
