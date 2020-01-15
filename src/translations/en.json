@@ -1066,6 +1066,8 @@
   "TopbarDesktop.logo": "offto",
   "TopbarDesktop.logout": "Log out",
   "TopbarDesktop.profileSettingsLink": "Profile settings",
+  "TopbarDesktop.profileSettingsShopLink": "Profile settings",
+  "TopbarDesktop.manageAdditionalItemsPageLink": "Additional Items",
   "TopbarDesktop.signup": "Sign up",
   "TopbarDesktop.yourListingsLink": "Your listings",
   "TopbarMobileMenu.accountSettingsLink": "Account settings",
