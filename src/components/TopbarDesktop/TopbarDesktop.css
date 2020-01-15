@@ -273,6 +273,8 @@
 }
 
 .profileSettingsLink,
+.profileSettingsShopLink,
+.manageAdditionalItemsPageLink,
 .yourListingsLink {
   @apply --marketplaceH4FontStyles;
   position: relative;

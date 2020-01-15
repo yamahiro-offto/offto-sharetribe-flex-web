@@ -74,47 +74,91 @@ const TopbarDesktop = props => {
     return currentPage === page || isAccountSettingsPage ? css.currentPage : null;
   };
 
+  const _profileMenuItems = [
+    <MenuItem key="ManageListingsPage">
+      <NamedLink
+        className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
+        name="ManageListingsPage"
+      >
+        {OfftoUser.userIsShop(currentUser) && [
+          <span className={css.menuItemBorder} />,
+          <FormattedMessage id="TopbarDesktop.yourListingsLink" />,
+        ]}
+      </NamedLink>
+    </MenuItem>,
+    <MenuItem key="ProfileSettingsPage">
+      <NamedLink
+        className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
+        name="ProfileSettingsPage"
+      >
+        <span className={css.menuItemBorder} />
+        <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
+      </NamedLink>
+    </MenuItem>,
+    <MenuItem key="AccountSettingsPage">
+      <NamedLink
+        className={classNames(css.yourListingsLink, currentPageClass('AccountSettingsPage'))}
+        name="AccountSettingsPage"
+      >
+        <span className={css.menuItemBorder} />
+        <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
+      </NamedLink>
+    </MenuItem>,
+    <MenuItem key="logout">
+      <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
+        <span className={css.menuItemBorder} />
+        <FormattedMessage id="TopbarDesktop.logout" />
+      </InlineTextButton>
+    </MenuItem>,
+  ];
+
+  const profileMenuItemsManageAdditionalItems = (
+    <MenuItem key="ManageAdditionalItemsPage">
+      <NamedLink
+        className={classNames(
+          css.manageAdditionalItemsPageLink,
+          currentPageClass('ManageAdditionalItemsPage')
+        )}
+        name="ManageAdditionalItemsPage"
+      >
+        <span className={css.menuItemBorder} />
+        <FormattedMessage id="TopbarDesktop.manageAdditionalItemsPageLink" />
+      </NamedLink>
+    </MenuItem>
+  );
+
+  const profileMenuItemsProfileSettingsShop = (
+    <MenuItem key="ProfileSettingsShopPage">
+      <NamedLink
+        className={classNames(
+          css.profileSettingsShopLink,
+          currentPageClass('ProfileSettingsShopPage')
+        )}
+        name="ProfileSettingsShopPage"
+      >
+        <span className={css.menuItemBorder} />
+        <FormattedMessage id="TopbarDesktop.profileSettingsShopLink" />
+      </NamedLink>
+    </MenuItem>
+  );
+
+  const profileMenuItems = OfftoUser.userIsShop(currentUser)
+    ? [
+        _profileMenuItems[0],
+        profileMenuItemsManageAdditionalItems,
+        profileMenuItemsProfileSettingsShop,
+        _profileMenuItems[2],
+        _profileMenuItems[3],
+      ]
+    : [_profileMenuItems[1], _profileMenuItems[2], _profileMenuItems[3]];
+
   const profileMenu = authenticatedOnClientSide ? (
     <Menu>
       <MenuLabel className={css.profileMenuLabel} isOpenClassName={css.profileMenuIsOpen}>
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
-        <MenuItem key="ManageListingsPage">
-          <NamedLink
-            className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
-            name="ManageListingsPage"
-          >
-            {OfftoUser.userIsShop(currentUser) && [
-              <span className={css.menuItemBorder} />,
-              <FormattedMessage id="TopbarDesktop.yourListingsLink" />,
-            ]}
-          </NamedLink>
-        </MenuItem>
-        <MenuItem key="ProfileSettingsPage">
-          <NamedLink
-            className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
-            name="ProfileSettingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
-          </NamedLink>
-        </MenuItem>
-        <MenuItem key="AccountSettingsPage">
-          <NamedLink
-            className={classNames(css.yourListingsLink, currentPageClass('AccountSettingsPage'))}
-            name="AccountSettingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
-          </NamedLink>
-        </MenuItem>
-        <MenuItem key="logout">
-          <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.logout" />
-          </InlineTextButton>
-        </MenuItem>
+        {profileMenuItems.map(item => item)}
       </MenuContent>
     </Menu>
   ) : null;
