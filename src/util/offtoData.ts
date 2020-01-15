@@ -117,6 +117,7 @@ export class OfftoUserPublicData {
   businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';
+  additionalItems?: AdditionalItem[] = [];
 
   constructor(publicData?: any) {
     this.type = !(publicData && publicData.type) ? this.type : publicData.type;
@@ -130,6 +131,9 @@ export class OfftoUserPublicData {
     this.phoneNumber = !(publicData && publicData.phoneNumber)
       ? this.phoneNumber
       : publicData.phoneNumber;
+    this.additionalItems = !(publicData && publicData.additionalItems)
+      ? this.additionalItems
+      : publicData.additionalItems;
   }
 
   static publicDataIsShop(publicData: any): boolean {
@@ -188,8 +192,6 @@ export const OFFTOLISTING_DETAILINFO_TABLE = {
 };
 
 export class AdditionalItem {
-  id: string = '';
-  key: string = '';
   label: string = '';
   price: C_Money = new Money(0, 'JPY');
 }
