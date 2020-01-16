@@ -1,3 +1,4 @@
+import { types as sdkTypes } from '../../util/sdkLoader';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape } from '../../util/reactIntl';
@@ -27,6 +28,9 @@ import {
 
 import css from './EditListingWizard.css';
 import { stringifyDateToISO8601 } from '../../util/dates';
+import { defaultValueWithEnUSD } from '../FieldCurrencyInput/FieldCurrencyInput.example';
+
+const { LatLng } = sdkTypes;
 
 // All chars must be lower case.
 // EditListingWizard.tabLabel{*} in src/translation/--.json must be the same
@@ -131,9 +135,25 @@ const EditListingWizardTab = props => {
     return images ? images.map(img => img.imageId || img.id) : null;
   };
 
-  const onCompleteEditListingWizardTab = (tab, updateValues) => {
-    // Normalize images for API call
-    updateValues = { title: '(no title)', ...updateValues };
+  const onCompleteEditListingWizardTab = (tab, updateValues, currentUser) => {
+    const defaultValues = {
+      title: '(no title)',
+      geolocation:
+        currentUser &&
+        currentUser.attributes.profile.publicData.geolocation &&
+        currentUser.attributes.profile.publicData.geolocation.selectedPlace &&
+        currentUser.attributes.profile.publicData.geolocation.selectedPlace.origin &&
+        new LatLng(
+          currentUser.attributes.profile.publicData.geolocation.selectedPlace.origin.lat,
+          currentUser.attributes.profile.publicData.geolocation.selectedPlace.origin.lng
+        ),
+    };
+
+    updateValues = {
+      ...defaultValues,
+      ...updateValues,
+    };
+
     const { images: updatedImages, ...otherValues } = updateValues;
     const imageProperty =
       typeof updatedImages !== 'undefined' ? { images: imageIds(updatedImages) } : {};
@@ -224,7 +244,7 @@ const EditListingWizardTab = props => {
           {...panelProps(DESCRIPTION)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -235,7 +255,7 @@ const EditListingWizardTab = props => {
           {...panelProps(FEATURES)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -246,7 +266,7 @@ const EditListingWizardTab = props => {
           {...panelProps(POLICY)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -257,7 +277,7 @@ const EditListingWizardTab = props => {
           {...panelProps(LOCATION)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -268,7 +288,7 @@ const EditListingWizardTab = props => {
           {...panelProps(PRICING)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -280,7 +300,7 @@ const EditListingWizardTab = props => {
           availability={availability}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -294,7 +314,7 @@ const EditListingWizardTab = props => {
           onImageUpload={onImageUpload}
           onRemoveImage={onRemoveImage}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
           onUpdateImageOrder={onUpdateImageOrder}
         />
@@ -306,7 +326,7 @@ const EditListingWizardTab = props => {
           {...panelProps(ACTIVITY)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -317,7 +337,7 @@ const EditListingWizardTab = props => {
           {...panelProps(RENTALSTYLE)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -328,7 +348,7 @@ const EditListingWizardTab = props => {
           {...panelProps(BASICINFO)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -339,7 +359,7 @@ const EditListingWizardTab = props => {
           {...panelProps(DETAILINFO)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
@@ -350,7 +370,7 @@ const EditListingWizardTab = props => {
           {...panelProps(ADDITIONALITEM)}
           submitButtonText={createNextButtonText(tab, marketplaceTabs, isNewListingFlow, isLastTab)}
           onSubmit={values => {
-            onCompleteEditListingWizardTab(tab, values);
+            onCompleteEditListingWizardTab(tab, values, currentUser);
           }}
         />
       );
