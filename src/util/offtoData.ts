@@ -192,6 +192,7 @@ export const OFFTOLISTING_DETAILINFO_TABLE = {
 };
 
 export class AdditionalItem {
+  id: string = '';
   label: string = '';
   price: C_Money = new Money(0, 'JPY');
 }
