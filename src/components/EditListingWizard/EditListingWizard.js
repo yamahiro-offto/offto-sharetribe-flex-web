@@ -46,14 +46,14 @@ export const TABS = [
   RENTALSTYLE,
   BASICINFO,   // tab added
   DETAILINFO,   // tab added
-  ADDITIONALITEM,   // tab added
-  DESCRIPTION,
-  FEATURES,
-  POLICY,
-  LOCATION,
+  // DESCRIPTION,
+  // FEATURES,
+  // POLICY,
+  PHOTOS,
+  // LOCATION,
   PRICING,
   ...availabilityMaybe,
-  PHOTOS,
+  ADDITIONALITEM,   // tab added
   // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
