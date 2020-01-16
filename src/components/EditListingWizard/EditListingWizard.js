@@ -27,9 +27,9 @@ import EditListingWizardTab, {
   PHOTOS,
   ACTIVITY,
   RENTALSTYLE,
-  BASICINFO,  // id added
-  DETAILINFO,  // id added
-  ADDITIONALITEM,  // id added
+  BASICINFO, // id added
+  DETAILINFO, // id added
+  ADDITIONALITEM, // id added
   // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
@@ -50,7 +50,7 @@ export const TABS = [
   // FEATURES,
   // POLICY,
   PHOTOS,
-  LOCATION,
+  // LOCATION,
   PRICING,
   ...availabilityMaybe,
   ADDITIONALITEM, // tab added
@@ -110,7 +110,6 @@ const tabCompleted = (tab, listing) => {
     publicData,
   } = listing.attributes;
   const images = listing.images;
-  console.log('listing.attributes', listing.attributes);
 
   switch (tab) {
     case DESCRIPTION:
