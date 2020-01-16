@@ -113,7 +113,7 @@ export class BusinessDate {
 
 export class OfftoUserPublicData {
   type?: string = UserType.CUSTOMER;
-  geolocation?: C_LatLng = new LatLng(0, 0);
+  geolocation?: any; // c_geolocation
   businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';

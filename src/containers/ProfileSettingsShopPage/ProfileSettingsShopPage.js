@@ -1,3 +1,4 @@
+import { types as sdkTypes } from '../../util/sdkLoader';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
@@ -23,6 +24,8 @@ import { TopbarContainer } from '../../containers';
 import { updateProfile, uploadImage } from './ProfileSettingsShopPage.duck';
 import css from './ProfileSettingsShopPage.css';
 
+const { LatLng, UUID, Money } = sdkTypes;
+
 const onImageUploadHandler = (values, fn) => {
   const { id, imageId, file } = values;
   if (file) {
@@ -46,29 +49,64 @@ export class ProfileSettingsShopPageComponent extends Component {
     } = this.props;
 
     const handleSubmit = values => {
-      const { profileImage, ...profile } = values;
+      const {
+        firstName,
+        lastName,
+        displayName,
+        geolocation,
+        building,
+        profileImage,
+        publicData,
+      } = values;
 
-      profile.publicData = offtoData.OfftoUser.sanitizePublicData(profile.publicData);
+      const publicData_ = offtoData.OfftoUser.sanitizePublicData({
+        ...publicData,
+        geolocation,
+        building,
+      });
+
+      const updateProfile = { firstName, lastName, displayName, publicData: publicData_ };
 
       // Update profileImage only if file system has been accessed
       const uploadedImage = this.props.image;
-      const {abbreviatedName, ...updatedValues} =
+      const { abbreviatedName, ...updatedValues } =
         uploadedImage && uploadedImage.imageId && uploadedImage.file
-          ? { ...profile, profileImageId: uploadedImage.imageId }
-          : profile;
+          ? { ...updateProfile, profileImageId: uploadedImage.imageId }
+          : updateProfile;
 
       onUpdateProfile(updatedValues);
     };
 
     const user = ensureCurrentUser(currentUser);
+    const { firstName, lastName, displayName, bio } = user.attributes.profile;
+    const geolocation =
+      (user.attributes.profile.publicData && user.attributes.profile.publicData.geolocation) || {};
+    const building =
+      (user.attributes.profile.publicData && user.attributes.profile.publicData.building) || '';
     const profileImageId = user.profileImage ? user.profileImage.id : null;
     const profileImage = image || { imageId: profileImageId };
+    const publicData = (user.attributes.profile && user.attributes.profile.publicData) || {};
+
+    if (geolocation.selectedPlace) {
+      geolocation.selectedPlace.bounds.ne = new LatLng(geolocation.selectedPlace.bounds.ne);
+      geolocation.selectedPlace.bounds.sw = new LatLng(geolocation.selectedPlace.bounds.sw);
+      geolocation.selectedPlace.origin = new LatLng(geolocation.selectedPlace.origin);
+    }
 
     const profileSettingsForm = user.id ? (
       <ProfileSettingsShopForm
         className={css.form}
         currentUser={currentUser}
-        initialValues={{ ...user.attributes.profile, profileImage: user.profileImage }}
+        initialValues={{
+          firstName,
+          lastName,
+          displayName,
+          bio,
+          geolocation,
+          building,
+          profileImage,
+          publicData,
+        }}
         profileImage={profileImage}
         onImageUpload={e => onImageUploadHandler(e, onImageUpload)}
         uploadInProgress={uploadInProgress}
