@@ -1,6 +1,9 @@
 export { default as BookingDatesForm } from './BookingDatesForm/BookingDatesForm';
 export { default as ContactDetailsForm } from './ContactDetailsForm/ContactDetailsForm';
 export { default as EditListingActivityForm } from './EditListingActivityForm/EditListingActivityForm';
+export { default as EditListingBasicinfoForm } from './EditListingBasicinfoForm/EditListingBasicinfoForm';
+export { default as EditListingDetailinfoForm } from './EditListingDetailinfoForm/EditListingDetailinfoForm';
+export { default as EditListingAdditionalitemForm } from './EditListingAdditionalitemForm/EditListingAdditionalitemForm';
 export { default as EditListingAvailabilityForm } from './EditListingAvailabilityForm/EditListingAvailabilityForm';
 export { default as EditListingDescriptionForm } from './EditListingDescriptionForm/EditListingDescriptionForm';
 export { default as EditListingFeaturesForm } from './EditListingFeaturesForm/EditListingFeaturesForm';
@@ -14,6 +17,7 @@ export { default as EnquiryForm } from './EnquiryForm/EnquiryForm';
 export { default as FilterForm } from './FilterForm/FilterForm';
 export { default as LocationSearchForm } from './LocationSearchForm/LocationSearchForm';
 export { default as LoginForm } from './LoginForm/LoginForm';
+export { default as ManageAdditionalItemsForm } from './ManageAdditionalItemsForm/ManageAdditionalItemsForm';
 export { default as PasswordChangeForm } from './PasswordChangeForm/PasswordChangeForm';
 export { default as PasswordRecoveryForm } from './PasswordRecoveryForm/PasswordRecoveryForm';
 export { default as PasswordResetForm } from './PasswordResetForm/PasswordResetForm';

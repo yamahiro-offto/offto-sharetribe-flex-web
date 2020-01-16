@@ -13,7 +13,7 @@ const UserNav = props => {
   const { className, rootClassName, selectedPageName, currentUser } = props;
   const classes = classNames(rootClassName || css.root, className);
 
-  const tabs = [
+  const _tabs = [
     {
       text: <FormattedMessage id="ManageListingsPage.yourListings" />,
       selected: selectedPageName === 'ManageListingsPage',
@@ -39,18 +39,28 @@ const UserNav = props => {
     },
   ];
 
-  if (OfftoUser.userIsShop(currentUser)) {
-    tabs[1] = {
-      text: <FormattedMessage id="ManageListingsPage.profileSettings" />,
-      selected: selectedPageName === 'ProfileSettingsShopPage',
-      disabled: false,
-      linkProps: {
-        name: 'ProfileSettingsShopPage',
-      },
-    };
-  } else {
-    tabs.splice(0, 1);
-  }
+  const tabs = OfftoUser.userIsShop(currentUser)
+    ? [
+        _tabs[0],
+        {
+          text: <FormattedMessage id="ManageListingsPage.additionalItems" />,
+          selected: selectedPageName === 'ManageAdditionalItemsPage',
+          disabled: false,
+          linkProps: {
+            name: 'ManageAdditionalItemsPage',
+          },
+        },
+        {
+          text: <FormattedMessage id="ManageListingsPage.profileSettings" />,
+          selected: selectedPageName === 'ProfileSettingsShopPage',
+          disabled: false,
+          linkProps: {
+            name: 'ProfileSettingsShopPage',
+          },
+        },
+        _tabs[2],
+      ]
+    : [_tabs[1], _tabs[2]];
 
   return (
     <LinkTabNavHorizontal className={classes} tabRootClassName={css.tab} tabs={tabs} skin="dark" />

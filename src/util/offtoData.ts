@@ -1,5 +1,8 @@
 import { types as sdkTypes } from './sdkLoader';
 import { plainToClass, classToPlain } from 'class-transformer';
+import { LabelHTMLAttributes } from 'react';
+import { propTypes } from './types';
+import { Decimal } from 'decimal.js';
 const { LatLng, UUID, Money } = sdkTypes;
 type C_UUID = typeof UUID;
 type C_LatLng = typeof LatLng;
@@ -23,6 +26,75 @@ export enum RentalStyle {
   SHOP_RECOMMEND = 'shop_recommend',
 }
 
+export enum Size {
+  XL = 'xl',
+  L = 'l',
+  M = 'm',
+  S = 's',
+  XS = 'xs',
+}
+
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+  // UNISEX = 'unisex',
+}
+
+export enum Age {
+  ADULT = 'adult',
+  CHILD = 'child',
+  // ALL_AGE = 'all_age',
+}
+
+export enum Skill {
+  BEGINNER = 'beginner',
+  INTERMEDIATE = 'intermediate',
+  ADVANCED = 'advanced',
+}
+
+export enum Color {
+  BLACK = 'black',
+  GRAY = 'gray',
+  WHITE = 'white',
+  RED = 'red',
+  ORANGE = 'orange',
+  YELLOW = 'yellow',
+  GREEN = 'green',
+  BLUE = 'blue',
+  PURPLE = 'purple',
+  PINK = 'pink',
+  LIGHT_BLUE = 'light_blue',
+  YELLOW_GREEN = 'yellow_green',
+  SILVER = 'silver',
+  GOLD = 'gold',
+}
+
+export enum Condition {
+  LIKELY_NEW = 'likely_new',
+  LITTLE_DAMAGED = 'lettle_damaged',
+  SOME_DAMAGED = 'some_damaged',
+}
+
+export enum ActivityTypeSnow {
+  ALL_MOUNTAIN = 'all_mountain',
+  BACK_COUNTRY = 'back_country',
+}
+
+export enum ActivityTypeCycle {}
+
+export enum ActivityTypeOther {
+  NONE = 'none',
+}
+
+export type ActivityType = ActivityTypeSnow | ActivityTypeCycle | ActivityTypeOther;
+export const ACTIVITYTYPE_TABLE = {
+  [Activity.SKI_SNOWBOARD]: ActivityTypeSnow,
+  [Activity.CYCLE]: ActivityTypeCycle,
+  [Activity.OTHER]: ActivityTypeOther,
+};
+
+// ================ class definitions ================ //
+
 export class BusinessHour {
   isRegularHoliday: boolean = false;
   startTime: string = '0';
@@ -42,10 +114,10 @@ export class BusinessDate {
 export class OfftoUserPublicData {
   type?: string = UserType.CUSTOMER;
   geolocation?: C_LatLng = new LatLng(0, 0);
-  rentalStyle?: string = RentalStyle.CUSTOMER_SELECT;
   businessDate?: BusinessDate = new BusinessDate();
   activity?: Activity = Activity.OTHER;
   phoneNumber?: string = '000-000-0000';
+  additionalItems?: AdditionalItem[] = [];
 
   constructor(publicData?: any) {
     this.type = !(publicData && publicData.type) ? this.type : publicData.type;
@@ -59,6 +131,9 @@ export class OfftoUserPublicData {
     this.phoneNumber = !(publicData && publicData.phoneNumber)
       ? this.phoneNumber
       : publicData.phoneNumber;
+    this.additionalItems = !(publicData && publicData.additionalItems)
+      ? this.additionalItems
+      : publicData.additionalItems;
   }
 
   static publicDataIsShop(publicData: any): boolean {
@@ -79,6 +154,74 @@ export class OfftoUserPublicData {
   //   return classToPlain(this);
   // }
 }
+
+export class OfftoListingDetailInfoSkiSnowboard {
+  brand: string = '';
+  length: number = 180; // cm
+  radius: number = 20; // m
+  widthHead: number = 20; // cm
+  widthWaist: number = 15; // cm
+  widthTail: number = 20; // cm
+  binding: string = '';
+  modelYear: string = '';
+
+  constructor(params?: any) {
+    if (params) {
+      Object.assign(this, params);
+    }
+  }
+}
+
+export class OfftoListingDetailInfoCycle {
+  constructor(params?: any) {}
+}
+export class OfftoListingDetailInfoOther {
+  constructor(params?: any) {}
+}
+
+export type OfftoListingDetailInfo =
+  | OfftoListingDetailInfoSkiSnowboard
+  | OfftoListingDetailInfoCycle
+  | OfftoListingDetailInfoOther;
+
+// export const OFFTOLISTING_DETAILINFO_TABLE: { [key: string]: OfftoListingDetailInfo } = {
+export const OFFTOLISTING_DETAILINFO_TABLE = {
+  [Activity.SKI_SNOWBOARD]: OfftoListingDetailInfoSkiSnowboard,
+  [Activity.CYCLE]: OfftoListingDetailInfoCycle,
+  [Activity.OTHER]: OfftoListingDetailInfoOther,
+};
+
+export class AdditionalItem {
+  label: string = '';
+  price: C_Money = new Money(0, 'JPY');
+}
+
+export class OfftoListingPubilcData {
+  activity: Activity = Activity.OTHER;
+  rentalStyle: RentalStyle = RentalStyle.CUSTOMER_SELECT;
+  gearId: string = '';
+  activityType: ActivityType = ActivityTypeOther.NONE;
+  size: Size = Size.M;
+  skill: Skill = Skill.BEGINNER;
+  age: Age = Age.ADULT;
+  gender: Gender = Gender.FEMALE;
+  color: Color = Color.WHITE;
+  condition: Condition = Condition.LIKELY_NEW;
+  description: string = '';
+  additionalItems: AdditionalItem[] = [];
+  detailInfo: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
+
+  constructor(publicData?: any) {
+    if (publicData) {
+      Object.assign(this, publicData);
+      const activity = this.activity;
+      const detailInfoType = OFFTOLISTING_DETAILINFO_TABLE[activity];
+      this.detailInfo = new detailInfoType(detailInfoType);
+    }
+  }
+}
+
+// ================ class definitions ================ //
 
 export class OfftoUser {
   firstName: string = '';
@@ -117,5 +260,19 @@ export class OfftoUser {
 
   static sanitizePublicData(pubilcData: any) {
     return OfftoUserPublicData.sanitize(pubilcData);
+  }
+}
+
+export class OfftoListingAttributes {
+  title: string = '(no title)';
+  description: string = '';
+  geolocation: C_LatLng = new LatLng(0, 0);
+  price: C_Money = new Money(0, 'JPY');
+  publicData: OfftoListingPubilcData = new OfftoListingPubilcData();
+
+  constructor(attributes: any) {
+    if (attributes) {
+      Object.assign(this, attributes);
+    }
   }
 }

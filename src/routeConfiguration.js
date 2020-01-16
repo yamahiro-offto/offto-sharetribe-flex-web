@@ -11,6 +11,7 @@ import {
   LandingPage,
   ListingPage,
   ManageListingsPage,
+  ManageAdditionalItemsPage,
   NotFoundPage,
   PasswordChangePage,
   PasswordRecoveryPage,
@@ -241,6 +242,13 @@ const routeConfiguration = () => {
       authPage: 'LoginPage',
       component: props => <ManageListingsPage {...props} />,
       loadData: ManageListingsPage.loadData,
+    },
+    {
+      path: '/additional-items',
+      name: 'ManageAdditionalItemsPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: props => <ManageAdditionalItemsPage {...props} />,
     },
     {
       path: '/account',
