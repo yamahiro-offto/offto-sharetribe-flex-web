@@ -8,6 +8,11 @@ import classNames from 'classnames';
 import { ensureCurrentUser } from '../../util/data';
 import { propTypes } from '../../util/types';
 import * as validators from '../../util/validators';
+import {
+  autocompleteSearchRequired,
+  autocompletePlaceSelected,
+  composeValidators,
+} from '../../util/validators';
 import { isUploadImageOverLimitError } from '../../util/errors';
 import * as offtoData from '../../util/offtoData';
 import {
@@ -18,9 +23,12 @@ import {
   IconSpinner,
   FieldTextInput,
   FieldSelectCustom,
+  LocationAutocompleteInputField,
 } from '../../components';
 
 import css from './ProfileSettingsShopForm.css';
+
+const identity = v => v;
 
 const ACCEPT_IMAGES = 'image/*';
 const UPLOAD_CHANGE_DELAY = 2000; // Show spinner so that browser has time to load img srcset
@@ -104,6 +112,32 @@ class ProfileSettingsShopFormComponent extends Component {
           });
           const bioPlaceholder = intl.formatMessage({
             id: 'ProfileSettingsShopForm.bioPlaceholder',
+          });
+
+          // location
+          const titleRequiredMessage = intl.formatMessage({
+            id: 'EditListingLocationForm.address',
+          });
+          const addressPlaceholderMessage = intl.formatMessage({
+            id: 'EditListingLocationForm.addressPlaceholder',
+          });
+          const addressRequiredMessage = intl.formatMessage({
+            id: 'EditListingLocationForm.addressRequired',
+          });
+          const addressNotRecognizedMessage = intl.formatMessage({
+            id: 'EditListingLocationForm.addressNotRecognized',
+          });
+
+          const optionalText = intl.formatMessage({
+            id: 'EditListingLocationForm.optionalText',
+          });
+
+          const buildingMessage = intl.formatMessage(
+            { id: 'EditListingLocationForm.building' },
+            { optionalText: optionalText }
+          );
+          const buildingPlaceholderMessage = intl.formatMessage({
+            id: 'EditListingLocationForm.buildingPlaceholder',
           });
 
           const uploadingOverlay =
@@ -362,6 +396,39 @@ class ProfileSettingsShopFormComponent extends Component {
               </p>
             </div>
           );
+          formDivs.location = (
+            <div className={css.sectionContainer}>
+              <h3 className={css.sectionTitle}>
+                <FormattedMessage id="ProfileSettingsShopForm.locationHeading" />
+              </h3>
+              <LocationAutocompleteInputField
+                className={css.locationAddress}
+                inputClassName={css.locationAutocompleteInput}
+                iconClassName={css.locationAutocompleteInputIcon}
+                predictionsClassName={css.predictionsRoot}
+                validClassName={css.validLocation}
+                name="geolocation"
+                meta={{ touched: true, valid: true }}
+                label={titleRequiredMessage}
+                placeholder={addressPlaceholderMessage}
+                useDefaultPredictions={false}
+                format={identity}
+                valueFromForm={values.geolocation}
+                validate={composeValidators(
+                  autocompleteSearchRequired(addressRequiredMessage),
+                  autocompletePlaceSelected(addressNotRecognizedMessage)
+                )}
+              />
+              <FieldTextInput
+                className={css.building}
+                type="text"
+                name="building"
+                id="building"
+                label={buildingMessage}
+                placeholder={buildingPlaceholderMessage}
+              />
+            </div>
+          );
 
           return (
             <Form
@@ -377,6 +444,7 @@ class ProfileSettingsShopFormComponent extends Component {
               {formDivs.intro}
               {/* {formDivs.userType} */}
               {formDivs.activity}
+              {formDivs.location}
               {/* (余白) */}
               <div className={css.lastSection} />
               {submitError}
