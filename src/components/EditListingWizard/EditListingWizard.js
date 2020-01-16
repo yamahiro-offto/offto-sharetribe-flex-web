@@ -44,16 +44,16 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 export const TABS = [
   ACTIVITY,
   RENTALSTYLE,
-  BASICINFO,   // tab added
-  DETAILINFO,   // tab added
-  ADDITIONALITEM,   // tab added
-  DESCRIPTION,
-  FEATURES,
-  POLICY,
+  BASICINFO, // tab added
+  DETAILINFO, // tab added
+  // DESCRIPTION,
+  // FEATURES,
+  // POLICY,
+  PHOTOS,
   LOCATION,
   PRICING,
   ...availabilityMaybe,
-  PHOTOS,
+  ADDITIONALITEM, // tab added
   // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
@@ -110,6 +110,7 @@ const tabCompleted = (tab, listing) => {
     publicData,
   } = listing.attributes;
   const images = listing.images;
+  console.log('listing.attributes', listing.attributes);
 
   switch (tab) {
     case DESCRIPTION:
@@ -131,11 +132,11 @@ const tabCompleted = (tab, listing) => {
     case RENTALSTYLE:
       return !!(publicData && publicData.rentalStyle);
     case BASICINFO:
-      return !!(publicData && publicData.activity) // TODO: revise;
+      return !!(publicData && publicData.activity); // TODO: revise;
     case DETAILINFO:
-      return !!(publicData && publicData.detailInfo) // TODO: revise;
+      return !!(publicData && publicData.detailInfo); // TODO: revise;
     case ADDITIONALITEM:
-      return !!(publicData && publicData.additionalItems) // TODO: revise;
+      return !!(publicData && publicData.additionalItems); // TODO: revise;
     // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
