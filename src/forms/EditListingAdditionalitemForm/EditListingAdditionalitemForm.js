@@ -109,9 +109,9 @@ const EditListingAdditionalitemFormComponent = props => (
           name={'additionalItems'}
           options={
             additionalItems
-              ? additionalItems.map(item => {
+              ? additionalItems.map((item, index) => {
                   return {
-                    key: item.key,
+                    key: item.id,
                     label:
                       item.price.currency === 'JPY'
                         ? `${item.label}　　${item.price.amount}円`
