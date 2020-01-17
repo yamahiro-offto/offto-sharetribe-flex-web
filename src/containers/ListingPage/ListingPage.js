@@ -122,7 +122,7 @@ export class ListingPageComponent extends Component {
     // Clear previous Stripe errors from store if there is any
     onInitializeCardPaymentData();
 
-    // Redirect to CheckoutPage
+    // Redirect to SelectAdditionalItemsPage
     history.push(
       createResourceLocatorString(
         'SelectAdditionalItemsPage',
