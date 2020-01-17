@@ -131,7 +131,9 @@ class ManageAdditionalItemsFormComponent extends Component {
 
             const labelIsEmptyString = label === '';
             if (labelIsEmptyString) {
-              alert(intl.formatMessage({ id: 'ManageAdditionalItemsForm.alartAddingItemLabelEmpty' }));
+              alert(
+                intl.formatMessage({ id: 'ManageAdditionalItemsForm.alartAddingItemLabelEmpty' })
+              );
               return;
             }
 
@@ -139,11 +141,15 @@ class ManageAdditionalItemsFormComponent extends Component {
             const priceIsNotNubmer = !Number(price) && Number(price) !== 0;
             const priceIsMinus = Number(price) < 0;
             if (priceIsEmptyString || priceIsNotNubmer || priceIsMinus) {
-              alert(intl.formatMessage({ id: 'ManageAdditionalItemsForm.alartAddingItemPriceInvalid' }));
+              alert(
+                intl.formatMessage({ id: 'ManageAdditionalItemsForm.alartAddingItemPriceInvalid' })
+              );
               return;
             }
 
+            const id = new Date().getTime();
             this.additionalItems.push({
+              id,
               label,
               price: {
                 amount: Number(price),

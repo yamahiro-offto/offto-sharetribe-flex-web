@@ -27,9 +27,9 @@ import EditListingWizardTab, {
   PHOTOS,
   ACTIVITY,
   RENTALSTYLE,
-  BASICINFO,  // id added
-  DETAILINFO,  // id added
-  ADDITIONALITEM,  // id added
+  BASICINFO, // id added
+  DETAILINFO, // id added
+  ADDITIONALITEM, // id added
   // [ADD_EDITLISTINGIDENTIFIER_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 } from './EditListingWizardTab';
 import css from './EditListingWizard.css';
@@ -44,16 +44,16 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 export const TABS = [
   ACTIVITY,
   RENTALSTYLE,
-  BASICINFO,   // tab added
-  DETAILINFO,   // tab added
-  ADDITIONALITEM,   // tab added
-  DESCRIPTION,
-  FEATURES,
-  POLICY,
-  LOCATION,
+  BASICINFO, // tab added
+  DETAILINFO, // tab added
+  // DESCRIPTION,
+  // FEATURES,
+  // POLICY,
+  PHOTOS,
+  // LOCATION,
   PRICING,
   ...availabilityMaybe,
-  PHOTOS,
+  ADDITIONALITEM, // tab added
   // [ADD_TABS_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
 ];
 
@@ -131,11 +131,11 @@ const tabCompleted = (tab, listing) => {
     case RENTALSTYLE:
       return !!(publicData && publicData.rentalStyle);
     case BASICINFO:
-      return !!(publicData && publicData.activity) // TODO: revise;
+      return !!(publicData && publicData.activity); // TODO: revise;
     case DETAILINFO:
-      return !!(publicData && publicData.detailInfo) // TODO: revise;
+      return !!(publicData && publicData.detailInfo); // TODO: revise;
     case ADDITIONALITEM:
-      return !!(publicData && publicData.additionalItems) // TODO: revise;
+      return !!(publicData && publicData.additionalItems); // TODO: revise;
     // [ADD_TABCOMPLETED_HERE] NOTE: Do not delete this line. Used by misc/copyEditLisingPanelAndForm.py
     default:
       return false;
