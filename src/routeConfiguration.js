@@ -22,6 +22,7 @@ import {
   ProfilePage,
   ProfileSettingsPage,
   ProfileSettingsShopPage,
+  SelectAdditionalItemsPage,
   SearchPage,
   StyleguidePage,
   TermsOfServicePage,
@@ -94,6 +95,13 @@ const routeConfiguration = () => {
       name: 'ListingPage',
       component: props => <ListingPage {...props} />,
       loadData: ListingPage.loadData,
+    },
+    {
+      path: '/l/:slug/:id/selectAdditionalItems',
+      name: 'SelectAdditionalItemsPage',
+      auth: true,
+      component: props => <SelectAdditionalItemsPage {...props} />,
+      setInitialValues: SelectAdditionalItemsPage.setInitialValues,
     },
     {
       path: '/l/:slug/:id/checkout',

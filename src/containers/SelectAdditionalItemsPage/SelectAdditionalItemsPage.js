@@ -52,11 +52,11 @@ import {
   stripeCustomer,
   confirmPayment,
   sendMessage,
-} from './CheckoutPage.duck';
-import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
-import css from './CheckoutPage.css';
+} from './SelectAdditionalItemsPage.duck';
+import { storeData, storedData, clearData } from './SelectAdditionalItemsPageSessionHelpers';
+import css from './SelectAdditionalItemsPage.css';
 
-const STORAGE_KEY = 'CheckoutPage';
+const STORAGE_KEY = 'SelectAdditionalItemsPage';
 
 // Stripe PaymentIntent statuses, where user actions are already completed
 // https://stripe.com/docs/payments/payment-intents/status
@@ -93,7 +93,7 @@ const checkIsPaymentExpired = existingTransaction => {
     : false;
 };
 
-export class CheckoutPageComponent extends Component {
+export class SelectAdditionalItemsPageComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -122,9 +122,9 @@ export class CheckoutPageComponent extends Component {
    * Since the data for the checkout is not passed in the URL (there
    * might be lots of options in the future), we must pass in the data
    * some other way. Currently the ListingPage sets the initial data
-   * for the CheckoutPage's Redux store.
+   * for the SelectAdditionalItemsPage's Redux store.
    *
-   * For some cases (e.g. a refresh in the CheckoutPage), the Redux
+   * For some cases (e.g. a refresh in the SelectAdditionalItemsPage), the Redux
    * store is empty. To handle that case, we store the received data
    * to window.sessionStorage and read it from there if no props from
    * the store exist.
@@ -521,7 +521,7 @@ export class CheckoutPageComponent extends Component {
     const currentAuthor = ensureUser(currentListing.author);
 
     const listingTitle = currentListing.attributes.title;
-    const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { listingTitle });
+    const title = intl.formatMessage({ id: 'SelectAdditionalItemsPage.title' }, { listingTitle });
 
     const pageProps = { title, scrollingDisabled };
     const topbar = (
@@ -529,12 +529,12 @@ export class CheckoutPageComponent extends Component {
         <NamedLink className={css.home} name="LandingPage">
           <Logo
             className={css.logoMobile}
-            title={intl.formatMessage({ id: 'CheckoutPage.goToLandingPage' })}
+            title={intl.formatMessage({ id: 'SelectAdditionalItemsPage.goToLandingPage' })}
             format="mobile"
           />
           <Logo
             className={css.logoDesktop}
-            alt={intl.formatMessage({ id: 'CheckoutPage.goToLandingPage' })}
+            alt={intl.formatMessage({ id: 'SelectAdditionalItemsPage.goToLandingPage' })}
             format="desktop"
           />
         </NamedLink>
@@ -617,7 +617,7 @@ export class CheckoutPageComponent extends Component {
         name="ListingPage"
         params={{ id: currentListing.id.uuid, slug: createSlug(listingTitle) }}
       >
-        <FormattedMessage id="CheckoutPage.errorlistingLinkText" />
+        <FormattedMessage id="SelectAdditionalItemsPage.errorlistingLinkText" />
       </NamedLink>
     );
 
@@ -634,25 +634,25 @@ export class CheckoutPageComponent extends Component {
     if (listingNotFound) {
       listingNotFoundErrorMessage = (
         <p className={css.notFoundError}>
-          <FormattedMessage id="CheckoutPage.listingNotFoundError" />
+          <FormattedMessage id="SelectAdditionalItemsPage.listingNotFoundError" />
         </p>
       );
     } else if (isAmountTooLowError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.initiateOrderAmountTooLow" />
+          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderAmountTooLow" />
         </p>
       );
     } else if (isBookingTimeNotAvailableError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.bookingTimeNotAvailableMessage" />
+          <FormattedMessage id="SelectAdditionalItemsPage.bookingTimeNotAvailableMessage" />
         </p>
       );
     } else if (isChargeDisabledError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.chargeDisabledMessage" />
+          <FormattedMessage id="SelectAdditionalItemsPage.chargeDisabledMessage" />
         </p>
       );
     } else if (stripeErrors && stripeErrors.length > 0) {
@@ -662,7 +662,7 @@ export class CheckoutPageComponent extends Component {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
           <FormattedMessage
-            id="CheckoutPage.initiateOrderStripeError"
+            id="SelectAdditionalItemsPage.initiateOrderStripeError"
             values={{ stripeErrors: stripeErrorsAsString }}
           />
         </p>
@@ -671,14 +671,14 @@ export class CheckoutPageComponent extends Component {
       // Generic initiate order error
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.initiateOrderError" values={{ listingLink }} />
+          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderError" values={{ listingLink }} />
         </p>
       );
     }
 
     const speculateTransactionErrorMessage = speculateTransactionError ? (
       <p className={css.speculateError}>
-        <FormattedMessage id="CheckoutPage.speculateTransactionError" />
+        <FormattedMessage id="SelectAdditionalItemsPage.speculateTransactionError" />
       </p>
     ) : null;
     let speculateErrorMessage = null;
@@ -686,25 +686,25 @@ export class CheckoutPageComponent extends Component {
     if (isTransactionInitiateMissingStripeAccountError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.providerStripeAccountMissingError" />
+          <FormattedMessage id="SelectAdditionalItemsPage.providerStripeAccountMissingError" />
         </p>
       );
     } else if (isTransactionInitiateBookingTimeNotAvailableError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.bookingTimeNotAvailableMessage" />
+          <FormattedMessage id="SelectAdditionalItemsPage.bookingTimeNotAvailableMessage" />
         </p>
       );
     } else if (isTransactionZeroPaymentError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.initiateOrderAmountTooLow" />
+          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderAmountTooLow" />
         </p>
       );
     } else if (speculateTransactionError) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="CheckoutPage.speculateFailedMessage" />
+          <FormattedMessage id="SelectAdditionalItemsPage.speculateFailedMessage" />
         </p>
       );
     }
@@ -714,10 +714,10 @@ export class CheckoutPageComponent extends Component {
     const isDaily = unitType === LINE_ITEM_DAY;
 
     const unitTranslationKey = isNightly
-      ? 'CheckoutPage.perNight'
+      ? 'SelectAdditionalItemsPage.perNight'
       : isDaily
-      ? 'CheckoutPage.perDay'
-      : 'CheckoutPage.perUnit';
+      ? 'SelectAdditionalItemsPage.perDay'
+      : 'SelectAdditionalItemsPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
@@ -763,7 +763,7 @@ export class CheckoutPageComponent extends Component {
               <h1 className={css.title}>{title}</h1>
               <div className={css.author}>
                 <FormattedMessage
-                  id="CheckoutPage.hostedBy"
+                  id="SelectAdditionalItemsPage.hostedBy"
                   values={{ name: currentAuthor.attributes.profile.displayName }}
                 />
               </div>
@@ -781,7 +781,7 @@ export class CheckoutPageComponent extends Component {
               {retrievePaymentIntentError ? (
                 <p className={css.orderError}>
                   <FormattedMessage
-                    id="CheckoutPage.retrievingStripePaymentIntentFailed"
+                    id="SelectAdditionalItemsPage.retrievingStripePaymentIntentFailed"
                     values={{ listingLink }}
                   />
                 </p>
@@ -791,8 +791,8 @@ export class CheckoutPageComponent extends Component {
                   className={css.paymentForm}
                   onSubmit={this.handleSubmit}
                   inProgress={this.state.submitting}
-                  formId="CheckoutPagePaymentForm"
-                  paymentInfo={intl.formatMessage({ id: 'CheckoutPage.paymentInfo' })}
+                  formId="SelectAdditionalItemsPagePaymentForm"
+                  paymentInfo={intl.formatMessage({ id: 'SelectAdditionalItemsPage.paymentInfo' })}
                   authorDisplayName={currentAuthor.attributes.profile.displayName}
                   showInitialMessageInput={showInitialMessageInput}
                   initialValues={initalValuesForStripePayment}
@@ -811,7 +811,7 @@ export class CheckoutPageComponent extends Component {
               {isPaymentExpired ? (
                 <p className={css.orderError}>
                   <FormattedMessage
-                    id="CheckoutPage.paymentExpiredMessage"
+                    id="SelectAdditionalItemsPage.paymentExpiredMessage"
                     values={{ listingLink }}
                   />
                 </p>
@@ -844,7 +844,7 @@ export class CheckoutPageComponent extends Component {
   }
 }
 
-CheckoutPageComponent.defaultProps = {
+SelectAdditionalItemsPageComponent.defaultProps = {
   initiateOrderError: null,
   confirmPaymentError: null,
   listing: null,
@@ -857,7 +857,7 @@ CheckoutPageComponent.defaultProps = {
   paymentIntent: null,
 };
 
-CheckoutPageComponent.propTypes = {
+SelectAdditionalItemsPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
   listing: propTypes.listing,
   bookingData: object,
@@ -913,7 +913,7 @@ const mapStateToProps = state => {
     transaction,
     initiateOrderError,
     confirmPaymentError,
-  } = state.CheckoutPage;
+  } = state.SelectAdditionalItemsPage;
   const { currentUser } = state.user;
   const { handleCardPaymentError, paymentIntent, retrievePaymentIntentError } = state.stripe;
   return {
@@ -948,17 +948,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(savePaymentMethod(stripeCustomer, stripePaymentMethodId)),
 });
 
-const CheckoutPage = compose(
+const SelectAdditionalItemsPage = compose(
   withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(CheckoutPageComponent);
+)(SelectAdditionalItemsPageComponent);
 
-CheckoutPage.setInitialValues = initialValues => setInitialValues(initialValues);
+SelectAdditionalItemsPage.setInitialValues = initialValues => setInitialValues(initialValues);
 
-CheckoutPage.displayName = 'CheckoutPage';
+SelectAdditionalItemsPage.displayName = 'SelectAdditionalItemsPage';
 
-export default CheckoutPage;
+export default SelectAdditionalItemsPage;

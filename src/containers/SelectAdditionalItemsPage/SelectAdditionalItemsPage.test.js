@@ -1,12 +1,12 @@
 import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { createUser, createCurrentUser, createListing, fakeIntl } from '../../util/test-data';
-import { CheckoutPageComponent } from './CheckoutPage';
-import checkoutPageReducer, { SET_INITAL_VALUES, setInitialValues } from './CheckoutPage.duck';
+import { SelectAdditionalItemsPageComponent } from './SelectAdditionalItemsPage';
+import SelectAdditionalItemsPageReducer, { SET_INITAL_VALUES, setInitialValues } from './SelectAdditionalItemsPage.duck';
 
 const noop = () => null;
 
-describe('CheckoutPage', () => {
+describe('SelectAdditionalItemsPage', () => {
   it('matches snapshot', () => {
     const listing = createListing('listing1', {}, { author: createUser('author') });
     const props = {
@@ -34,7 +34,7 @@ describe('CheckoutPage', () => {
       onSendMessage: noop,
       handleCardPaymentInProgress: false,
     };
-    const tree = renderShallow(<CheckoutPageComponent {...props} />);
+    const tree = renderShallow(<SelectAdditionalItemsPageComponent {...props} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -74,7 +74,7 @@ describe('CheckoutPage', () => {
       };
 
       it('should return the initial state', () => {
-        expect(checkoutPageReducer(undefined, {})).toEqual(initialValues);
+        expect(SelectAdditionalItemsPageReducer(undefined, {})).toEqual(initialValues);
       });
 
       it('should handle SET_INITAL_VALUES', () => {
@@ -91,7 +91,7 @@ describe('CheckoutPage', () => {
         };
         const payload = { listing, bookingDates };
         const expected = { ...initialValues, ...payload };
-        expect(checkoutPageReducer({}, { type: SET_INITAL_VALUES, payload })).toEqual(expected);
+        expect(SelectAdditionalItemsPageReducer({}, { type: SET_INITAL_VALUES, payload })).toEqual(expected);
       });
     });
   });
