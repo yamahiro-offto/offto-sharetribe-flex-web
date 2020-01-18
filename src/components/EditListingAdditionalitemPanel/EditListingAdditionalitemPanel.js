@@ -52,7 +52,6 @@ const EditListingAdditionalitemPanel = props => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingAdditionalitemForm
         className={css.form}
-        currentListing={currentListing}
         additionalItems={additionalItems}
         initialValues={{
           additionalItems: _currentListingAttributes.publicData.additionalItems || [],
@@ -74,7 +73,6 @@ const EditListingAdditionalitemPanel = props => {
         updated={panelUpdated}
         updateInProgress={updateInProgress}
         fetchErrors={errors}
-        categories={config.custom.categories}
       />
     </div>
   );

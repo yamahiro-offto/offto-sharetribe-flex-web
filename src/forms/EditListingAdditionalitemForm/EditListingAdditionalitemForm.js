@@ -27,9 +27,7 @@ const EditListingAdditionalitemFormComponent = props => (
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
-        categories,
         className,
-        currentListing,
         additionalItems,
         disabled,
         ready,
@@ -43,30 +41,6 @@ const EditListingAdditionalitemFormComponent = props => (
         fetchErrors,
       } = formRenderProps;
 
-      const titleMessage = intl.formatMessage({ id: 'EditListingAdditionalitemForm.title' });
-      const titlePlaceholderMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.titlePlaceholder',
-      });
-      const titleRequiredMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.titleRequired',
-      });
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingAdditionalitemForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        }
-      );
-
-      const descriptionMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.description',
-      });
-      const descriptionPlaceholderMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.descriptionPlaceholder',
-      });
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
-      const descriptionRequiredMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.descriptionRequired',
-      });
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
@@ -145,7 +119,6 @@ EditListingAdditionalitemFormComponent.defaultProps = { className: null, fetchEr
 
 EditListingAdditionalitemFormComponent.propTypes = {
   className: string,
-  currentListing: propTypes.currentListing,
   additionalItems: array.isRequired,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
