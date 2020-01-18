@@ -2,6 +2,7 @@ import React from 'react';
 import { arrayOf, bool, func, shape, string, array } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
+import { OnChange } from 'react-final-form-listeners';
 import arrayMutators from 'final-form-arrays';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
@@ -32,6 +33,7 @@ const EditListingAdditionalitemFormComponent = props => (
         disabled,
         ready,
         handleSubmit,
+        onChange,
         intl,
         invalid,
         pristine,
@@ -86,8 +88,8 @@ const EditListingAdditionalitemFormComponent = props => (
       formDivs.push(
         <FieldCheckboxGroup
           className={css.additionalItems}
-          id={'additionalItems'}
-          name={'additionalItems'}
+          id={'additionalItemIds'}
+          name={'additionalItemIds'}
           options={additionalItemOptions}
         />
       );
@@ -109,6 +111,11 @@ const EditListingAdditionalitemFormComponent = props => (
           >
             {saveActionMsg}
           </Button>
+          <OnChange>
+            {(value, previous) => {
+              onChange(value, previous)
+            }}
+          </OnChange>
         </Form>
       );
     }}

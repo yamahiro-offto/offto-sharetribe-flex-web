@@ -54,14 +54,14 @@ const EditListingAdditionalitemPanel = props => {
         className={css.form}
         additionalItems={additionalItems}
         initialValues={{
-          additionalItems: _currentListingAttributes.publicData.additionalItems || [],
+          additionalItemIds: _currentListingAttributes.publicData.additionalItemIds || [],
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { additionalItems } = values;
+          const { additionalItemIds } = values;
           const updateValues = {
             publicData: {
-              additionalItems,
+              additionalItemIds,
             },
           };
 

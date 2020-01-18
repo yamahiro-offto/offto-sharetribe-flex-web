@@ -381,6 +381,16 @@ propTypes.transaction = shape({
   }),
   booking: propTypes.booking,
   listing: propTypes.listing,
+  // additionalItems: arrayOf(
+  //   shape({
+  //     id: string,
+  //     lable: string,
+  //     price: shape({
+  //       amount: number,
+  //       currency: string,
+  //     }),
+  //   })
+  // ),
   customer: propTypes.user,
   provider: propTypes.user,
   reviews: arrayOf(propTypes.review),

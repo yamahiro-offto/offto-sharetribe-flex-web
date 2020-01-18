@@ -40,7 +40,7 @@ import {
   Page,
   ResponsiveImage,
 } from '../../components';
-import { StripePaymentForm } from '../../forms';
+import { EditListingAdditionalitemForm } from '../../forms';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { handleCardPayment, retrievePaymentIntent } from '../../ducks/stripe.duck';
 import { savePaymentMethod } from '../../ducks/paymentMethods.duck';
@@ -55,6 +55,7 @@ import {
 } from './SelectAdditionalItemsPage.duck';
 import { storeData, storedData, clearData } from './SelectAdditionalItemsPageSessionHelpers';
 import css from './SelectAdditionalItemsPage.css';
+import { OfftoListingAttributes } from '../../util/offtoData';
 
 const STORAGE_KEY = 'SelectAdditionalItemsPage';
 
@@ -671,7 +672,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
       // Generic initiate order error
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderError" values={{ listingLink }} />
+          <FormattedMessage
+            id="SelectAdditionalItemsPage.initiateOrderError"
+            values={{ listingLink }}
+          />
         </p>
       );
     }
@@ -743,6 +747,26 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     const initalValuesForStripePayment = { name: userName };
 
+    // additional items: ones registered in listing's publicData and user's publicData
+    const currentOfftoListingAttibutes = new OfftoListingAttributes(currentListing.attributes);
+    const listingItemIds = currentOfftoListingAttibutes.publicData.additionalItemIds;
+    const userItems = currentAuthor.attributes.profile.publicData.additionalItems;
+    const additionalItems = listingItemIds
+      .map(listingItemId => {
+        const idx = userItems.findIndex(userItem => userItem.id === listingItemId);
+        if (idx >= 0) {
+          return userItems[idx];
+        } else {
+          return null;
+        }
+      })
+      .filter(v => v);
+
+    // addiional items form button
+    const additionalItemsButtonText = intl.formatMessage({
+      id: 'SelectAdditionalItemsPage.submitButton',
+    });
+
     return (
       <Page {...pageProps}>
         {topbar}
@@ -787,25 +811,38 @@ export class SelectAdditionalItemsPageComponent extends Component {
                 </p>
               ) : null}
               {showPaymentForm ? (
-                <StripePaymentForm
-                  className={css.paymentForm}
-                  onSubmit={this.handleSubmit}
-                  inProgress={this.state.submitting}
-                  formId="SelectAdditionalItemsPagePaymentForm"
-                  paymentInfo={intl.formatMessage({ id: 'SelectAdditionalItemsPage.paymentInfo' })}
-                  authorDisplayName={currentAuthor.attributes.profile.displayName}
-                  showInitialMessageInput={showInitialMessageInput}
-                  initialValues={initalValuesForStripePayment}
-                  initiateOrderError={initiateOrderError}
-                  handleCardPaymentError={handleCardPaymentError}
-                  confirmPaymentError={confirmPaymentError}
-                  hasHandledCardPayment={hasPaymentIntentUserActionsDone}
-                  loadingData={!stripeCustomerFetched}
-                  defaultPaymentMethod={
-                    hasDefaultPaymentMethod ? currentUser.stripeCustomer.defaultPaymentMethod : null
-                  }
-                  paymentIntent={paymentIntent}
-                  onStripeInitialized={this.onStripeInitialized}
+                <EditListingAdditionalitemForm
+                  className={css.form}
+                  saveActionMsg={additionalItemsButtonText}
+                  // onSubmit={this.handleSubmit}
+                  onSubmit={values => {
+                    console.log('onSubmit values', values);
+                    const { additionalItems } = values;
+                    const updateValues = {
+                      publicData: {
+                        additionalItems,
+                      },
+                    };
+                    // onSubmit(updateValues);
+                  }}
+                  // onChange={this.handleChange}
+                  onChange={(values, _pre) => {
+                    const { additionalItemIds } = values;
+                    console.log('additionalItemIds', additionalItemIds);
+                    const selectedAdditionalItems = additionalItemIds.map(itemId => {
+                      const idx = additionalItems.findIndex(item => item.id == itemId);
+                      return additionalItems[idx];
+                    });
+                    console.log('onChange selectedAdditionalItems', selectedAdditionalItems);
+                    // onSelectedAdditionalItemChanged(transaction, selectedAdditionalItems);
+                  }}
+                  initialValues={[]}
+                  additionalItems={additionalItems}
+                  disabled={false}
+                  ready={false}
+                  updated={false}
+                  updateInProgress={false}
+                  fetchErrors={{}}
                 />
               ) : null}
               {isPaymentExpired ? (
@@ -946,6 +983,7 @@ const mapDispatchToProps = dispatch => ({
   onSendMessage: params => dispatch(sendMessage(params)),
   onSavePaymentMethod: (stripeCustomer, stripePaymentMethodId) =>
     dispatch(savePaymentMethod(stripeCustomer, stripePaymentMethodId)),
+  // onSelectedAdditionalItemChanged: (transaction, addiionalItemIds) => {},
 });
 
 const SelectAdditionalItemsPage = compose(
