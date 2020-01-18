@@ -1,5 +1,5 @@
 import React from 'react';
-import { arrayOf, bool, func, shape, string } from 'prop-types';
+import { arrayOf, bool, func, shape, string, array } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
@@ -30,7 +30,7 @@ const EditListingAdditionalitemFormComponent = props => (
         categories,
         className,
         currentListing,
-        currentUser,
+        additionalItems,
         disabled,
         ready,
         handleSubmit,
@@ -93,33 +93,28 @@ const EditListingAdditionalitemFormComponent = props => (
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
+      const additionalItemOptions = additionalItems
+        ? additionalItems.map((item, index) => {
+            return {
+              key: item.id,
+              label:
+                item.price.currency === 'JPY'
+                  ? `${item.label}　　 ${item.price.amount} 円`
+                  : `${item.label}　　 ${item.price.amount} [${item.price.currency}]`,
+            };
+          })
+        : [];
+
       // HTMLs to be displayed in this form
       const formDivs = [];
 
       // additional items
-      const additionalItems =
-        currentUser &&
-        currentUser.attributes.profile.publicData &&
-        currentUser.attributes.profile.publicData.additionalItems;
-      console.log(currentUser);
       formDivs.push(
         <FieldCheckboxGroup
           className={css.additionalItems}
           id={'additionalItems'}
           name={'additionalItems'}
-          options={
-            additionalItems
-              ? additionalItems.map((item, index) => {
-                  return {
-                    key: item.id,
-                    label:
-                      item.price.currency === 'JPY'
-                        ? `${item.label}　　${item.price.amount}円`
-                        : `${item.label}　　${item.price.amount} ${item.price.amount} [${item.price.currency}]`,
-                  };
-                })
-              : []
-          }
+          options={additionalItemOptions}
         />
       );
 
@@ -151,7 +146,7 @@ EditListingAdditionalitemFormComponent.defaultProps = { className: null, fetchEr
 EditListingAdditionalitemFormComponent.propTypes = {
   className: string,
   currentListing: propTypes.currentListing,
-  currentUser: propTypes.currentUser,
+  additionalItems: array.isRequired,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,

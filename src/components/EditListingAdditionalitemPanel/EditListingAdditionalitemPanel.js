@@ -42,28 +42,29 @@ const EditListingAdditionalitemPanel = props => {
   );
 
   const _currentListingAttributes = new offtoData.OfftoListingAttributes(currentListing.attributes);
-  console.log('_currentListingAttributes', _currentListingAttributes);
+  const additionalItems =
+    currentUser &&
+    currentUser.attributes.profile.publicData &&
+    currentUser.attributes.profile.publicData.additionalItems;
+    
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingAdditionalitemForm
         className={css.form}
         currentListing={currentListing}
-        currentUser={currentUser}
+        additionalItems={additionalItems}
         initialValues={{
           additionalItems: _currentListingAttributes.publicData.additionalItems || [],
         }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
           const { additionalItems } = values;
-          console.log('values', values);
-          console.log('additionalItems', additionalItems);
           const updateValues = {
             publicData: {
               additionalItems,
             },
           };
-          console.log('updateValues', updateValues);
 
           onSubmit(updateValues);
         }}
