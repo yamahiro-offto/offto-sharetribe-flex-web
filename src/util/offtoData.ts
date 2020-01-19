@@ -3,6 +3,9 @@ import { plainToClass, classToPlain } from 'class-transformer';
 import { LabelHTMLAttributes } from 'react';
 import { propTypes } from './types';
 import { Decimal } from 'decimal.js';
+import _ from 'lodash';
+import { userDisplayNameAsString } from './data';
+
 const { LatLng, UUID, Money } = sdkTypes;
 type C_UUID = typeof UUID;
 type C_LatLng = typeof LatLng;
@@ -167,7 +170,7 @@ export class OfftoListingDetailInfoSkiSnowboard {
 
   constructor(params?: any) {
     if (params) {
-      Object.assign(this, params);
+      _.merge(this, params);
     }
   }
 }
@@ -192,9 +195,13 @@ export const OFFTOLISTING_DETAILINFO_TABLE = {
 };
 
 export class AdditionalItem {
-  id: string = '';
+  id: number = 0; // unixtime, = new Date().getTime(), created in ManageAddtionalItemsForm
   label: string = '';
   price: C_Money = new Money(0, 'JPY');
+
+  constructor(additionalItem: any) {
+    _.merge(this, additionalItem);
+  }
 }
 
 export class OfftoListingPubilcData {
@@ -209,12 +216,19 @@ export class OfftoListingPubilcData {
   color: Color = Color.WHITE;
   condition: Condition = Condition.LIKELY_NEW;
   description: string = '';
-  additionalItems: AdditionalItem[] = [];
+  additionalItemIds: string[] = [];
   detailInfo: OfftoListingDetailInfo = new OfftoListingDetailInfoOther();
 
   constructor(publicData?: any) {
     if (publicData) {
-      Object.assign(this, publicData);
+      _.merge(this, publicData);
+
+      // if (publicData.additionalItems) {
+      //   this.additionalItems = publicData.additionalItems.map((item: any) => {
+      //     new AdditionalItem(item);
+      //   });
+      // }
+
       const activity = this.activity;
       const detailInfoType = OFFTOLISTING_DETAILINFO_TABLE[activity];
       this.detailInfo = new detailInfoType(detailInfoType);
@@ -273,7 +287,11 @@ export class OfftoListingAttributes {
 
   constructor(attributes: any) {
     if (attributes) {
-      Object.assign(this, attributes);
+      _.merge(this, attributes);
+
+      if (attributes.publicData) {
+        this.publicData = new OfftoListingPubilcData(attributes.publicData);
+      }
     }
   }
 }

@@ -116,16 +116,16 @@ export class ListingPageComponent extends Component {
 
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
-    const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
+    const { setInitialValues } = findRouteByRouteName('SelectAdditionalItemsPage', routes);
     callSetInitialValues(setInitialValues, initialValues);
 
     // Clear previous Stripe errors from store if there is any
     onInitializeCardPaymentData();
 
-    // Redirect to CheckoutPage
+    // Redirect to SelectAdditionalItemsPage
     history.push(
       createResourceLocatorString(
-        'CheckoutPage',
+        'SelectAdditionalItemsPage',
         routes,
         { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
         {}

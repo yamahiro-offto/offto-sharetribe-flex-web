@@ -3,7 +3,7 @@
  * I.e. dates and other details related to payment decision in receipt format.
  */
 import React from 'react';
-import { oneOf, string } from 'prop-types';
+import { oneOf, string, array } from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import {
@@ -22,9 +22,10 @@ import LineItemProviderCommissionMaybe from './LineItemProviderCommissionMaybe';
 import LineItemProviderCommissionRefundMaybe from './LineItemProviderCommissionRefundMaybe';
 import LineItemRefundMaybe from './LineItemRefundMaybe';
 import LineItemTotalPrice from './LineItemTotalPrice';
-import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe';
+import LineItemAdditionalItemsMaybe from './LineItemAdditionalItemsMaybe';
 
 import css from './BookingBreakdown.css';
+import PropertyGroup from '../PropertyGroup/PropertyGroup';
 
 export const BookingBreakdownComponent = props => {
   const {
@@ -36,6 +37,7 @@ export const BookingBreakdownComponent = props => {
     booking,
     intl,
     dateType,
+    additionalItems,
   } = props;
 
   const isCustomer = userRole === 'customer';
@@ -92,7 +94,11 @@ export const BookingBreakdownComponent = props => {
       <LineItemUnitsMaybe transaction={transaction} unitType={unitType} />
 
       <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
-      <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
+      <LineItemAdditionalItemsMaybe
+        transaction={transaction}
+        additionalItems={additionalItems}
+        intl={intl}
+      />
 
       <LineItemSubTotalMaybe
         transaction={transaction}
@@ -146,6 +152,7 @@ BookingBreakdownComponent.propTypes = {
   transaction: propTypes.transaction.isRequired,
   booking: propTypes.booking.isRequired,
   dateType: propTypes.dateType,
+  additionalItems: array.isRequired,
 
   // from injectIntl
   intl: intlShape.isRequired,
