@@ -331,7 +331,14 @@ export const LINE_ITEM_DAY = 'line-item/day';
 export const LINE_ITEM_UNITS = 'line-item/units';
 export const LINE_ITEM_CUSTOMER_COMMISSION = 'line-item/customer-commission';
 export const LINE_ITEM_PROVIDER_COMMISSION = 'line-item/provider-commission';
-export const LINE_ITEM_ADDITIONAL_ITEM = 'line-item/additional-item';
+export const LINE_ITEM_ADDITIONAL_ITEM_HEAD = 'line-item/additional-item';
+export const formatLineItemAdditionalItem = id => LINE_ITEM_ADDITIONAL_ITEM_HEAD + '/' + String(id);
+export const isLineItemAdditionalItem = lineItem =>
+  lineItem.code.startsWith(LINE_ITEM_ADDITIONAL_ITEM_HEAD + '/') && !lineItem.reversal;
+export const extractLineItemAdditionalItemId = lineItemId =>
+  lineItemId.startsWith(LINE_ITEM_ADDITIONAL_ITEM_HEAD)
+    ? lineItemId.slice(LINE_ITEM_ADDITIONAL_ITEM_HEAD.length + 1) // eliminate "/"
+    : lineItemId;
 
 export const LINE_ITEMS = [
   LINE_ITEM_NIGHT,

@@ -14,6 +14,7 @@ import {
   LINE_ITEM_NIGHT,
   LINE_ITEM_DAY,
   LINE_ITEM_ADDITIONAL_ITEM,
+  formatLineItemAdditionalItem,
   DATE_TYPE_DATE,
 } from '../../util/types';
 import {
@@ -167,7 +168,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     const lineItems_additionalItems = selectedAdditionalItemIdQuantities
       ? selectedAdditionalItemIdQuantities.map(idQuantity => ({
-          code: LINE_ITEM_ADDITIONAL_ITEM,
+          code: formatLineItemAdditionalItem(idQuantity.id),
           // includeFor: ['customer', 'provider'],
           unitPrice: new Money(idQuantity.item.price.amount, idQuantity.item.price.currency),
           quantity: idQuantity.quantity,
@@ -658,6 +659,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
           transaction={tx}
           booking={txBooking}
           dateType={DATE_TYPE_DATE}
+          additionalItems={currentAuthor.attributes.profile.publicData.additionalItems || []}
         />
       ) : null;
 

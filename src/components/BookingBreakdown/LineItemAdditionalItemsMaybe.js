@@ -13,23 +13,36 @@ import React from 'react';
 import { intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { humanizeLineItemCode } from '../../util/data';
-import { LINE_ITEMS, propTypes } from '../../util/types';
+import {
+  isLineItemAdditionalItem,
+  extractLineItemAdditionalItemId,
+  propTypes,
+} from '../../util/types';
 
 import css from './BookingBreakdown.css';
+import { array } from 'prop-types';
 
-const LineItemUnknownItemsMaybe = props => {
-  const { transaction, intl } = props;
+const LineItemAdditionalItemsMaybe = props => {
+  const { transaction, additionalItems, intl } = props;
 
   // resolve unknown non-reversal line items
-  const items = transaction.attributes.lineItems.filter(
-    item => LINE_ITEMS.indexOf(item.code) === -1 && !item.reversal
-  );
+  const items = transaction.attributes.lineItems.filter(item => isLineItemAdditionalItem(item));
 
   return items.length > 0 ? (
     <React.Fragment>
       {items.map((item, i) => {
-        const label = humanizeLineItemCode(item.code);
+        const itemCodeId = Number(extractLineItemAdditionalItemId(item.code));
+
+        const matchItems = additionalItems
+          ? additionalItems.filter(additionaItem => Number(additionaItem.id) === itemCodeId)
+          : [];
+
+        const label =
+          matchItems.length > 0
+            ? String(matchItems[0].label) + " * " + String(item.quantity)
+            : humanizeLineItemCode(item.code);
         const formattedTotal = formatMoney(intl, item.lineTotal);
+
         return (
           <div key={`${i}-item.code`} className={css.lineItem}>
             <span className={css.itemLabel}>{label}</span>
@@ -41,9 +54,10 @@ const LineItemUnknownItemsMaybe = props => {
   ) : null;
 };
 
-LineItemUnknownItemsMaybe.propTypes = {
+LineItemAdditionalItemsMaybe.propTypes = {
   transaction: propTypes.transaction.isRequired,
+  additionalItems: array.isRequired,
   intl: intlShape.isRequired,
 };
 
-export default LineItemUnknownItemsMaybe;
+export default LineItemAdditionalItemsMaybe;
