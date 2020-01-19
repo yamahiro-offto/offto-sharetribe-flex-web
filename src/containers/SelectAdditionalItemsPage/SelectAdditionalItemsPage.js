@@ -18,7 +18,8 @@ import {
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data';
-import { dateFromLocalToAPI, minutesBetween } from '../../util/dates';
+import { dateFromLocalToAPI, minutesBetween, nightsBetween, daysBetween } from '../../util/dates';
+import { types as sdkTypes } from '../../util/sdkLoader';
 import { createSlug } from '../../util/urlHelpers';
 import {
   isTransactionInitiateAmountTooLowError,
@@ -56,6 +57,8 @@ import {
 import { storeData, storedData, clearData } from './SelectAdditionalItemsPageSessionHelpers';
 import css from './SelectAdditionalItemsPage.css';
 import { OfftoListingAttributes } from '../../util/offtoData';
+
+const { Money } = sdkTypes;
 
 const STORAGE_KEY = 'SelectAdditionalItemsPage';
 
@@ -116,6 +119,46 @@ export class SelectAdditionalItemsPageComponent extends Component {
     if (window) {
       this.loadInitialData();
     }
+  }
+
+  customPricingParams(params) {
+    const { bookingData, bookingDates, listing, ...rest } = params;
+
+    const { bookingStart, bookingEnd } = bookingDates;
+    // const listingId = listing.id;
+
+    // Convert picked date to date that will be converted on the API as
+    // a noon of correct year-month-date combo in UTC
+    // const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
+    // const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
+
+    // Fetch speculated transaction for showing price in booking breakdown
+    // NOTE: if unit type is line-item/units, quantity needs to be added.
+    // The way to pass it to checkout page is through pageData.bookingData
+
+    // const { bookingStart, bookingEnd, listing, ...rest } = params;
+    const { amount, currency } = listing.attributes.price;
+
+    const unitType = config.bookingUnitType;
+    const isNightly = unitType === LINE_ITEM_NIGHT;
+
+    const quantity = isNightly
+      ? nightsBetween(bookingStart, bookingEnd)
+      : daysBetween(bookingStart, bookingEnd);
+
+    return {
+      listingId: listing.id,
+      bookingStart,
+      bookingEnd,
+      lineItems: [
+        {
+          code: unitType,
+          unitPrice: new Money(amount, currency),
+          quantity,
+        },
+      ],
+      ...rest,
+    };
   }
 
   /**
@@ -185,23 +228,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
         !isBookingCreated);
 
     if (shouldFetchSpeculatedTransaction) {
-      const listingId = pageData.listing.id;
-      const { bookingStart, bookingEnd } = pageData.bookingDates;
+      const transactionParams = this.customPricingParams({ ...pageData });
 
-      // Convert picked date to date that will be converted on the API as
-      // a noon of correct year-month-date combo in UTC
-      const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
-      const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
-
-      // Fetch speculated transaction for showing price in booking breakdown
-      // NOTE: if unit type is line-item/units, quantity needs to be added.
-      // The way to pass it to checkout page is through pageData.bookingData
       fetchSpeculatedTransaction({
-        transactionParams: {
-          listingId,
-          bookingStart: bookingStartForAPI,
-          bookingEnd: bookingEndForAPI,
-        },
+        transactionParams,
         selectedAdditionalItemIdQuantities,
       });
     }
@@ -843,7 +873,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
                         return { id: itemId, quantity: 1, item: additionalItems[idx] };
                       }
                     );
-                    if(!this.selectedAdditionalItemIdQuantities === selectedAdditionalItemIdQuantities){
+                    if (
+                      !this.selectedAdditionalItemIdQuantities ===
+                      selectedAdditionalItemIdQuantities
+                    ) {
                       this.loadInitialData(selectedAdditionalItemIdQuantities);
                     }
                   }).bind(this)}
