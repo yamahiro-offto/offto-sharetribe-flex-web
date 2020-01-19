@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { bool, func, instanceOf, object, oneOfType, shape, string } from 'prop-types';
-import { compose } from 'redux';
+import { compose, combineReducers } from 'redux';
 import { connect } from 'react-redux';
+import Decimal from 'decimal.js';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
-import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATE } from '../../util/types';
+import {
+  propTypes,
+  LINE_ITEM_NIGHT,
+  LINE_ITEM_DAY,
+  LINE_ITEM_ADDITIONAL_ITEM,
+  DATE_TYPE_DATE,
+} from '../../util/types';
 import {
   ensureListing,
   ensureCurrentUser,
@@ -122,7 +129,13 @@ export class SelectAdditionalItemsPageComponent extends Component {
   }
 
   customPricingParams(params) {
-    const { bookingData, bookingDates, listing, ...rest } = params;
+    const {
+      bookingData,
+      bookingDates,
+      listing,
+      selectedAdditionalItemIdQuantities,
+      ...rest
+    } = params;
 
     const { bookingStart, bookingEnd } = bookingDates;
     // const listingId = listing.id;
@@ -146,17 +159,30 @@ export class SelectAdditionalItemsPageComponent extends Component {
       ? nightsBetween(bookingStart, bookingEnd)
       : daysBetween(bookingStart, bookingEnd);
 
+    const lineItem_listing = {
+      code: unitType,
+      unitPrice: new Money(amount, currency),
+      quantity,
+    };
+
+    const lineItems_additionalItems = selectedAdditionalItemIdQuantities
+      ? selectedAdditionalItemIdQuantities.map(idQuantity => ({
+          code: LINE_ITEM_ADDITIONAL_ITEM,
+          // includeFor: ['customer', 'provider'],
+          unitPrice: new Money(idQuantity.item.price.amount, idQuantity.item.price.currency),
+          quantity: idQuantity.quantity,
+          // reversal: false,
+        }))
+      : [];
+
+    console.log('lineItem_listing', lineItem_listing);
+    console.log('lineItems_additionalItems', lineItems_additionalItems);
+
     return {
       listingId: listing.id,
       bookingStart,
       bookingEnd,
-      lineItems: [
-        {
-          code: unitType,
-          unitPrice: new Money(amount, currency),
-          quantity,
-        },
-      ],
+      lineItems: [lineItem_listing, ...lineItems_additionalItems],
       ...rest,
     };
   }
@@ -228,7 +254,12 @@ export class SelectAdditionalItemsPageComponent extends Component {
         !isBookingCreated);
 
     if (shouldFetchSpeculatedTransaction) {
-      const transactionParams = this.customPricingParams({ ...pageData });
+      const transactionParams = this.customPricingParams({
+        ...pageData,
+        selectedAdditionalItemIdQuantities,
+      });
+
+      console.log('transactionParams', transactionParams);
 
       fetchSpeculatedTransaction({
         transactionParams,

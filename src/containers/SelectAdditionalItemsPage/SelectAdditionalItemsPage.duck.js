@@ -77,7 +77,7 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
     case RESPECULATE_TRANSACTION_REQUEST:
       return {
         ...state,
-        speculateTransactionInProgress: false,
+        speculateTransactionInProgress: true,
         speculateTransactionError: null,
         speculatedTransaction: null,
         selectedAdditionalItemIdQuantities: payload.selectedAdditionalItemIdQuantities,
@@ -297,6 +297,8 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
     include: ['booking', 'provider'],
     expand: true,
   };
+
+  console.log('bodyParams.params', bodyParams.params);
   return sdk.transactions
     .initiateSpeculative(bodyParams, queryParams)
     .then(response => {
@@ -305,6 +307,8 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
         throw new Error('Expected a resource in the sdk.transactions.initiateSpeculative response');
       }
       const tx = entities[0];
+      console.log('tx', tx);
+      console.log('tx.attributes.lineItems', tx.attributes.lineItems);
       dispatch(speculateTransactionSuccess(tx));
     })
     .catch(e => {
