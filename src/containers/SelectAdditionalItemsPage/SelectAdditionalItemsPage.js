@@ -873,12 +873,18 @@ export class SelectAdditionalItemsPageComponent extends Component {
                         return { id: itemId, quantity: 1, item: additionalItems[idx] };
                       }
                     );
+
+                    // if not renewed, do nothing (may be called when initialValue is changed)
                     if (
-                      !this.selectedAdditionalItemIdQuantities ===
-                      selectedAdditionalItemIdQuantities
+                      this.selectedAdditionalItemIdQuantities &&
+                      selectedAdditionalItemIdQuantities &&
+                      this.selectedAdditionalItemIdQuantities.toString() ===
+                        selectedAdditionalItemIdQuantities.toString()
                     ) {
-                      this.loadInitialData(selectedAdditionalItemIdQuantities);
+                      return;
                     }
+
+                    this.loadInitialData(selectedAdditionalItemIdQuantities);
                   }).bind(this)}
                   initialValues={{
                     additionalItemIds: selectedAdditionalItemIdQuantities
