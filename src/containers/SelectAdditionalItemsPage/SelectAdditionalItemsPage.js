@@ -102,6 +102,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
       pageData: {},
       dataLoaded: false,
       submitting: false,
+      selectedAdditionalItemIdQuantities: null,
     };
     this.stripe = null;
 
@@ -133,7 +134,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
    * This function also sets of fetching the speculative transaction
    * based on this initial data.
    */
-  loadInitialData() {
+  loadInitialData(selectedAdditionalItemIdQuantities = null) {
     const {
       bookingData,
       bookingDates,
@@ -143,6 +144,8 @@ export class SelectAdditionalItemsPageComponent extends Component {
       fetchStripeCustomer,
       history,
     } = this.props;
+
+    this.selectedAdditionalItemIdQuantities = selectedAdditionalItemIdQuantities;
 
     // Fetch currentUser with stripeCustomer entity
     // Note: since there's need for data loading in "componentWillMount" function,
@@ -171,14 +174,15 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const isBookingCreated = tx && tx.booking && tx.booking.id;
 
     const shouldFetchSpeculatedTransaction =
-      pageData &&
-      pageData.listing &&
-      pageData.listing.id &&
-      pageData.bookingData &&
-      pageData.bookingDates &&
-      pageData.bookingDates.bookingStart &&
-      pageData.bookingDates.bookingEnd &&
-      !isBookingCreated;
+      selectedAdditionalItemIdQuantities || // force to fetch
+      (pageData &&
+        pageData.listing &&
+        pageData.listing.id &&
+        pageData.bookingData &&
+        pageData.bookingDates &&
+        pageData.bookingDates.bookingStart &&
+        pageData.bookingDates.bookingEnd &&
+        !isBookingCreated);
 
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
@@ -193,9 +197,12 @@ export class SelectAdditionalItemsPageComponent extends Component {
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
       fetchSpeculatedTransaction({
-        listingId,
-        bookingStart: bookingStartForAPI,
-        bookingEnd: bookingEndForAPI,
+        transactionParams: {
+          listingId,
+          bookingStart: bookingStartForAPI,
+          bookingEnd: bookingEndForAPI,
+        },
+        selectedAdditionalItemIdQuantities,
       });
     }
 
@@ -497,6 +504,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
       intl,
       params,
       currentUser,
+      selectedAdditionalItemIdQuantities,
       handleCardPaymentError,
       paymentIntent,
       retrievePaymentIntentError,
@@ -513,7 +521,8 @@ export class SelectAdditionalItemsPageComponent extends Component {
       isTransactionInitiateListingNotFoundError(speculateTransactionError) ||
       isTransactionInitiateListingNotFoundError(initiateOrderError);
 
-    const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
+    const isLoading = !this.state.dataLoaded;
+    // const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
     const { listing, bookingDates, transaction } = this.state.pageData;
     const existingTransaction = ensureTransaction(transaction);
@@ -826,17 +835,23 @@ export class SelectAdditionalItemsPageComponent extends Component {
                     // onSubmit(updateValues);
                   }}
                   // onChange={this.handleChange}
-                  onChange={(values, _pre) => {
-                    const { additionalItemIds } = values;
-                    console.log('additionalItemIds', additionalItemIds);
-                    const selectedAdditionalItems = additionalItemIds.map(itemId => {
-                      const idx = additionalItems.findIndex(item => item.id == itemId);
-                      return additionalItems[idx];
-                    });
-                    console.log('onChange selectedAdditionalItems', selectedAdditionalItems);
-                    // onSelectedAdditionalItemChanged(transaction, selectedAdditionalItems);
+                  onChange={((values, _pre) => {
+                    const { additionalItemIds: selectedAdditionalItemIds } = values;
+                    const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(
+                      itemId => {
+                        const idx = additionalItems.findIndex(item => item.id == itemId);
+                        return { id: itemId, quantity: 1, item: additionalItems[idx] };
+                      }
+                    );
+                    if(!this.selectedAdditionalItemIdQuantities === selectedAdditionalItemIdQuantities){
+                      this.loadInitialData(selectedAdditionalItemIdQuantities);
+                    }
+                  }).bind(this)}
+                  initialValues={{
+                    additionalItemIds: selectedAdditionalItemIdQuantities
+                      ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
+                      : [],
                   }}
-                  initialValues={[]}
                   additionalItems={additionalItems}
                   disabled={false}
                   ready={false}
@@ -943,6 +958,7 @@ const mapStateToProps = state => {
     listing,
     bookingData,
     bookingDates,
+    selectedAdditionalItemIdQuantities,
     stripeCustomerFetched,
     speculateTransactionInProgress,
     speculateTransactionError,
@@ -959,6 +975,7 @@ const mapStateToProps = state => {
     stripeCustomerFetched,
     bookingData,
     bookingDates,
+    selectedAdditionalItemIdQuantities,
     speculateTransactionInProgress,
     speculateTransactionError,
     speculatedTransaction,
