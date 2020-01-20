@@ -97,7 +97,7 @@ const routeConfiguration = () => {
       loadData: ListingPage.loadData,
     },
     {
-      path: '/l/:slug/:id/selectAdditionalItems',
+      path: '/l/:slug/:id/select-additional-items',
       name: 'SelectAdditionalItemsPage',
       auth: true,
       component: props => <SelectAdditionalItemsPage {...props} />,
