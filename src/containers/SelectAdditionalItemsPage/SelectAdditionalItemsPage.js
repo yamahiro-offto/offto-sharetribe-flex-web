@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
-import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
+import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
 import {
   propTypes,
   LINE_ITEM_NIGHT,
@@ -189,6 +189,33 @@ export class SelectAdditionalItemsPageComponent extends Component {
     };
   }
 
+  // Browser's back navigation should not rewrite data in session store.
+  setTransactionValues() {
+    const { bookingData, bookingDates, listing, transaction, history } = this.props;
+
+    // Action is 'POP' on both history.back() and page refresh cases.
+    // Action is 'PUSH' when user has directed through a link
+    // Action is 'REPLACE' when user has directed through login/signup process
+    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
+    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
+
+    if (hasDataInProps) {
+      // Store data only if data is passed through props and user has navigated through a link.
+      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
+    }
+  }
+
+  getTransactionValues() {
+    const { bookingData, bookingDates, listing, transaction, history } = this.props;
+
+    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
+    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
+    
+    return hasDataInProps
+      ? { bookingData, bookingDates, listing, transaction }
+      : storedData(STORAGE_KEY);
+  }
+
   /**
    * Load initial data for the page
    *
@@ -223,22 +250,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
     //       this is added here instead of loadData static function.
     fetchStripeCustomer();
 
-    // Browser's back navigation should not rewrite data in session store.
-    // Action is 'POP' on both history.back() and page refresh cases.
-    // Action is 'PUSH' when user has directed through a link
-    // Action is 'REPLACE' when user has directed through login/signup process
-    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
-
-    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
-    if (hasDataInProps) {
-      // Store data only if data is passed through props and user has navigated through a link.
-      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
-    }
+    this.setTransactionValues();
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
-    const pageData = hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction }
-      : storedData(STORAGE_KEY);
+    const pageData = this.getTransactionValues();
 
     // Check if a booking is already created according to stored data.
     const tx = pageData ? pageData.transaction : null;
@@ -474,15 +489,40 @@ export class SelectAdditionalItemsPageComponent extends Component {
   }
 
   handleSubmit(availableAdditionalItems) {
-    return values => {
-      console.log('onSubmit values', values);
-      const { additionalItems } = values;
-      const updateValues = {
-        publicData: {
-          additionalItems,
-        },
+    return (values, _pre) => {
+      console.log('handleSubmit');
+      const { additionalItemIds: selectedAdditionalItemIds } = values;
+      const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(itemId => {
+        const idx = availableAdditionalItems.findIndex(item => item.id == itemId);
+        return { id: itemId, quantity: 1, item: availableAdditionalItems[idx] };
+      });
+
+      const { listing, bookingData, bookingDates, transaction } = this.getTransactionValues();
+      const { history, callSetInitialValues } = this.props;
+
+      const initialValues = {
+        listing,
+        bookingData,
+        bookingDates,
+        transaction,
+        selectedAdditionalItemIdQuantities,
       };
-      // onSubmit(updateValues);
+
+      const routes = routeConfiguration();
+      const { setInitialValues } = findRouteByRouteName('InputCustomerDetailInfoPage', routes);
+      console.log('handleSubmit');
+
+      callSetInitialValues(setInitialValues, initialValues);
+
+      // Redirect to InputCustomerDetailInfo
+      history.push(
+        createResourceLocatorString(
+          'InputCustomerDetailInfoPage',
+          routes,
+          { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
+          {}
+        )
+      );
     };
   }
 
@@ -845,15 +885,13 @@ export class SelectAdditionalItemsPageComponent extends Component {
                 <EditListingAdditionalitemForm
                   className={css.form}
                   saveActionMsg={additionalItemsButtonText}
-                  // onSubmit={this.handleSubmit}
-                  onChange={this.handleChange(availableAdditionalItems)}
-                  onSubmit={this.handleSubmit(availableAdditionalItems)}
-                  // onChange={this.handleChange}
                   initialValues={{
                     additionalItemIds: selectedAdditionalItemIdQuantities
                       ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
                       : [],
                   }}
+                  onChange={this.handleChange(availableAdditionalItems)}
+                  onSubmit={this.handleSubmit(availableAdditionalItems)}
                   additionalItems={availableAdditionalItems}
                   disabled={false}
                   ready={false}
@@ -1002,7 +1040,7 @@ const mapDispatchToProps = dispatch => ({
   onSendMessage: params => dispatch(sendMessage(params)),
   onSavePaymentMethod: (stripeCustomer, stripePaymentMethodId) =>
     dispatch(savePaymentMethod(stripeCustomer, stripePaymentMethodId)),
-  // onSelectedAdditionalItemChanged: (transaction, addiionalItemIds) => {},
+  callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
 });
 
 const SelectAdditionalItemsPage = compose(
