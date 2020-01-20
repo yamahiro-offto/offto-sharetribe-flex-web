@@ -120,6 +120,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     this.onStripeInitialized = this.onStripeInitialized.bind(this);
     this.loadInitialData = this.loadInitialData.bind(this);
     this.handlePaymentIntent = this.handlePaymentIntent.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -448,6 +449,28 @@ export class SelectAdditionalItemsPageComponent extends Component {
     };
 
     return handlePaymentIntentCreation(orderParams);
+  }
+
+  handleChange(additionalItems) {
+    return (values, _pre) => {
+      const { additionalItemIds: selectedAdditionalItemIds } = values;
+      const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(itemId => {
+        const idx = additionalItems.findIndex(item => item.id == itemId);
+        return { id: itemId, quantity: 1, item: additionalItems[idx] };
+      });
+
+      // if not renewed, do nothing (may be called when initialValue is changed)
+      if (
+        this.selectedAdditionalItemIdQuantities &&
+        selectedAdditionalItemIdQuantities &&
+        this.selectedAdditionalItemIdQuantities.toString() ===
+          selectedAdditionalItemIdQuantities.toString()
+      ) {
+        return;
+      }
+
+      this.loadInitialData(selectedAdditionalItemIdQuantities);
+    };
   }
 
   handleSubmit(values) {
@@ -887,6 +910,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
                   className={css.form}
                   saveActionMsg={additionalItemsButtonText}
                   // onSubmit={this.handleSubmit}
+                  onChange={this.handleChange(additionalItems)}
                   onSubmit={values => {
                     console.log('onSubmit values', values);
                     const { additionalItems } = values;
@@ -898,27 +922,6 @@ export class SelectAdditionalItemsPageComponent extends Component {
                     // onSubmit(updateValues);
                   }}
                   // onChange={this.handleChange}
-                  onChange={((values, _pre) => {
-                    const { additionalItemIds: selectedAdditionalItemIds } = values;
-                    const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(
-                      itemId => {
-                        const idx = additionalItems.findIndex(item => item.id == itemId);
-                        return { id: itemId, quantity: 1, item: additionalItems[idx] };
-                      }
-                    );
-
-                    // if not renewed, do nothing (may be called when initialValue is changed)
-                    if (
-                      this.selectedAdditionalItemIdQuantities &&
-                      selectedAdditionalItemIdQuantities &&
-                      this.selectedAdditionalItemIdQuantities.toString() ===
-                        selectedAdditionalItemIdQuantities.toString()
-                    ) {
-                      return;
-                    }
-
-                    this.loadInitialData(selectedAdditionalItemIdQuantities);
-                  }).bind(this)}
                   initialValues={{
                     additionalItemIds: selectedAdditionalItemIdQuantities
                       ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
