@@ -451,12 +451,12 @@ export class SelectAdditionalItemsPageComponent extends Component {
     return handlePaymentIntentCreation(orderParams);
   }
 
-  handleChange(additionalItems) {
+  handleChange(availableAdditionalItems) {
     return (values, _pre) => {
       const { additionalItemIds: selectedAdditionalItemIds } = values;
       const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(itemId => {
-        const idx = additionalItems.findIndex(item => item.id == itemId);
-        return { id: itemId, quantity: 1, item: additionalItems[idx] };
+        const idx = availableAdditionalItems.findIndex(item => item.id == itemId);
+        return { id: itemId, quantity: 1, item: availableAdditionalItems[idx] };
       });
 
       // if not renewed, do nothing (may be called when initialValue is changed)
@@ -473,81 +473,17 @@ export class SelectAdditionalItemsPageComponent extends Component {
     };
   }
 
-  handleSubmit(values) {
-    if (this.state.submitting) {
-      return;
-    }
-    this.setState({ submitting: true });
-
-    const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
-    const { card, message, paymentMethod, formValues } = values;
-    const {
-      name,
-      addressLine1,
-      addressLine2,
-      postal,
-      city,
-      state,
-      country,
-      saveAfterOnetimePayment,
-    } = formValues;
-
-    // Billing address is recommended.
-    // However, let's not assume that <StripePaymentAddress> data is among formValues.
-    // Read more about this from Stripe's docs
-    // https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment-no-element
-    const addressMaybe =
-      addressLine1 && postal
-        ? {
-            address: {
-              city: city,
-              country: country,
-              line1: addressLine1,
-              line2: addressLine2,
-              postal_code: postal,
-              state: state,
-            },
-          }
-        : {};
-    const billingDetails = {
-      name,
-      email: ensureCurrentUser(currentUser).attributes.email,
-      ...addressMaybe,
+  handleSubmit(availableAdditionalItems) {
+    return values => {
+      console.log('onSubmit values', values);
+      const { additionalItems } = values;
+      const updateValues = {
+        publicData: {
+          additionalItems,
+        },
+      };
+      // onSubmit(updateValues);
     };
-
-    const requestPaymentParams = {
-      pageData: this.state.pageData,
-      speculatedTransaction,
-      stripe: this.stripe,
-      card,
-      billingDetails,
-      message,
-      paymentIntent,
-      selectedPaymentMethod: paymentMethod,
-      saveAfterOnetimePayment: !!saveAfterOnetimePayment,
-    };
-
-    this.handlePaymentIntent(requestPaymentParams)
-      .then(res => {
-        const { orderId, messageSuccess, paymentMethodSaved } = res;
-        this.setState({ submitting: false });
-
-        const routes = routeConfiguration();
-        const initialMessageFailedToTransaction = messageSuccess ? null : orderId;
-        const orderDetailsPath = pathByRouteName('OrderDetailsPage', routes, { id: orderId.uuid });
-        const initialValues = {
-          initialMessageFailedToTransaction,
-          savePaymentMethodFailed: !paymentMethodSaved,
-        };
-
-        initializeOrderPage(initialValues, routes, dispatch);
-        clearData(STORAGE_KEY);
-        history.push(orderDetailsPath);
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({ submitting: false });
-      });
   }
 
   onStripeInitialized(stripe) {
@@ -846,7 +782,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const currentOfftoListingAttibutes = new OfftoListingAttributes(currentListing.attributes);
     const listingItemIds = currentOfftoListingAttibutes.publicData.additionalItemIds;
     const userItems = currentAuthor.attributes.profile.publicData.additionalItems;
-    const additionalItems = listingItemIds
+    const availableAdditionalItems = listingItemIds
       .map(listingItemId => {
         const idx = userItems.findIndex(userItem => userItem.id === listingItemId);
         if (idx >= 0) {
@@ -910,24 +846,15 @@ export class SelectAdditionalItemsPageComponent extends Component {
                   className={css.form}
                   saveActionMsg={additionalItemsButtonText}
                   // onSubmit={this.handleSubmit}
-                  onChange={this.handleChange(additionalItems)}
-                  onSubmit={values => {
-                    console.log('onSubmit values', values);
-                    const { additionalItems } = values;
-                    const updateValues = {
-                      publicData: {
-                        additionalItems,
-                      },
-                    };
-                    // onSubmit(updateValues);
-                  }}
+                  onChange={this.handleChange(availableAdditionalItems)}
+                  onSubmit={this.handleSubmit(availableAdditionalItems)}
                   // onChange={this.handleChange}
                   initialValues={{
                     additionalItemIds: selectedAdditionalItemIdQuantities
                       ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
                       : [],
                   }}
-                  additionalItems={additionalItems}
+                  additionalItems={availableAdditionalItems}
                   disabled={false}
                   ready={false}
                   updated={false}
