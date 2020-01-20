@@ -10,8 +10,8 @@
     since browsers support CSS Properties already.
  */
 
-  --SelectAdditionalItemsPage_logoHeight: 25px;
-  --SelectAdditionalItemsPage_logoHeightDesktop: 27px;
+  --InputCustomerDetailInfoPage_logoHeight: 25px;
+  --InputCustomerDetailInfoPage_logoHeightDesktop: 27px;
 }
 
 /* Dummy Topbar */
@@ -40,10 +40,10 @@
 
 .home {
   display: flex;
-  padding: calc((var(--topbarHeight) - var(--SelectAdditionalItemsPage_logoHeight)) / 2) 24px;
+  padding: calc((var(--topbarHeight) - var(--InputCustomerDetailInfoPage_logoHeight)) / 2) 24px;
 
   @media (--viewportLarge) {
-    padding: calc((var(--topbarHeightDesktop) - var(--SelectAdditionalItemsPage_logoHeightDesktop)) / 2) 36px;
+    padding: calc((var(--topbarHeightDesktop) - var(--InputCustomerDetailInfoPage_logoHeightDesktop)) / 2) 36px;
   }
 }
 

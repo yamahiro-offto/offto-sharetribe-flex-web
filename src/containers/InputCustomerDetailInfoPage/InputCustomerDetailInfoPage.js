@@ -61,14 +61,14 @@ import {
   stripeCustomer,
   confirmPayment,
   sendMessage,
-} from './SelectAdditionalItemsPage.duck';
-import { storeData, storedData, clearData } from './SelectAdditionalItemsPageSessionHelpers';
-import css from './SelectAdditionalItemsPage.css';
+} from './InputCustomerDetailInfoPage.duck';
+import { storeData, storedData, clearData } from './InputCustomerDetailInfoPageSessionHelpers';
+import css from './InputCustomerDetailInfoPage.css';
 import { OfftoListingAttributes } from '../../util/offtoData';
 
 const { Money } = sdkTypes;
 
-const STORAGE_KEY = 'SelectAdditionalItemsPage';
+const STORAGE_KEY = 'InputCustomerDetailInfoPage';
 
 // Stripe PaymentIntent statuses, where user actions are already completed
 // https://stripe.com/docs/payments/payment-intents/status
@@ -105,7 +105,7 @@ const checkIsPaymentExpired = existingTransaction => {
     : false;
 };
 
-export class SelectAdditionalItemsPageComponent extends Component {
+export class InputCustomerDetailInfoPageComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -194,9 +194,9 @@ export class SelectAdditionalItemsPageComponent extends Component {
    * Since the data for the checkout is not passed in the URL (there
    * might be lots of options in the future), we must pass in the data
    * some other way. Currently the ListingPage sets the initial data
-   * for the SelectAdditionalItemsPage's Redux store.
+   * for the InputCustomerDetailInfoPage's Redux store.
    *
-   * For some cases (e.g. a refresh in the SelectAdditionalItemsPage), the Redux
+   * For some cases (e.g. a refresh in the InputCustomerDetailInfoPage), the Redux
    * store is empty. To handle that case, we store the received data
    * to window.sessionStorage and read it from there if no props from
    * the store exist.
@@ -593,7 +593,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const currentAuthor = ensureUser(currentListing.author);
 
     const listingTitle = currentListing.attributes.title;
-    const title = intl.formatMessage({ id: 'SelectAdditionalItemsPage.title' }, { listingTitle });
+    const title = intl.formatMessage({ id: 'InputCustomerDetailInfoPage.title' }, { listingTitle });
 
     const pageProps = { title, scrollingDisabled };
     const topbar = (
@@ -601,12 +601,12 @@ export class SelectAdditionalItemsPageComponent extends Component {
         <NamedLink className={css.home} name="LandingPage">
           <Logo
             className={css.logoMobile}
-            title={intl.formatMessage({ id: 'SelectAdditionalItemsPage.goToLandingPage' })}
+            title={intl.formatMessage({ id: 'InputCustomerDetailInfoPage.goToLandingPage' })}
             format="mobile"
           />
           <Logo
             className={css.logoDesktop}
-            alt={intl.formatMessage({ id: 'SelectAdditionalItemsPage.goToLandingPage' })}
+            alt={intl.formatMessage({ id: 'InputCustomerDetailInfoPage.goToLandingPage' })}
             format="desktop"
           />
         </NamedLink>
@@ -690,7 +690,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
         name="ListingPage"
         params={{ id: currentListing.id.uuid, slug: createSlug(listingTitle) }}
       >
-        <FormattedMessage id="SelectAdditionalItemsPage.errorlistingLinkText" />
+        <FormattedMessage id="InputCustomerDetailInfoPage.errorlistingLinkText" />
       </NamedLink>
     );
 
@@ -707,25 +707,25 @@ export class SelectAdditionalItemsPageComponent extends Component {
     if (listingNotFound) {
       listingNotFoundErrorMessage = (
         <p className={css.notFoundError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.listingNotFoundError" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.listingNotFoundError" />
         </p>
       );
     } else if (isAmountTooLowError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderAmountTooLow" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.initiateOrderAmountTooLow" />
         </p>
       );
     } else if (isBookingTimeNotAvailableError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.bookingTimeNotAvailableMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.bookingTimeNotAvailableMessage" />
         </p>
       );
     } else if (isChargeDisabledError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.chargeDisabledMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.chargeDisabledMessage" />
         </p>
       );
     } else if (stripeErrors && stripeErrors.length > 0) {
@@ -735,7 +735,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
           <FormattedMessage
-            id="SelectAdditionalItemsPage.initiateOrderStripeError"
+            id="InputCustomerDetailInfoPage.initiateOrderStripeError"
             values={{ stripeErrors: stripeErrorsAsString }}
           />
         </p>
@@ -745,7 +745,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
           <FormattedMessage
-            id="SelectAdditionalItemsPage.initiateOrderError"
+            id="InputCustomerDetailInfoPage.initiateOrderError"
             values={{ listingLink }}
           />
         </p>
@@ -754,7 +754,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     const speculateTransactionErrorMessage = speculateTransactionError ? (
       <p className={css.speculateError}>
-        <FormattedMessage id="SelectAdditionalItemsPage.speculateTransactionError" />
+        <FormattedMessage id="InputCustomerDetailInfoPage.speculateTransactionError" />
       </p>
     ) : null;
     let speculateErrorMessage = null;
@@ -762,25 +762,25 @@ export class SelectAdditionalItemsPageComponent extends Component {
     if (isTransactionInitiateMissingStripeAccountError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.providerStripeAccountMissingError" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.providerStripeAccountMissingError" />
         </p>
       );
     } else if (isTransactionInitiateBookingTimeNotAvailableError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.bookingTimeNotAvailableMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.bookingTimeNotAvailableMessage" />
         </p>
       );
     } else if (isTransactionZeroPaymentError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderAmountTooLow" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.initiateOrderAmountTooLow" />
         </p>
       );
     } else if (speculateTransactionError) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.speculateFailedMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.speculateFailedMessage" />
         </p>
       );
     }
@@ -790,10 +790,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const isDaily = unitType === LINE_ITEM_DAY;
 
     const unitTranslationKey = isNightly
-      ? 'SelectAdditionalItemsPage.perNight'
+      ? 'InputCustomerDetailInfoPage.perNight'
       : isDaily
-      ? 'SelectAdditionalItemsPage.perDay'
-      : 'SelectAdditionalItemsPage.perUnit';
+      ? 'InputCustomerDetailInfoPage.perDay'
+      : 'InputCustomerDetailInfoPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
@@ -836,7 +836,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     // addiional items form button
     const additionalItemsButtonText = intl.formatMessage({
-      id: 'SelectAdditionalItemsPage.submitButton',
+      id: 'InputCustomerDetailInfoPage.submitButton',
     });
 
     return (
@@ -859,7 +859,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               <h1 className={css.title}>{title}</h1>
               <div className={css.author}>
                 <FormattedMessage
-                  id="SelectAdditionalItemsPage.hostedBy"
+                  id="InputCustomerDetailInfoPage.hostedBy"
                   values={{ name: currentAuthor.attributes.profile.displayName }}
                 />
               </div>
@@ -877,7 +877,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               {retrievePaymentIntentError ? (
                 <p className={css.orderError}>
                   <FormattedMessage
-                    id="SelectAdditionalItemsPage.retrievingStripePaymentIntentFailed"
+                    id="InputCustomerDetailInfoPage.retrievingStripePaymentIntentFailed"
                     values={{ listingLink }}
                   />
                 </p>
@@ -887,51 +887,16 @@ export class SelectAdditionalItemsPageComponent extends Component {
                   className={css.form}
                   saveActionMsg={additionalItemsButtonText}
                   // onSubmit={this.handleSubmit}
-                  onSubmit={(values => {
-                    const { additionalItemIds: selectedAdditionalItemIds } = values;
-                    const {
-                      history,
-                      getListing,
-                      params,
-                      callSetInitialValues,
-                      onInitializeCardPaymentData,
-                    } = this.props;
-                    const listingId = new UUID(params.id);
-                    const listing = getListing(listingId);
-
-                    const { bookingDates, ...bookingData } = values;
-
-                    const initialValues = {
-                      listing,
-                      bookingData,
-                      bookingDates: {
-                        bookingStart: bookingDates.startDate,
-                        bookingEnd: bookingDates.endDate,
+                  onSubmit={values => {
+                    console.log('onSubmit values', values);
+                    const { additionalItems } = values;
+                    const updateValues = {
+                      publicData: {
+                        additionalItems,
                       },
-                      confirmPaymentError: null,
                     };
-
-                    const routes = routeConfiguration();
-                    // Customize checkout page state with current listing and selected bookingDates
-                    const { setInitialValues } = findRouteByRouteName(
-                      'SelectAdditionalItemsPage',
-                      routes
-                    );
-                    callSetInitialValues(setInitialValues, initialValues);
-
-                    // Clear previous Stripe errors from store if there is any
-                    onInitializeCardPaymentData();
-
-                    // Redirect to SelectAdditionalItemsPage
-                    history.push(
-                      createResourceLocatorString(
-                        'SelectAdditionalItemsPage',
-                        routes,
-                        { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
-                        {}
-                      )
-                    );
-                  }).bind(this)}
+                    // onSubmit(updateValues);
+                  }}
                   // onChange={this.handleChange}
                   onChange={((values, _pre) => {
                     const { additionalItemIds: selectedAdditionalItemIds } = values;
@@ -970,7 +935,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               {isPaymentExpired ? (
                 <p className={css.orderError}>
                   <FormattedMessage
-                    id="SelectAdditionalItemsPage.paymentExpiredMessage"
+                    id="InputCustomerDetailInfoPage.paymentExpiredMessage"
                     values={{ listingLink }}
                   />
                 </p>
@@ -1003,7 +968,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
   }
 }
 
-SelectAdditionalItemsPageComponent.defaultProps = {
+InputCustomerDetailInfoPageComponent.defaultProps = {
   initiateOrderError: null,
   confirmPaymentError: null,
   listing: null,
@@ -1016,7 +981,7 @@ SelectAdditionalItemsPageComponent.defaultProps = {
   paymentIntent: null,
 };
 
-SelectAdditionalItemsPageComponent.propTypes = {
+InputCustomerDetailInfoPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
   listing: propTypes.listing,
   bookingData: object,
@@ -1073,7 +1038,7 @@ const mapStateToProps = state => {
     transaction,
     initiateOrderError,
     confirmPaymentError,
-  } = state.SelectAdditionalItemsPage;
+  } = state.InputCustomerDetailInfoPage;
   const { currentUser } = state.user;
   const { handleCardPaymentError, paymentIntent, retrievePaymentIntentError } = state.stripe;
   return {
@@ -1110,17 +1075,17 @@ const mapDispatchToProps = dispatch => ({
   // onSelectedAdditionalItemChanged: (transaction, addiionalItemIds) => {},
 });
 
-const SelectAdditionalItemsPage = compose(
+const InputCustomerDetailInfoPage = compose(
   withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(SelectAdditionalItemsPageComponent);
+)(InputCustomerDetailInfoPageComponent);
 
-SelectAdditionalItemsPage.setInitialValues = initialValues => setInitialValues(initialValues);
+InputCustomerDetailInfoPage.setInitialValues = initialValues => setInitialValues(initialValues);
 
-SelectAdditionalItemsPage.displayName = 'SelectAdditionalItemsPage';
+InputCustomerDetailInfoPage.displayName = 'InputCustomerDetailInfoPage';
 
-export default SelectAdditionalItemsPage;
+export default InputCustomerDetailInfoPage;

@@ -8,6 +8,7 @@ import {
   EditListingPage,
   EmailVerificationPage,
   InboxPage,
+  InputCustomerDetailInfoPage,
   LandingPage,
   ListingPage,
   ManageListingsPage,
@@ -102,6 +103,13 @@ const routeConfiguration = () => {
       auth: true,
       component: props => <SelectAdditionalItemsPage {...props} />,
       setInitialValues: SelectAdditionalItemsPage.setInitialValues,
+    },
+    {
+      path: '/l/:slug/:id/input-customer-detail-info',
+      name: 'InputCustomerDetailInfoPage',
+      auth: true,
+      component: props => <InputCustomerDetailInfoPage {...props} />,
+      setInitialValues: InputCustomerDetailInfoPage.setInitialValues,
     },
     {
       path: '/l/:slug/:id/checkout',

@@ -12,15 +12,15 @@ import { fetchCurrentUserHasOrdersSuccess, fetchCurrentUser } from '../../ducks/
 
 // ================ Action types ================ //
 
-export const SET_INITAL_VALUES = 'app/SelectAdditionalItemsPage/SET_INITIAL_VALUES';
+export const SET_INITAL_VALUES = 'app/InputCustomerDetailInfoPage/SET_INITIAL_VALUES';
 
-export const INITIATE_ORDER_REQUEST = 'app/SelectAdditionalItemsPage/INITIATE_ORDER_REQUEST';
-export const INITIATE_ORDER_SUCCESS = 'app/SelectAdditionalItemsPage/INITIATE_ORDER_SUCCESS';
-export const INITIATE_ORDER_ERROR = 'app/SelectAdditionalItemsPage/INITIATE_ORDER_ERROR';
+export const INITIATE_ORDER_REQUEST = 'app/InputCustomerDetailInfoPage/INITIATE_ORDER_REQUEST';
+export const INITIATE_ORDER_SUCCESS = 'app/InputCustomerDetailInfoPage/INITIATE_ORDER_SUCCESS';
+export const INITIATE_ORDER_ERROR = 'app/InputCustomerDetailInfoPage/INITIATE_ORDER_ERROR';
 
-export const CONFIRM_PAYMENT_REQUEST = 'app/SelectAdditionalItemsPage/CONFIRM_PAYMENT_REQUEST';
-export const CONFIRM_PAYMENT_SUCCESS = 'app/SelectAdditionalItemsPage/CONFIRM_PAYMENT_SUCCESS';
-export const CONFIRM_PAYMENT_ERROR = 'app/SelectAdditionalItemsPage/CONFIRM_PAYMENT_ERROR';
+export const CONFIRM_PAYMENT_REQUEST = 'app/InputCustomerDetailInfoPage/CONFIRM_PAYMENT_REQUEST';
+export const CONFIRM_PAYMENT_SUCCESS = 'app/InputCustomerDetailInfoPage/CONFIRM_PAYMENT_SUCCESS';
+export const CONFIRM_PAYMENT_ERROR = 'app/InputCustomerDetailInfoPage/CONFIRM_PAYMENT_ERROR';
 
 export const SPECULATE_TRANSACTION_REQUEST = 'app/ListingPage/SPECULATE_TRANSACTION_REQUEST';
 export const SPECULATE_TRANSACTION_SUCCESS = 'app/ListingPage/SPECULATE_TRANSACTION_SUCCESS';
@@ -28,9 +28,9 @@ export const SPECULATE_TRANSACTION_ERROR = 'app/ListingPage/SPECULATE_TRANSACTIO
 
 export const RESPECULATE_TRANSACTION_REQUEST = 'app/ListingPage/RESPECULATE_TRANSACTION_REQUEST';
 
-export const STRIPE_CUSTOMER_REQUEST = 'app/SelectAdditionalItemsPage/STRIPE_CUSTOMER_REQUEST';
-export const STRIPE_CUSTOMER_SUCCESS = 'app/SelectAdditionalItemsPage/STRIPE_CUSTOMER_SUCCESS';
-export const STRIPE_CUSTOMER_ERROR = 'app/SelectAdditionalItemsPage/STRIPE_CUSTOMER_ERROR';
+export const STRIPE_CUSTOMER_REQUEST = 'app/InputCustomerDetailInfoPage/STRIPE_CUSTOMER_REQUEST';
+export const STRIPE_CUSTOMER_SUCCESS = 'app/InputCustomerDetailInfoPage/STRIPE_CUSTOMER_SUCCESS';
+export const STRIPE_CUSTOMER_ERROR = 'app/InputCustomerDetailInfoPage/STRIPE_CUSTOMER_ERROR';
 
 // ================ Reducer ================ //
 
@@ -290,7 +290,7 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
     processAlias: config.bookingProcessAlias,
     params: {
       ...transactionParams,
-      cardToken: 'SelectAdditionalItemsPage_speculative_card_token',
+      cardToken: 'InputCustomerDetailInfoPage_speculative_card_token',
     },
   };
   const queryParams = {

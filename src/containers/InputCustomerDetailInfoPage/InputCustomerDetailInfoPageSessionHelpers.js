@@ -1,5 +1,5 @@
 /**
- * SelectAdditionalItemsPage starts payment process and therefore it will get data from ListingPage
+ * InputCustomerDetailInfoPage starts payment process and therefore it will get data from ListingPage
  * (booking dates, listing data, and all the other data that affects to booking decision).
  * This data is saved to Session Store which only exists while the browsing session exists -
  * e.g. tab is open. (Session Store is not related to session cookies.)
@@ -90,7 +90,7 @@ export const storeData = (bookingData, bookingDates, listing, transaction, stora
 // Get stored data
 export const storedData = storageKey => {
   if (window && window.sessionStorage) {
-    const SelectAdditionalItemsPageData = window.sessionStorage.getItem(storageKey);
+    const InputCustomerDetailInfoPageData = window.sessionStorage.getItem(storageKey);
 
     const reviver = (k, v) => {
       if (v && typeof v === 'object' && v._serializedType === 'SerializableDate') {
@@ -105,8 +105,8 @@ export const storedData = storageKey => {
       return sdkTypes.reviver(k, v);
     };
 
-    const { bookingData, bookingDates, listing, transaction, storedAt } = SelectAdditionalItemsPageData
-      ? JSON.parse(SelectAdditionalItemsPageData, reviver)
+    const { bookingData, bookingDates, listing, transaction, storedAt } = InputCustomerDetailInfoPageData
+      ? JSON.parse(InputCustomerDetailInfoPageData, reviver)
       : {};
 
     // If sessionStore contains freshly saved data (max 1 day old), use it

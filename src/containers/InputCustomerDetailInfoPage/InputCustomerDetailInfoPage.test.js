@@ -1,12 +1,12 @@
 import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { createUser, createCurrentUser, createListing, fakeIntl } from '../../util/test-data';
-import { SelectAdditionalItemsPageComponent } from './SelectAdditionalItemsPage';
-import SelectAdditionalItemsPageReducer, { SET_INITAL_VALUES, setInitialValues } from './SelectAdditionalItemsPage.duck';
+import { InputCustomerDetailInfoPageComponent } from './InputCustomerDetailInfoPage';
+import InputCustomerDetailInfoPageReducer, { SET_INITAL_VALUES, setInitialValues } from './InputCustomerDetailInfoPage.duck';
 
 const noop = () => null;
 
-describe('SelectAdditionalItemsPage', () => {
+describe('InputCustomerDetailInfoPage', () => {
   it('matches snapshot', () => {
     const listing = createListing('listing1', {}, { author: createUser('author') });
     const props = {
@@ -34,7 +34,7 @@ describe('SelectAdditionalItemsPage', () => {
       onSendMessage: noop,
       handleCardPaymentInProgress: false,
     };
-    const tree = renderShallow(<SelectAdditionalItemsPageComponent {...props} />);
+    const tree = renderShallow(<InputCustomerDetailInfoPageComponent {...props} />);
     expect(tree).toMatchSnapshot();
   });
 
@@ -74,7 +74,7 @@ describe('SelectAdditionalItemsPage', () => {
       };
 
       it('should return the initial state', () => {
-        expect(SelectAdditionalItemsPageReducer(undefined, {})).toEqual(initialValues);
+        expect(InputCustomerDetailInfoPageReducer(undefined, {})).toEqual(initialValues);
       });
 
       it('should handle SET_INITAL_VALUES', () => {
@@ -91,7 +91,7 @@ describe('SelectAdditionalItemsPage', () => {
         };
         const payload = { listing, bookingDates };
         const expected = { ...initialValues, ...payload };
-        expect(SelectAdditionalItemsPageReducer({}, { type: SET_INITAL_VALUES, payload })).toEqual(expected);
+        expect(InputCustomerDetailInfoPageReducer({}, { type: SET_INITAL_VALUES, payload })).toEqual(expected);
       });
     });
   });
