@@ -7,6 +7,7 @@ import CheckoutPage from './CheckoutPage/CheckoutPage.duck';
 import ContactDetailsPage from './ContactDetailsPage/ContactDetailsPage.duck';
 import EditListingPage from './EditListingPage/EditListingPage.duck';
 import InboxPage from './InboxPage/InboxPage.duck';
+import InputCustomerDetailInfoPage from './InputCustomerDetailInfoPage/InputCustomerDetailInfoPage.duck';
 import ListingPage from './ListingPage/ListingPage.duck';
 import ManageListingsPage from './ManageListingsPage/ManageListingsPage.duck';
 import ManageAdditionalItemsPage from './ManageAdditionalItemsPage/ManageAdditionalItemsPage.duck';
@@ -27,6 +28,7 @@ export {
   ContactDetailsPage,
   EditListingPage,
   InboxPage,
+  InputCustomerDetailInfoPage,
   ListingPage,
   ManageListingsPage,
   ManageAdditionalItemsPage,

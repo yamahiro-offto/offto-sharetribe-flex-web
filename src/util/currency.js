@@ -2,7 +2,7 @@ import has from 'lodash/has';
 import trimEnd from 'lodash/trimEnd';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from './sdkLoader';
-import { subUnitDivisors } from '../currency-config';
+import { subUnitDivisors,currencyConfiguration } from '../currency-config';
 
 const { Money } = sdkTypes;
 
@@ -247,14 +247,7 @@ export const formatMoney = (intl, value) => {
   const valueAsNumber = convertMoneyToNumber(value);
 
   // See: https://github.com/yahoo/react-intl/wiki/API#formatnumber
-  const numberFormatOptions = {
-    style: 'currency',
-    currency: value.currency,
-    currencyDisplay: 'symbol',
-    useGrouping: true,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
+  const numberFormatOptions = currencyConfiguration(value.currency);
 
   return intl.formatNumber(valueAsNumber, numberFormatOptions);
 };
