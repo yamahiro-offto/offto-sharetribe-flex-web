@@ -109,13 +109,13 @@ const BookingPanel = props => {
             <FormattedMessage id="BookingPanel.hostedBy" values={{ name: authorDisplayName }} />
           </div>
         </div>
-
+　　
         <div className={css.bookingHeading}>
-        <div className={css.desktopPriceContainer}>
-        <div className={css.desktopPriceValue} title={priceTitle}>
+        <div className={css.PriceContainer}>
+        <div className={css.PriceValue} title={priceTitle}>
           {formattedPrice}
         </div>
-        <div className={css.desktopPerUnit}>
+        <div className={css.PerUnit}>
           <FormattedMessage id={unitTranslationKey} />
         </div>
       </div>
