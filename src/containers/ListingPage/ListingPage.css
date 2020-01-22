@@ -212,6 +212,7 @@
 
 .LayoutDoubleColumn {
   @media (--viewportMedium) {
+    display:flex;
     flex-direction: column;
   }
 
@@ -224,17 +225,35 @@
   }
 }
 
-.LayoutDoubleColumn {
+
+.leftColumn {
   @media (--viewportMedium) {
-    flex-direction: column;
+    
   }
 
   @media (--viewportLarge) {
-    flex-direction: row;
+    flex: 2 1 66% ;
+
   }
 
   @media (--viewportXLarge) {
-    flex-direction: row;
+    width:70%;
+
+  }
+}
+
+.rightColumn {
+  @media (--viewportMedium) {
+    width:100%;
+  }
+
+  @media (--viewportLarge) {
+    flex: 1 2 33% ;
+  }
+
+  @media (--viewportXLarge) {
+    width:30%;
+
   }
 }
 
