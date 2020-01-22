@@ -210,6 +210,35 @@
   }
 }
 
+.LayoutDoubleColumn {
+  @media (--viewportMedium) {
+    flex-direction: column;
+  }
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+  }
+
+  @media (--viewportXLarge) {
+    flex-direction: row;
+  }
+}
+
+.LayoutDoubleColumn {
+  @media (--viewportMedium) {
+    flex-direction: column;
+  }
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+  }
+
+  @media (--viewportXLarge) {
+    flex-direction: row;
+  }
+}
+
+
 .mainContent {
   flex-basis: 100%;
   margin-bottom: 23px;
@@ -230,6 +259,7 @@
     flex-grow: 1;
   }
 }
+
 
 .bookingPanel {
   @media (--viewportLarge) {
