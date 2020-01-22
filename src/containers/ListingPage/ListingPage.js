@@ -404,7 +404,7 @@ export class ListingPageComponent extends Component {
          
           <LayoutWrapperMain>
           
-            <div>
+            <div className={css.LayoutDoubleColumn}>
                             
               <div className={css.leftColumn}>
            
