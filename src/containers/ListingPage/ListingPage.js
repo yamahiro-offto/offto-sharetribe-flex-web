@@ -116,16 +116,16 @@ export class ListingPageComponent extends Component {
 
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
-    const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
+    const { setInitialValues } = findRouteByRouteName('SelectAdditionalItemsPage', routes);
     callSetInitialValues(setInitialValues, initialValues);
 
     // Clear previous Stripe errors from store if there is any
     onInitializeCardPaymentData();
 
-    // Redirect to CheckoutPage
+    // Redirect to SelectAdditionalItemsPage
     history.push(
       createResourceLocatorString(
-        'CheckoutPage',
+        'SelectAdditionalItemsPage',
         routes,
         { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
         {}
@@ -399,10 +399,16 @@ export class ListingPageComponent extends Component {
         }}
       >
         <LayoutSingleColumn className={css.pageRoot}>
+        
           <LayoutWrapperTopbar>{topbar}</LayoutWrapperTopbar>
+         
           <LayoutWrapperMain>
+          
             <div>
-              <SectionImages
+                            
+              <div className={css.leftColumn}>
+           
+                <SectionImages
                 title={title}
                 listing={currentListing}
                 isOwnListing={isOwnListing}
@@ -417,8 +423,10 @@ export class ListingPageComponent extends Component {
                 handleViewPhotosClick={handleViewPhotosClick}
                 onManageDisableScrolling={onManageDisableScrolling}
               />
-              <div className={css.contentContainer}>
-                <SectionAvatar user={currentAuthor} params={params} />
+ 
+              <SectionAvatar user={currentAuthor} params={params} />
+
+                
                 <div className={css.mainContent}>
                   <SectionHeading
                     priceTitle={priceTitle}
@@ -452,6 +460,9 @@ export class ListingPageComponent extends Component {
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
                 </div>
+            </div>
+                
+            <div className={css.rightColumn}>
                 <BookingPanel
                   className={css.bookingPanel}
                   listing={currentListing}
@@ -465,9 +476,12 @@ export class ListingPageComponent extends Component {
                   timeSlots={timeSlots}
                   fetchTimeSlotsError={fetchTimeSlotsError}
                 />
-              </div>
+             </div>
+              
             </div>
+            
           </LayoutWrapperMain>
+          
           <LayoutWrapperFooter>
             <Footer />
           </LayoutWrapperFooter>

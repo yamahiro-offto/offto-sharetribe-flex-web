@@ -1,7 +1,8 @@
 import React from 'react';
-import { arrayOf, bool, func, shape, string } from 'prop-types';
+import { arrayOf, bool, func, shape, string, array } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
+import { OnChange } from 'react-final-form-listeners';
 import arrayMutators from 'final-form-arrays';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
@@ -27,13 +28,12 @@ const EditListingAdditionalitemFormComponent = props => (
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
-        categories,
         className,
-        currentListing,
-        currentUser,
+        additionalItems,
         disabled,
         ready,
         handleSubmit,
+        onChange,
         intl,
         invalid,
         pristine,
@@ -43,30 +43,6 @@ const EditListingAdditionalitemFormComponent = props => (
         fetchErrors,
       } = formRenderProps;
 
-      const titleMessage = intl.formatMessage({ id: 'EditListingAdditionalitemForm.title' });
-      const titlePlaceholderMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.titlePlaceholder',
-      });
-      const titleRequiredMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.titleRequired',
-      });
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingAdditionalitemForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        }
-      );
-
-      const descriptionMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.description',
-      });
-      const descriptionPlaceholderMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.descriptionPlaceholder',
-      });
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
-      const descriptionRequiredMessage = intl.formatMessage({
-        id: 'EditListingAdditionalitemForm.descriptionRequired',
-      });
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
@@ -93,33 +69,28 @@ const EditListingAdditionalitemFormComponent = props => (
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
 
+      const additionalItemOptions = additionalItems
+        ? additionalItems.map((item, index) => {
+            return {
+              key: item.id,
+              label:
+                item.price.currency === 'JPY'
+                  ? `${item.label}　　 ${item.price.amount} 円`
+                  : `${item.label}　　 ${item.price.amount} [${item.price.currency}]`,
+            };
+          })
+        : [];
+
       // HTMLs to be displayed in this form
       const formDivs = [];
 
       // additional items
-      const additionalItems =
-        currentUser &&
-        currentUser.attributes.profile.publicData &&
-        currentUser.attributes.profile.publicData.additionalItems;
-      console.log(currentUser);
       formDivs.push(
         <FieldCheckboxGroup
           className={css.additionalItems}
-          id={'additionalItems'}
-          name={'additionalItems'}
-          options={
-            additionalItems
-              ? additionalItems.map(item => {
-                  return {
-                    key: item.key,
-                    label:
-                      item.price.currency === 'JPY'
-                        ? `${item.label}　　${item.price.amount}円`
-                        : `${item.label}　　${item.price.amount} ${item.price.amount} [${item.price.currency}]`,
-                  };
-                })
-              : []
-          }
+          id={'additionalItemIds'}
+          name={'additionalItemIds'}
+          options={additionalItemOptions}
         />
       );
 
@@ -140,6 +111,11 @@ const EditListingAdditionalitemFormComponent = props => (
           >
             {saveActionMsg}
           </Button>
+          <OnChange>
+            {(value, previous) => {
+              onChange(value, previous)
+            }}
+          </OnChange>
         </Form>
       );
     }}
@@ -150,8 +126,7 @@ EditListingAdditionalitemFormComponent.defaultProps = { className: null, fetchEr
 
 EditListingAdditionalitemFormComponent.propTypes = {
   className: string,
-  currentListing: propTypes.currentListing,
-  currentUser: propTypes.currentUser,
+  additionalItems: array.isRequired,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,
