@@ -218,6 +218,8 @@
 
   @media (--viewportLarge) {
     flex-direction: row;
+    max-width:1024px;
+    margin: 0 auto;
   }
 
   @media (--viewportXLarge) {
