@@ -172,6 +172,8 @@
   height: 100vh;
   background-color: rgba(1, 1, 1, 0.92);
 }
+  
+  
 
 .carouselModalContainer {
   width: 100%;
@@ -209,6 +211,7 @@
     flex-direction: row;
     max-width:1024px;
     margin: 0 auto;
+    
   }
 
   @media (--viewportXLarge) {
@@ -225,30 +228,28 @@
 
   @media (--viewportLarge) {
     flex: 2 1 66% ;
-    border-right: solid 1px #e7e7e7;
+    border-right: solid 1px var(--matterColorNegative);
     padding-right:36px;
+    padding-bottom:100px;
     
   }
 
-  @media (--viewportXLarge) {
-    flex: 2 1 66% ;
-    border-right: solid 1px #e7e7e7;
-    padding-right:36px;  }
-}
+  }
 
 .rightColumn {
   @media (--viewportMedium) {
     width:100%;
+    position:relative;
 
   }
 
   @media (--viewportLarge) {
     flex: 1 2 33% ;
+    position:relative;
+    padding-bottom:100px;
   }
 
-  @media (--viewportXLarge) {
-    flex: 1 2 33% ;
-  }
+ 
 }
 
 
@@ -275,15 +276,20 @@
 
 
 .bookingPanel {
+   @media (--viewportMedium) {
+    display: block;
+    margin-top: 95px;
+    padding-left: 60px;
+     }
+
+
   @media (--viewportLarge) {
     display: block;
     margin-top: 95px;
-    margin-left: 60px;
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-left-color: var(--matterColorNegative);
-
     padding-left: 60px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 70px;
 
     /* The calendar needs 312px */
     flex-basis: 312px;
