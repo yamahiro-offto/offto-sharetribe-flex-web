@@ -1,0 +1,27 @@
+{
+    "version": "0.1.0",
+    // 起動中のChromeと連携してデバッグ
+    "configurations": [
+      {
+        // デバッグ設定の名称
+        "name": "Localhost Debug",
+        // デバッグ種別を指定（chrome/node/monoなど）
+        "type": "chrome",
+        // lanunchまたはattachを指定
+        "request": "launch",
+        "url": "http://localhost:3000",
+        // マッピングするローカルファイルが配置されているディレクトリを指定
+        "webRoot": "${workspaceFolder}",
+        // リモートデバッギングポートのポート番号を指定（デフォルト値の9222を指定）
+        "port": 9222,
+        // ソースマップの有効・無効の指定（true/false）
+        "sourceMaps": true,
+        // コンソールにログを出力するかの指定（true/false）
+        "trace": true,
+
+        "runtimeArgs": ["--disable-web-security", "--user-data-dir"]
+      }
+    ],
+    // "userDataDir": "",
+    // "runtimeArgs": "--remote-debugging-port=9222"
+  }
