@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
-import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
+import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
 import {
   propTypes,
   LINE_ITEM_NIGHT,
@@ -61,14 +61,14 @@ import {
   stripeCustomer,
   confirmPayment,
   sendMessage,
-} from './SelectAdditionalItemsPage.duck';
-import { storeData, storedData, clearData } from './SelectAdditionalItemsPageSessionHelpers';
-import css from './SelectAdditionalItemsPage.css';
+} from './InputCustomerDetailInfoPage.duck';
+import { storeData, storedData, clearData } from './InputCustomerDetailInfoPageSessionHelpers';
+import css from './InputCustomerDetailInfoPage.css';
 import { OfftoListingAttributes } from '../../util/offtoData';
 
 const { Money } = sdkTypes;
 
-const STORAGE_KEY = 'SelectAdditionalItemsPage';
+const STORAGE_KEY = 'InputCustomerDetailInfoPage';
 
 // Stripe PaymentIntent statuses, where user actions are already completed
 // https://stripe.com/docs/payments/payment-intents/status
@@ -105,7 +105,7 @@ const checkIsPaymentExpired = existingTransaction => {
     : false;
 };
 
-export class SelectAdditionalItemsPageComponent extends Component {
+export class InputCustomerDetailInfoPageComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -120,7 +120,6 @@ export class SelectAdditionalItemsPageComponent extends Component {
     this.onStripeInitialized = this.onStripeInitialized.bind(this);
     this.loadInitialData = this.loadInitialData.bind(this);
     this.handlePaymentIntent = this.handlePaymentIntent.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -189,42 +188,15 @@ export class SelectAdditionalItemsPageComponent extends Component {
     };
   }
 
-  // Browser's back navigation should not rewrite data in session store.
-  setTransactionValues() {
-    const { bookingData, bookingDates, listing, transaction, history } = this.props;
-
-    // Action is 'POP' on both history.back() and page refresh cases.
-    // Action is 'PUSH' when user has directed through a link
-    // Action is 'REPLACE' when user has directed through login/signup process
-    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
-    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
-
-    if (hasDataInProps) {
-      // Store data only if data is passed through props and user has navigated through a link.
-      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
-    }
-  }
-
-  getTransactionValues() {
-    const { bookingData, bookingDates, listing, transaction, history } = this.props;
-
-    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
-    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
-    
-    return hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction }
-      : storedData(STORAGE_KEY);
-  }
-
   /**
    * Load initial data for the page
    *
    * Since the data for the checkout is not passed in the URL (there
    * might be lots of options in the future), we must pass in the data
    * some other way. Currently the ListingPage sets the initial data
-   * for the SelectAdditionalItemsPage's Redux store.
+   * for the InputCustomerDetailInfoPage's Redux store.
    *
-   * For some cases (e.g. a refresh in the SelectAdditionalItemsPage), the Redux
+   * For some cases (e.g. a refresh in the InputCustomerDetailInfoPage), the Redux
    * store is empty. To handle that case, we store the received data
    * to window.sessionStorage and read it from there if no props from
    * the store exist.
@@ -250,10 +222,22 @@ export class SelectAdditionalItemsPageComponent extends Component {
     //       this is added here instead of loadData static function.
     fetchStripeCustomer();
 
-    this.setTransactionValues();
+    // Browser's back navigation should not rewrite data in session store.
+    // Action is 'POP' on both history.back() and page refresh cases.
+    // Action is 'PUSH' when user has directed through a link
+    // Action is 'REPLACE' when user has directed through login/signup process
+    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
+
+    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
+    if (hasDataInProps) {
+      // Store data only if data is passed through props and user has navigated through a link.
+      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
+    }
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
-    const pageData = this.getTransactionValues();
+    const pageData = hasDataInProps
+      ? { bookingData, bookingDates, listing, transaction }
+      : storedData(STORAGE_KEY);
 
     // Check if a booking is already created according to stored data.
     const tx = pageData ? pageData.transaction : null;
@@ -466,64 +450,81 @@ export class SelectAdditionalItemsPageComponent extends Component {
     return handlePaymentIntentCreation(orderParams);
   }
 
-  handleChange(availableAdditionalItems) {
-    return (values, _pre) => {
-      const { additionalItemIds: selectedAdditionalItemIds } = values;
-      const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(itemId => {
-        const idx = availableAdditionalItems.findIndex(item => item.id == itemId);
-        return { id: itemId, quantity: 1, item: availableAdditionalItems[idx] };
-      });
+  handleSubmit(values) {
+    if (this.state.submitting) {
+      return;
+    }
+    this.setState({ submitting: true });
 
-      // if not renewed, do nothing (may be called when initialValue is changed)
-      if (
-        this.selectedAdditionalItemIdQuantities &&
-        selectedAdditionalItemIdQuantities &&
-        this.selectedAdditionalItemIdQuantities.toString() ===
-          selectedAdditionalItemIdQuantities.toString()
-      ) {
-        return;
-      }
+    const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
+    const { card, message, paymentMethod, formValues } = values;
+    const {
+      name,
+      addressLine1,
+      addressLine2,
+      postal,
+      city,
+      state,
+      country,
+      saveAfterOnetimePayment,
+    } = formValues;
 
-      this.loadInitialData(selectedAdditionalItemIdQuantities);
+    // Billing address is recommended.
+    // However, let's not assume that <StripePaymentAddress> data is among formValues.
+    // Read more about this from Stripe's docs
+    // https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment-no-element
+    const addressMaybe =
+      addressLine1 && postal
+        ? {
+            address: {
+              city: city,
+              country: country,
+              line1: addressLine1,
+              line2: addressLine2,
+              postal_code: postal,
+              state: state,
+            },
+          }
+        : {};
+    const billingDetails = {
+      name,
+      email: ensureCurrentUser(currentUser).attributes.email,
+      ...addressMaybe,
     };
-  }
 
-  handleSubmit(availableAdditionalItems) {
-    return (values, _pre) => {
-      console.log('handleSubmit');
-      const { additionalItemIds: selectedAdditionalItemIds } = values;
-      const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(itemId => {
-        const idx = availableAdditionalItems.findIndex(item => item.id == itemId);
-        return { id: itemId, quantity: 1, item: availableAdditionalItems[idx] };
-      });
-
-      const { listing, bookingData, bookingDates, transaction } = this.getTransactionValues();
-      const { history, callSetInitialValues } = this.props;
-
-      const initialValues = {
-        listing,
-        bookingData,
-        bookingDates,
-        transaction,
-        selectedAdditionalItemIdQuantities,
-      };
-
-      const routes = routeConfiguration();
-      const { setInitialValues } = findRouteByRouteName('InputCustomerDetailInfoPage', routes);
-      console.log('handleSubmit');
-
-      callSetInitialValues(setInitialValues, initialValues);
-
-      // Redirect to InputCustomerDetailInfo
-      history.push(
-        createResourceLocatorString(
-          'InputCustomerDetailInfoPage',
-          routes,
-          { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
-          {}
-        )
-      );
+    const requestPaymentParams = {
+      pageData: this.state.pageData,
+      speculatedTransaction,
+      stripe: this.stripe,
+      card,
+      billingDetails,
+      message,
+      paymentIntent,
+      selectedPaymentMethod: paymentMethod,
+      saveAfterOnetimePayment: !!saveAfterOnetimePayment,
     };
+
+    this.handlePaymentIntent(requestPaymentParams)
+      .then(res => {
+        const { orderId, messageSuccess, paymentMethodSaved } = res;
+        this.setState({ submitting: false });
+
+        const routes = routeConfiguration();
+        const initialMessageFailedToTransaction = messageSuccess ? null : orderId;
+        const orderDetailsPath = pathByRouteName('OrderDetailsPage', routes, { id: orderId.uuid });
+        const initialValues = {
+          initialMessageFailedToTransaction,
+          savePaymentMethodFailed: !paymentMethodSaved,
+        };
+
+        initializeOrderPage(initialValues, routes, dispatch);
+        clearData(STORAGE_KEY);
+        history.push(orderDetailsPath);
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({ submitting: false });
+      });
   }
 
   onStripeInitialized(stripe) {
@@ -592,7 +593,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const currentAuthor = ensureUser(currentListing.author);
 
     const listingTitle = currentListing.attributes.title;
-    const title = intl.formatMessage({ id: 'SelectAdditionalItemsPage.title' }, { listingTitle });
+    const title = intl.formatMessage({ id: 'InputCustomerDetailInfoPage.title' }, { listingTitle });
 
     const pageProps = { title, scrollingDisabled };
     const topbar = (
@@ -600,12 +601,12 @@ export class SelectAdditionalItemsPageComponent extends Component {
         <NamedLink className={css.home} name="LandingPage">
           <Logo
             className={css.logoMobile}
-            title={intl.formatMessage({ id: 'SelectAdditionalItemsPage.goToLandingPage' })}
+            title={intl.formatMessage({ id: 'InputCustomerDetailInfoPage.goToLandingPage' })}
             format="mobile"
           />
           <Logo
             className={css.logoDesktop}
-            alt={intl.formatMessage({ id: 'SelectAdditionalItemsPage.goToLandingPage' })}
+            alt={intl.formatMessage({ id: 'InputCustomerDetailInfoPage.goToLandingPage' })}
             format="desktop"
           />
         </NamedLink>
@@ -689,7 +690,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
         name="ListingPage"
         params={{ id: currentListing.id.uuid, slug: createSlug(listingTitle) }}
       >
-        <FormattedMessage id="SelectAdditionalItemsPage.errorlistingLinkText" />
+        <FormattedMessage id="InputCustomerDetailInfoPage.errorlistingLinkText" />
       </NamedLink>
     );
 
@@ -706,25 +707,25 @@ export class SelectAdditionalItemsPageComponent extends Component {
     if (listingNotFound) {
       listingNotFoundErrorMessage = (
         <p className={css.notFoundError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.listingNotFoundError" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.listingNotFoundError" />
         </p>
       );
     } else if (isAmountTooLowError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderAmountTooLow" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.initiateOrderAmountTooLow" />
         </p>
       );
     } else if (isBookingTimeNotAvailableError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.bookingTimeNotAvailableMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.bookingTimeNotAvailableMessage" />
         </p>
       );
     } else if (isChargeDisabledError) {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.chargeDisabledMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.chargeDisabledMessage" />
         </p>
       );
     } else if (stripeErrors && stripeErrors.length > 0) {
@@ -734,7 +735,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
           <FormattedMessage
-            id="SelectAdditionalItemsPage.initiateOrderStripeError"
+            id="InputCustomerDetailInfoPage.initiateOrderStripeError"
             values={{ stripeErrors: stripeErrorsAsString }}
           />
         </p>
@@ -744,7 +745,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
       initiateOrderErrorMessage = (
         <p className={css.orderError}>
           <FormattedMessage
-            id="SelectAdditionalItemsPage.initiateOrderError"
+            id="InputCustomerDetailInfoPage.initiateOrderError"
             values={{ listingLink }}
           />
         </p>
@@ -753,7 +754,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     const speculateTransactionErrorMessage = speculateTransactionError ? (
       <p className={css.speculateError}>
-        <FormattedMessage id="SelectAdditionalItemsPage.speculateTransactionError" />
+        <FormattedMessage id="InputCustomerDetailInfoPage.speculateTransactionError" />
       </p>
     ) : null;
     let speculateErrorMessage = null;
@@ -761,25 +762,25 @@ export class SelectAdditionalItemsPageComponent extends Component {
     if (isTransactionInitiateMissingStripeAccountError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.providerStripeAccountMissingError" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.providerStripeAccountMissingError" />
         </p>
       );
     } else if (isTransactionInitiateBookingTimeNotAvailableError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.bookingTimeNotAvailableMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.bookingTimeNotAvailableMessage" />
         </p>
       );
     } else if (isTransactionZeroPaymentError(speculateTransactionError)) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.initiateOrderAmountTooLow" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.initiateOrderAmountTooLow" />
         </p>
       );
     } else if (speculateTransactionError) {
       speculateErrorMessage = (
         <p className={css.orderError}>
-          <FormattedMessage id="SelectAdditionalItemsPage.speculateFailedMessage" />
+          <FormattedMessage id="InputCustomerDetailInfoPage.speculateFailedMessage" />
         </p>
       );
     }
@@ -789,10 +790,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const isDaily = unitType === LINE_ITEM_DAY;
 
     const unitTranslationKey = isNightly
-      ? 'SelectAdditionalItemsPage.perNight'
+      ? 'InputCustomerDetailInfoPage.perNight'
       : isDaily
-      ? 'SelectAdditionalItemsPage.perDay'
-      : 'SelectAdditionalItemsPage.perUnit';
+      ? 'InputCustomerDetailInfoPage.perDay'
+      : 'InputCustomerDetailInfoPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
@@ -822,7 +823,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const currentOfftoListingAttibutes = new OfftoListingAttributes(currentListing.attributes);
     const listingItemIds = currentOfftoListingAttibutes.publicData.additionalItemIds;
     const userItems = currentAuthor.attributes.profile.publicData.additionalItems;
-    const availableAdditionalItems = listingItemIds
+    const additionalItems = listingItemIds
       .map(listingItemId => {
         const idx = userItems.findIndex(userItem => userItem.id === listingItemId);
         if (idx >= 0) {
@@ -835,7 +836,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     // addiional items form button
     const additionalItemsButtonText = intl.formatMessage({
-      id: 'SelectAdditionalItemsPage.submitButton',
+      id: 'InputCustomerDetailInfoPage.submitButton',
     });
 
     return (
@@ -858,7 +859,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               <h1 className={css.title}>{title}</h1>
               <div className={css.author}>
                 <FormattedMessage
-                  id="SelectAdditionalItemsPage.hostedBy"
+                  id="InputCustomerDetailInfoPage.hostedBy"
                   values={{ name: currentAuthor.attributes.profile.displayName }}
                 />
               </div>
@@ -876,7 +877,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               {retrievePaymentIntentError ? (
                 <p className={css.orderError}>
                   <FormattedMessage
-                    id="SelectAdditionalItemsPage.retrievingStripePaymentIntentFailed"
+                    id="InputCustomerDetailInfoPage.retrievingStripePaymentIntentFailed"
                     values={{ listingLink }}
                   />
                 </p>
@@ -885,14 +886,45 @@ export class SelectAdditionalItemsPageComponent extends Component {
                 <EditListingAdditionalitemForm
                   className={css.form}
                   saveActionMsg={additionalItemsButtonText}
+                  // onSubmit={this.handleSubmit}
+                  onSubmit={values => {
+                    console.log('onSubmit values', values);
+                    const { additionalItems } = values;
+                    const updateValues = {
+                      publicData: {
+                        additionalItems,
+                      },
+                    };
+                    // onSubmit(updateValues);
+                  }}
+                  // onChange={this.handleChange}
+                  onChange={((values, _pre) => {
+                    const { additionalItemIds: selectedAdditionalItemIds } = values;
+                    const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(
+                      itemId => {
+                        const idx = additionalItems.findIndex(item => item.id == itemId);
+                        return { id: itemId, quantity: 1, item: additionalItems[idx] };
+                      }
+                    );
+
+                    // if not renewed, do nothing (may be called when initialValue is changed)
+                    if (
+                      this.selectedAdditionalItemIdQuantities &&
+                      selectedAdditionalItemIdQuantities &&
+                      this.selectedAdditionalItemIdQuantities.toString() ===
+                        selectedAdditionalItemIdQuantities.toString()
+                    ) {
+                      return;
+                    }
+
+                    this.loadInitialData(selectedAdditionalItemIdQuantities);
+                  }).bind(this)}
                   initialValues={{
                     additionalItemIds: selectedAdditionalItemIdQuantities
                       ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
                       : [],
                   }}
-                  onChange={this.handleChange(availableAdditionalItems)}
-                  onSubmit={this.handleSubmit(availableAdditionalItems)}
-                  additionalItems={availableAdditionalItems}
+                  additionalItems={additionalItems}
                   disabled={false}
                   ready={false}
                   updated={false}
@@ -903,7 +935,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               {isPaymentExpired ? (
                 <p className={css.orderError}>
                   <FormattedMessage
-                    id="SelectAdditionalItemsPage.paymentExpiredMessage"
+                    id="InputCustomerDetailInfoPage.paymentExpiredMessage"
                     values={{ listingLink }}
                   />
                 </p>
@@ -936,7 +968,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
   }
 }
 
-SelectAdditionalItemsPageComponent.defaultProps = {
+InputCustomerDetailInfoPageComponent.defaultProps = {
   initiateOrderError: null,
   confirmPaymentError: null,
   listing: null,
@@ -949,7 +981,7 @@ SelectAdditionalItemsPageComponent.defaultProps = {
   paymentIntent: null,
 };
 
-SelectAdditionalItemsPageComponent.propTypes = {
+InputCustomerDetailInfoPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
   listing: propTypes.listing,
   bookingData: object,
@@ -1006,7 +1038,7 @@ const mapStateToProps = state => {
     transaction,
     initiateOrderError,
     confirmPaymentError,
-  } = state.SelectAdditionalItemsPage;
+  } = state.InputCustomerDetailInfoPage;
   const { currentUser } = state.user;
   const { handleCardPaymentError, paymentIntent, retrievePaymentIntentError } = state.stripe;
   return {
@@ -1040,20 +1072,20 @@ const mapDispatchToProps = dispatch => ({
   onSendMessage: params => dispatch(sendMessage(params)),
   onSavePaymentMethod: (stripeCustomer, stripePaymentMethodId) =>
     dispatch(savePaymentMethod(stripeCustomer, stripePaymentMethodId)),
-  callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
+  // onSelectedAdditionalItemChanged: (transaction, addiionalItemIds) => {},
 });
 
-const SelectAdditionalItemsPage = compose(
+const InputCustomerDetailInfoPage = compose(
   withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(SelectAdditionalItemsPageComponent);
+)(InputCustomerDetailInfoPageComponent);
 
-SelectAdditionalItemsPage.setInitialValues = initialValues => setInitialValues(initialValues);
+InputCustomerDetailInfoPage.setInitialValues = initialValues => setInitialValues(initialValues);
 
-SelectAdditionalItemsPage.displayName = 'SelectAdditionalItemsPage';
+InputCustomerDetailInfoPage.displayName = 'InputCustomerDetailInfoPage';
 
-export default SelectAdditionalItemsPage;
+export default InputCustomerDetailInfoPage;

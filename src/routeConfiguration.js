@@ -8,6 +8,7 @@ import {
   EditListingPage,
   EmailVerificationPage,
   InboxPage,
+  InputCustomerDetailInfoPage,
   LandingPage,
   ListingPage,
   ManageListingsPage,
@@ -97,11 +98,18 @@ const routeConfiguration = () => {
       loadData: ListingPage.loadData,
     },
     {
-      path: '/l/:slug/:id/selectAdditionalItems',
+      path: '/l/:slug/:id/select-additional-items',
       name: 'SelectAdditionalItemsPage',
       auth: true,
       component: props => <SelectAdditionalItemsPage {...props} />,
       setInitialValues: SelectAdditionalItemsPage.setInitialValues,
+    },
+    {
+      path: '/l/:slug/:id/input-customer-detail-info',
+      name: 'InputCustomerDetailInfoPage',
+      auth: true,
+      component: props => <InputCustomerDetailInfoPage {...props} />,
+      setInitialValues: InputCustomerDetailInfoPage.setInitialValues,
     },
     {
       path: '/l/:slug/:id/checkout',
