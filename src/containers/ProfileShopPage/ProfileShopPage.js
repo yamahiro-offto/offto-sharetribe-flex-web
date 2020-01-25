@@ -25,18 +25,18 @@ import {
   Reviews,
   ButtonTabNavHorizontal,
 } from '../../components';
-import { TopbarContainer, NotFoundPage } from '../../containers';
-import { loadData } from './ProfilePage.duck';
+import { TopbarContainer, NotFoundPage } from '..';
+import { loadData } from './ProfileShopPage.duck';
 import config from '../../config';
 
 import * as offtoData from '../../util/offtoData'
 
-import css from './ProfilePage.css';
+import css from './ProfileShopPage.css';
 
 const { UUID } = sdkTypes;
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 
-export class ProfilePageComponent extends Component {
+export class ProfileShopPageComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -86,18 +86,18 @@ export class ProfilePageComponent extends Component {
     const isMobileLayout = viewport.width < MAX_MOBILE_SCREEN_WIDTH;
 
     const isShopUser = offtoData.OfftoUser.userIsShop(user);
-    if(isShopUser && userId){
-      return <NamedRedirect name="ProfileShopPage" params={{id: userId.uuid}}/>;
+    if(!isShopUser && userId){
+      return <NamedRedirect name="ProfilePage" params={{id: userId.uuid}}/>;
     }
 
     const editLinkMobile = isCurrentUser ? (
-      <NamedLink className={css.editLinkMobile} name="ProfileSettingsPage">
-        <FormattedMessage id="ProfilePage.editProfileLinkMobile" />
+      <NamedLink className={css.editLinkMobile} name="ProfileSettingsShopPage">
+        <FormattedMessage id="ProfileShopPage.editProfileLinkMobile" />
       </NamedLink>
     ) : null;
     const editLinkDesktop = isCurrentUser ? (
-      <NamedLink className={css.editLinkDesktop} name="ProfileSettingsPage">
-        <FormattedMessage id="ProfilePage.editProfileLinkDesktop" />
+      <NamedLink className={css.editLinkDesktop} name="ProfileSettingsShopPage">
+        <FormattedMessage id="ProfileShopPage.editProfileLinkDesktop" />
       </NamedLink>
     ) : null;
 
@@ -106,7 +106,7 @@ export class ProfilePageComponent extends Component {
         <AvatarLarge className={css.avatar} user={user} disableProfileLink />
         <h1 className={css.mobileHeading}>
           {displayName ? (
-            <FormattedMessage id="ProfilePage.mobileHeading" values={{ name: displayName }} />
+            <FormattedMessage id="ProfileShopPage.mobileHeading" values={{ name: displayName }} />
           ) : null}
         </h1>
         {editLinkMobile}
@@ -120,7 +120,7 @@ export class ProfilePageComponent extends Component {
 
     const reviewsError = (
       <p className={css.error}>
-        <FormattedMessage id="ProfilePage.loadingReviewsFailed" />
+        <FormattedMessage id="ProfileShopPage.loadingReviewsFailed" />
       </p>
     );
 
@@ -132,7 +132,7 @@ export class ProfilePageComponent extends Component {
       <div className={css.mobileReviews}>
         <h2 className={css.mobileReviewsTitle}>
           <FormattedMessage
-            id="ProfilePage.reviewsOfProviderTitle"
+            id="ProfileShopPage.reviewsOfProviderTitle"
             values={{ count: reviewsOfProvider.length }}
           />
         </h2>
@@ -140,7 +140,7 @@ export class ProfilePageComponent extends Component {
         <Reviews reviews={reviewsOfProvider} />
         <h2 className={css.mobileReviewsTitle}>
           <FormattedMessage
-            id="ProfilePage.reviewsOfCustomerTitle"
+            id="ProfileShopPage.reviewsOfCustomerTitle"
             values={{ count: reviewsOfCustomer.length }}
           />
         </h2>
@@ -154,7 +154,7 @@ export class ProfilePageComponent extends Component {
         text: (
           <h3 className={css.desktopReviewsTitle}>
             <FormattedMessage
-              id="ProfilePage.reviewsOfProviderTitle"
+              id="ProfileShopPage.reviewsOfProviderTitle"
               values={{ count: reviewsOfProvider.length }}
             />
           </h3>
@@ -166,7 +166,7 @@ export class ProfilePageComponent extends Component {
         text: (
           <h3 className={css.desktopReviewsTitle}>
             <FormattedMessage
-              id="ProfilePage.reviewsOfCustomerTitle"
+              id="ProfileShopPage.reviewsOfCustomerTitle"
               values={{ count: reviewsOfCustomer.length }}
             />
           </h3>
@@ -193,14 +193,14 @@ export class ProfilePageComponent extends Component {
     const mainContent = (
       <div>
         <h1 className={css.desktopHeading}>
-          <FormattedMessage id="ProfilePage.desktopHeading" values={{ name: displayName }} />
+          <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
         </h1>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {hasListings ? (
           <div className={listingsContainerClasses}>
             <h2 className={css.listingsTitle}>
               <FormattedMessage
-                id="ProfilePage.listingsTitle"
+                id="ProfileShopPage.listingsTitle"
                 values={{ count: listings.length }}
               />
             </h2>
@@ -224,7 +224,7 @@ export class ProfilePageComponent extends Component {
     } else if (userShowError || queryListingsError) {
       content = (
         <p className={css.error}>
-          <FormattedMessage id="ProfilePage.loadingDataFailed" />
+          <FormattedMessage id="ProfileShopPage.loadingDataFailed" />
         </p>
       );
     } else {
@@ -233,7 +233,7 @@ export class ProfilePageComponent extends Component {
 
     const schemaTitle = intl.formatMessage(
       {
-        id: 'ProfilePage.schemaTitle',
+        id: 'ProfileShopPage.schemaTitle',
       },
       {
         name: displayName,
@@ -247,13 +247,13 @@ export class ProfilePageComponent extends Component {
         title={schemaTitle}
         schema={{
           '@context': 'http://schema.org',
-          '@type': 'ProfilePage',
+          '@type': 'ProfileShopPage',
           name: schemaTitle,
         }}
       >
         <LayoutSideNavigation>
           <LayoutWrapperTopbar>
-            <TopbarContainer currentPage="ProfilePage" />
+            <TopbarContainer currentPage="ProfileShopPage" />
           </LayoutWrapperTopbar>
           <LayoutWrapperSideNav className={css.aside}>{asideContent}</LayoutWrapperSideNav>
           <LayoutWrapperMain>{content}</LayoutWrapperMain>
@@ -266,7 +266,7 @@ export class ProfilePageComponent extends Component {
   }
 }
 
-ProfilePageComponent.defaultProps = {
+ProfileShopPageComponent.defaultProps = {
   currentUser: null,
   user: null,
   userShowError: null,
@@ -277,7 +277,7 @@ ProfilePageComponent.defaultProps = {
 
 const { bool, arrayOf, number, shape } = PropTypes;
 
-ProfilePageComponent.propTypes = {
+ProfileShopPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
   currentUser: propTypes.currentUser,
   user: propTypes.user,
@@ -306,7 +306,7 @@ const mapStateToProps = state => {
     userListingRefs,
     reviews,
     queryReviewsError,
-  } = state.ProfilePage;
+  } = state.ProfileShopPage;
   const userMatches = getMarketplaceEntities(state, [{ type: 'user', id: userId }]);
   const user = userMatches.length === 1 ? userMatches[0] : null;
   const listings = getMarketplaceEntities(state, userListingRefs);
@@ -323,15 +323,15 @@ const mapStateToProps = state => {
   };
 };
 
-const ProfilePage = compose(
+const ProfileShopPage = compose(
   connect(mapStateToProps),
   withViewport,
   injectIntl
-)(ProfilePageComponent);
+)(ProfileShopPageComponent);
 
-ProfilePage.loadData = params => {
+ProfileShopPage.loadData = params => {
   const id = new UUID(params.id);
   return loadData(id);
 };
 
-export default ProfilePage;
+export default ProfileShopPage;
