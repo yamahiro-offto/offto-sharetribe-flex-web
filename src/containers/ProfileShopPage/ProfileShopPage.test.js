@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderShallow } from '../../util/test-helpers';
 import { createUser, fakeIntl, fakeViewport } from '../../util/test-data';
-import { ProfilePageComponent } from './ProfilePage';
+import { ProfilePageComponent } from './ProfileShopPagePage';
 
 const noop = () => null;
 
-describe('ProfilePage', () => {
+describe('ProfileShopPage', () => {
   it('matches snapshot', () => {
     const tree = renderShallow(
       <ProfilePageComponent

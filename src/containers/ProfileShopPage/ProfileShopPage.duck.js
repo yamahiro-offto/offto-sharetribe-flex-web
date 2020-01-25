@@ -5,19 +5,19 @@ import { storableError } from '../../util/errors';
 
 // ================ Action types ================ //
 
-export const SET_INITIAL_STATE = 'app/ProfilePage/SET_INITIAL_STATE';
+export const SET_INITIAL_STATE = 'app/ProfileShopPage/SET_INITIAL_STATE';
 
-export const SHOW_USER_REQUEST = 'app/ProfilePage/SHOW_USER_REQUEST';
-export const SHOW_USER_SUCCESS = 'app/ProfilePage/SHOW_USER_SUCCESS';
-export const SHOW_USER_ERROR = 'app/ProfilePage/SHOW_USER_ERROR';
+export const SHOW_USER_REQUEST = 'app/ProfileShopPage/SHOW_USER_REQUEST';
+export const SHOW_USER_SUCCESS = 'app/ProfileShopPage/SHOW_USER_SUCCESS';
+export const SHOW_USER_ERROR = 'app/ProfileShopPage/SHOW_USER_ERROR';
 
-export const QUERY_LISTINGS_REQUEST = 'app/ProfilePage/QUERY_LISTINGS_REQUEST';
-export const QUERY_LISTINGS_SUCCESS = 'app/ProfilePage/QUERY_LISTINGS_SUCCESS';
-export const QUERY_LISTINGS_ERROR = 'app/ProfilePage/QUERY_LISTINGS_ERROR';
+export const QUERY_LISTINGS_REQUEST = 'app/ProfileShopPage/QUERY_LISTINGS_REQUEST';
+export const QUERY_LISTINGS_SUCCESS = 'app/ProfileShopPage/QUERY_LISTINGS_SUCCESS';
+export const QUERY_LISTINGS_ERROR = 'app/ProfileShopPage/QUERY_LISTINGS_ERROR';
 
-export const QUERY_REVIEWS_REQUEST = 'app/ProfilePage/QUERY_REVIEWS_REQUEST';
-export const QUERY_REVIEWS_SUCCESS = 'app/ProfilePage/QUERY_REVIEWS_SUCCESS';
-export const QUERY_REVIEWS_ERROR = 'app/ProfilePage/QUERY_REVIEWS_ERROR';
+export const QUERY_REVIEWS_REQUEST = 'app/ProfileShopPage/QUERY_REVIEWS_REQUEST';
+export const QUERY_REVIEWS_SUCCESS = 'app/ProfileShopPage/QUERY_REVIEWS_SUCCESS';
+export const QUERY_REVIEWS_ERROR = 'app/ProfileShopPage/QUERY_REVIEWS_ERROR';
 
 // ================ Reducer ================ //
 
@@ -30,7 +30,7 @@ const initialState = {
   queryReviewsError: null,
 };
 
-export default function profilePageReducer(state = initialState, action = {}) {
+export default function profileShopPageReducer(state = initialState, action = {}) {
   const { type, payload } = action;
   switch (type) {
     case SET_INITIAL_STATE:

@@ -20,6 +20,7 @@ import {
   Footer,
   AvatarLarge,
   NamedLink,
+  NamedRedirect,
   ListingCard,
   Reviews,
   ButtonTabNavHorizontal,
@@ -27,6 +28,8 @@ import {
 import { TopbarContainer, NotFoundPage } from '../../containers';
 import { loadData } from './ProfilePage.duck';
 import config from '../../config';
+
+import * as offtoData from '../../util/offtoData'
 
 import css from './ProfilePage.css';
 
@@ -63,6 +66,7 @@ export class ProfilePageComponent extends Component {
       scrollingDisabled,
       currentUser,
       user,
+      userId,
       userShowError,
       queryListingsError,
       listings,
@@ -80,6 +84,11 @@ export class ProfilePageComponent extends Component {
     const hasBio = !!bio;
     const hasListings = listings.length > 0;
     const isMobileLayout = viewport.width < MAX_MOBILE_SCREEN_WIDTH;
+
+    const isShopUser = offtoData.OfftoUser.userIsShop(user);
+    if(isShopUser && userId){
+      return <NamedRedirect name="ProfileShopPage" params={{id: userId.uuid}}/>;
+    }
 
     const editLinkMobile = isCurrentUser ? (
       <NamedLink className={css.editLinkMobile} name="ProfileSettingsPage">
@@ -305,6 +314,7 @@ const mapStateToProps = state => {
     scrollingDisabled: isScrollingDisabled(state),
     currentUser,
     user,
+    userId,
     userShowError,
     queryListingsError,
     listings,
