@@ -7,6 +7,8 @@ import { AvatarLarge, NamedLink, InlineTextButton } from '../../components';
 import { ensureUser, ensureCurrentUser } from '../../util/data';
 import { propTypes } from '../../util/types';
 
+import * as offtoData from '../../util/offtoData';
+
 import css from './UserCard.css';
 
 // Approximated collapsed size so that there are ~three lines of text
@@ -71,6 +73,8 @@ const UserCard = props => {
   const ensuredCurrentUser = ensureCurrentUser(currentUser);
   const isCurrentUser =
     ensuredUser.id && ensuredCurrentUser.id && ensuredUser.id.uuid === ensuredCurrentUser.id.uuid;
+
+  const isShopUser = offtoData.OfftoUser.userIsShop(user);
   const { displayName, bio } = ensuredUser.attributes.profile;
 
   const handleContactUserClick = () => {
@@ -85,6 +89,9 @@ const UserCard = props => {
 
   const separator = isCurrentUser ? null : <span className={css.linkSeparator}>•</span>;
 
+  const profileSettingPage = isShopUser ? 'ProfileSettingsShopPage' : 'ProfileSettingsPage';
+  const profilePage = isShopUser ? 'ProfileShopPage' : 'ProfilePage';
+
   const contact = (
     <InlineTextButton rootClassName={css.contact} onClick={handleContactUserClick}>
       <FormattedMessage id="UserCard.contactUser" />
@@ -94,21 +101,21 @@ const UserCard = props => {
   const editProfileMobile = (
     <span className={css.editProfileMobile}>
       <span className={css.linkSeparator}>•</span>
-      <NamedLink name="ProfileSettingsPage">
+      <NamedLink name={profileSettingPage}>
         <FormattedMessage id="ListingPage.editProfileLink" />
       </NamedLink>
     </span>
   );
 
   const editProfileDesktop = isCurrentUser ? (
-    <NamedLink className={css.editProfileDesktop} name="ProfileSettingsPage">
+    <NamedLink className={css.editProfileDesktop} name={profileSettingPage}>
       <FormattedMessage id="ListingPage.editProfileLink" />
     </NamedLink>
   ) : null;
 
   const links = ensuredUser.id ? (
     <p className={linkClasses}>
-      <NamedLink className={css.link} name="ProfilePage" params={{ id: ensuredUser.id.uuid }}>
+      <NamedLink className={css.link} name={profilePage} params={{ id: ensuredUser.id.uuid }}>
         <FormattedMessage id="UserCard.viewProfileLink" />
       </NamedLink>
       {separator}

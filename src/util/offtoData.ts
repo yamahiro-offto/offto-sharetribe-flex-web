@@ -252,6 +252,8 @@ export class OfftoUser {
   static userIsShop(user: any): boolean {
     return (
       !!user &&
+      !!user.attributes &&
+      !!user.attributes.profile &&
       !!user.attributes.profile.publicData &&
       OfftoUserPublicData.publicDataIsShop(user.attributes.profile.publicData)
     );
