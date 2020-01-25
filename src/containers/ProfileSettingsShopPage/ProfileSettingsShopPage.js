@@ -135,7 +135,7 @@ export class ProfileSettingsShopPageComponent extends Component {
                 {user.id ? (
                   <NamedLink
                     className={css.profileLink}
-                    name="ProfilePage"
+                    name="ProfileShopPage"
                     params={{ id: user.id.uuid }}
                   >
                     <FormattedMessage id="ProfileSettingsShopPage.viewProfileLink" />
