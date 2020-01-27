@@ -10,6 +10,7 @@ import * as offtoData from '../../util/offtoData';
 import { Form, Button, FieldTextInput, FieldSelectCustom } from '../../components';
 
 import css from './InputCustomerDetailInfoForm.css';
+import { overrideArrays } from '../../util/data';
 
 const TITLE_MAX_LENGTH = 60;
 
@@ -109,6 +110,47 @@ const InputCustomerDetailInfoFormComponent = props => (
         </div>
       );
 
+      // age
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="age"
+            name="age" // values の key
+            label={'Age'}
+            placeholder={'placeholder'}
+            validate=""
+            options={[...Array(200).keys()].map(age => {
+              return {
+                key: age,
+                label: age,
+              };
+            })}
+          />
+        </div>
+      );
+
+      // skill
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="skill"
+            name="skill" // values の key
+            label={'Skill'}
+            placeholder={'placeholder'}
+            validate=""
+            // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
+            options={Object.keys(offtoData.Skill).map(skill => {
+              return {
+                key: offtoData.Skill[skill],
+                label: offtoData.Skill[skill],
+              };
+            })}
+          />
+        </div>
+      );
+
       // height
       formDivs.push(
         <FieldTextInput
@@ -145,6 +187,60 @@ const InputCustomerDetailInfoFormComponent = props => (
           label={'Foot Size'}
           placeholder={'Foot size in cm'}
           validate={composeValidators(required('FootSize is required'))}
+        />
+      );
+
+      // TODO: limit time accoring to the business hour of the shop (of listing)
+      // key and label of time (00:00 - 23:50)
+      const timeKeyLabels = [...Array(24).keys()].map(hour =>
+        [...Array(60 / 10).keys()].map(minute => {
+          return {
+            key: `${('00' + String(hour)).slice(-2)}:${('00' + String(minute * 10)).slice(-2)}`,
+            label: `${('00' + String(hour)).slice(-2)}:${('00' + String(minute * 10)).slice(-2)}`,
+          };
+        })
+      );
+
+      // pickup Time
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="pickUpTime"
+            name="pickUpTime" // values の key
+            label={'Pick up time'}
+            placeholder={'placeholder'}
+            validate=""
+            options={timeKeyLabels.flat()}
+          />
+        </div>
+      );
+
+      // dropoff Time
+      formDivs.push(
+        <div className={css.selectCustom}>
+          <FieldSelectCustom
+            classname={css.selectCustom}
+            id="dropOffTime"
+            name="dropOffTime" // values の key
+            label={'Drop off time'}
+            placeholder={'placeholder'}
+            validate=""
+            options={timeKeyLabels.flat()}
+          />
+        </div>
+      );
+
+      // message
+      formDivs.push(
+        <FieldTextInput
+          id="message"
+          name="message"
+          className={css.title}
+          type="text"
+          label={'Message'}
+          placeholder={"Hi! I'm Hiroki."}
+          // validate={composeValidators(required('FootSize is required'))}
         />
       );
 
