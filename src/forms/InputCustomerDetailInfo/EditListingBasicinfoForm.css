@@ -1,0 +1,105 @@
+@import '../../marketplace.css';
+
+:root {
+  /*
+    These variables are available in global scope through ":root"
+    element (<html> tag). Variables with the same names are going to
+    overwrite each other if CSS Properties' (PostCSS plugin)
+    configuration "preserve: true" is used - meaning that variables
+    are left to CSS bundle. We are planning to enable it in the future
+    since browsers support CSS Properties already.
+ */
+
+  --EditListingBasicinfoForm_formMargins: {
+    margin-bottom: 24px;
+
+    @media (--viewportMedium) {
+      margin-bottom: 32px;
+    }
+  }
+}
+
+.root {
+  /* Dimensions */
+  width: 100%;
+  height: auto;
+
+  /* Layout */
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  padding-top: 1px;
+
+  @media (--viewportMedium) {
+    padding-top: 2px;
+  }
+}
+
+.error {
+  color: var(--failColor);
+}
+
+.title {
+  @apply --EditListingBasicinfoForm_formMargins;
+}
+
+.description {
+  @apply --EditListingBasicinfoForm_formMargins;
+  flex-shrink: 0;
+}
+
+.selectCustom {
+  @apply --EditListingBasicinfoForm_formMargins;
+}
+
+.submitButton {
+  margin-top: auto;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+
+  @media (--viewportLarge) {
+    display: inline-block;
+    width: 241px;
+    margin-top: 100px;
+  }
+}
+
+.sectionContainer {
+  padding: 0;
+  margin-bottom: 36px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+    margin-bottom: 56px;
+  }
+}
+
+.sectionTitle {
+  /* Font */
+  color: var(--matterColorAnti);
+
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 24px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+
+.lastSection {
+  margin-bottom: 69px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 111px;
+
+    & .sectionTitle {
+      margin-bottom: 16px;
+    }
+  }
+}
