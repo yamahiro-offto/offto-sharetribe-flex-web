@@ -190,6 +190,7 @@ export class ProfileShopPageComponent extends Component {
     );
 
     const mainContent = (
+      <div>
       <div className={css.LayoutDoubleColumn}>
         <div className={css.LeftColumn}>
         </div>
@@ -199,7 +200,6 @@ export class ProfileShopPageComponent extends Component {
         </h1>
         </div> 
       </div>
-      <div>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {hasListings ? (
           <div className={listingsContainerClasses}>
