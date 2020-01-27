@@ -191,15 +191,15 @@ export class ProfileShopPageComponent extends Component {
 
     const mainContent = (
       <div>
-      <div className={css.LayoutDoubleColumn}>
-        <div className={css.LeftColumn}>
-        </div>
-        <div className={css.rightColumn}>
-        <h1 className={css.desktopHeading}>
+        <div className={css.LayoutDoubleColumn}>
+          <div className={css.LeftColumn}>
+          </div>
+          <div className={css.rightColumn}>
+          <h1 className={css.desktopHeading}>
           <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
-        </h1>
-        </div> 
-      </div>
+          </h1>
+          </div> 
+        </div>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {hasListings ? (
           <div className={listingsContainerClasses}>
@@ -216,9 +216,10 @@ export class ProfileShopPageComponent extends Component {
                 </li>
               ))}
             </ul>
-      </div>
+          </div>
         ) : null}
         {isMobileLayout ? mobileReviews : desktopReviews}
+      </div>
     );
 
     let content;
