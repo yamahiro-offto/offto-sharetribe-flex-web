@@ -193,11 +193,24 @@ export class ProfileShopPageComponent extends Component {
       <div>
         <div className={css.LayoutDoubleColumn}>
           <div className={css.LeftColumn}>
+            <div className={css.ShopImagesTop}></div>
+            <div className={css.ShopImages}></div>
+            <div className={css.ShopImages}></div>
+            <div className={css.ShopImages}></div>
           </div>
           <div className={css.rightColumn}>
-          <h1 className={css.desktopHeading}>
-          <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
-          </h1>
+            <p className={css.ShopTitle}></p>
+            <h1 className={css.desktopHeading}>
+              <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
+            </h1>
+            <h2 className={css.ShopCommentTitle}></h2>
+            <p className={css.ShopComment}></p>
+            <h2 className={css.ShopAddressTitle}></h2>
+            <p className={css.ShopAddress}></p>
+            <h2 className={css.ShopOpeningHoursTitle}></h2>
+            <p className={css.ShopOpeningHours}></p>
+            <h2 className={css.ShopContactsTitle}></h2>
+            <p className={css.ShopContacts}></p>
           </div> 
         </div>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
