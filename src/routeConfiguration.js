@@ -21,6 +21,7 @@ import {
   PaymentMethodsPage,
   PrivacyPolicyPage,
   ProfilePage,
+  ProfileShopPage,
   ProfileSettingsPage,
   ProfileSettingsShopPage,
   SelectAdditionalItemsPage,
@@ -98,7 +99,7 @@ const routeConfiguration = () => {
       loadData: ListingPage.loadData,
     },
     {
-      path: '/l/:slug/:id/selectAdditionalItems',
+      path: '/l/:slug/:id/select-additional-items',
       name: 'SelectAdditionalItemsPage',
       auth: true,
       component: props => <SelectAdditionalItemsPage {...props} />,
@@ -170,6 +171,12 @@ const routeConfiguration = () => {
       name: 'ProfilePage',
       component: props => <ProfilePage {...props} />,
       loadData: ProfilePage.loadData,
+    },
+    {
+      path: '/u-shop/:id',
+      name: 'ProfileShopPage',
+      component: props => <ProfileShopPage {...props} />,
+      loadData: ProfileShopPage.loadData,
     },
     {
       path: '/profile-settings',
