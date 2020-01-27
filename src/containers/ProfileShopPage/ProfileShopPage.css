@@ -200,3 +200,41 @@
 .desktopReviewsTabNav {
   margin-bottom: 32px;
 }
+
+/* これ以降木津が追加 */
+
+.centeringWrapper {
+  margin:0 36px 0;
+}
+
+
+
+.shopImagesTop {
+  background-color: aliceblue;
+  width: ;
+}
+
+.shopImages {
+  background-color: aliceblue;
+  width: ;
+}
+
+
+
+.LayoutDoubleColumn {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+
+  @media (--viewportMedium) {
+  flex-direction: row;
+  }
+
+}
+
+.leftColumn {
+  padding: 0 10px 0 ;
+}
+.rightColumn {
+  padding: 0 10px 0 ;
+}

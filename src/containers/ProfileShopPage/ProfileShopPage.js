@@ -190,27 +190,45 @@ export class ProfileShopPageComponent extends Component {
     );
 
     const mainContent = (
-      <div>
+      <div className={css.centeringWrapper}>
         <div className={css.LayoutDoubleColumn}>
-          <div className={css.LeftColumn}>
-            <div className={css.ShopImagesTop}></div>
-            <div className={css.ShopImages}></div>
-            <div className={css.ShopImages}></div>
-            <div className={css.ShopImages}></div>
+          <div className={css.leftColumn}>
+            <div className={css.shopImagesTop}></div>
+            <div className={css.shopImages}></div>
+            <div className={css.shopImages}></div>
+            <div className={css.shopImages}></div>
           </div>
           <div className={css.rightColumn}>
-            <p className={css.ShopTitle}></p>
-            <h1 className={css.desktopHeading}>
+            <p className={css.shopNameTitle}>gear rental shop</p>
+            <h1 className={css.shopName}>
               <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
             </h1>
-            <h2 className={css.ShopCommentTitle}></h2>
-            <p className={css.ShopComment}></p>
-            <h2 className={css.ShopAddressTitle}></h2>
-            <p className={css.ShopAddress}></p>
-            <h2 className={css.ShopOpeningHoursTitle}></h2>
-            <p className={css.ShopOpeningHours}></p>
-            <h2 className={css.ShopContactsTitle}></h2>
-            <p className={css.ShopContacts}></p>
+            <h2 className={css.shopCommentTitle}>Shop comment</h2>
+            <p className={css.shopComment}>samplesamplesamplesamplesamplesamplesample</p>
+            <h2 className={css.shopAddressTitle}>Address</h2>
+            <p className={css.shopAddress}>samplesamplesamplesamplesamplesamplesample</p>
+            <h2 className={css.shopOpeningHoursTitle}>Opening Hours</h2>
+            <div className={css.shopOpeningHoursWrapper}>
+              <p className={css.dayTitle}>Monday</p>
+              <p className={css.modayContent}></p>
+              <p className={css.dayTitle}>Tuesday</p>
+              <p className={css.tuesdayContent}></p>
+              <p className={css.dayTitle}>Wednesday</p>
+              <p className={css.wednesdayContent}></p>
+              <p className={css.dayTitle}>Thursday</p>
+              <p className={css.thursdayContent}></p>
+              <p className={css.dayTitle}>Friday</p>
+              <p className={css.fridayContent}></p>
+              <p className={css.dayTitle}>Saturday</p>
+              <p className={css.saturdayContent}></p>
+              <p className={css.dayTitle}>Sunday</p>
+              <p className={css.sundayContent}></p>
+            </div>
+            <h2 className={css.shopContactsTitle}>Contacts</h2>
+            <div className={css.shopContactsWrapper}>
+              <p>sample</p>
+              <p>sample</p>
+            </div>
           </div> 
         </div>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
