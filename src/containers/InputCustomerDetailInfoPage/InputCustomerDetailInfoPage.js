@@ -49,7 +49,7 @@ import {
   Page,
   ResponsiveImage,
 } from '../../components';
-import { EditListingAdditionalitemForm } from '../../forms';
+import { InputCustomerDetailInfoForm } from '../../forms';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { handleCardPayment, retrievePaymentIntent } from '../../ducks/stripe.duck';
 import { savePaymentMethod } from '../../ducks/paymentMethods.duck';
@@ -882,56 +882,32 @@ export class InputCustomerDetailInfoPageComponent extends Component {
                   />
                 </p>
               ) : null}
-              {showPaymentForm ? (
-                <EditListingAdditionalitemForm
-                  className={css.form}
-                  saveActionMsg={additionalItemsButtonText}
-                  // onSubmit={this.handleSubmit}
-                  onSubmit={values => {
-                    console.log('onSubmit values', values);
-                    const { additionalItems } = values;
-                    const updateValues = {
-                      publicData: {
-                        additionalItems,
-                      },
-                    };
-                    // onSubmit(updateValues);
-                  }}
-                  // onChange={this.handleChange}
-                  onChange={((values, _pre) => {
-                    const { additionalItemIds: selectedAdditionalItemIds } = values;
-                    const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(
-                      itemId => {
-                        const idx = additionalItems.findIndex(item => item.id == itemId);
-                        return { id: itemId, quantity: 1, item: additionalItems[idx] };
-                      }
-                    );
+              <InputCustomerDetailInfoForm
+                className={css.form}
+                currentListing={currentListing}
+                initialValues={{
+                  height: '',
+                  weight: '',
+                  footSize: '',
+                }}
+                saveActionMsg={"submitButtonText"}
+                onSubmit={values => {
+                  const { groupName } = values;
+                  const updateValues = {
+                    groupName,
+                  };
+                  console.log('updateValues', updateValues);
 
-                    // if not renewed, do nothing (may be called when initialValue is changed)
-                    if (
-                      this.selectedAdditionalItemIdQuantities &&
-                      selectedAdditionalItemIdQuantities &&
-                      this.selectedAdditionalItemIdQuantities.toString() ===
-                        selectedAdditionalItemIdQuantities.toString()
-                    ) {
-                      return;
-                    }
-
-                    this.loadInitialData(selectedAdditionalItemIdQuantities);
-                  }).bind(this)}
-                  initialValues={{
-                    additionalItemIds: selectedAdditionalItemIdQuantities
-                      ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
-                      : [],
-                  }}
-                  additionalItems={additionalItems}
-                  disabled={false}
-                  ready={false}
-                  updated={false}
-                  updateInProgress={false}
-                  fetchErrors={{}}
-                />
-              ) : null}
+                  // onSubmit(updateValues);
+                }}
+                onChange={values => values}
+                disabled={false}
+                ready={true}
+                updated={false}
+                updateInProgress={false}
+                fetchErrors={false}
+                categories={config.custom.categories}
+              />
               {isPaymentExpired ? (
                 <p className={css.orderError}>
                   <FormattedMessage
