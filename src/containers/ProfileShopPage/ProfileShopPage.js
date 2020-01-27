@@ -12,9 +12,7 @@ import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import {
   Page,
-  LayoutSideNavigation,
   LayoutWrapperMain,
-  LayoutWrapperSideNav,
   LayoutWrapperTopbar,
   LayoutWrapperFooter,
   Footer,
@@ -24,6 +22,7 @@ import {
   ListingCard,
   Reviews,
   ButtonTabNavHorizontal,
+  LayoutSingleColumn,
 } from '../../components';
 import { TopbarContainer, NotFoundPage } from '..';
 import { loadData } from './ProfileShopPage.duck';
@@ -251,16 +250,15 @@ export class ProfileShopPageComponent extends Component {
           name: schemaTitle,
         }}
       >
-        <LayoutSideNavigation>
+        <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer currentPage="ProfileShopPage" />
           </LayoutWrapperTopbar>
-          <LayoutWrapperSideNav className={css.aside}>{asideContent}</LayoutWrapperSideNav>
           <LayoutWrapperMain>{content}</LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />
           </LayoutWrapperFooter>
-        </LayoutSideNavigation>
+        </LayoutSingleColumn>
       </Page>
     );
   }
