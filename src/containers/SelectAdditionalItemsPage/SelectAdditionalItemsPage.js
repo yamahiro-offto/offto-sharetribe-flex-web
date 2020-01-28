@@ -206,13 +206,13 @@ export class SelectAdditionalItemsPageComponent extends Component {
   }
 
   getTransactionValues() {
-    const { bookingData, bookingDates, listing, transaction, history } = this.props;
+    const { bookingData, bookingDates, listing, speculatedTransaction, history } = this.props;
 
     const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
     const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
-    
+
     return hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction }
+      ? { bookingData, bookingDates, listing, speculatedTransaction }
       : storedData(STORAGE_KEY);
   }
 
@@ -256,7 +256,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const pageData = this.getTransactionValues();
 
     // Check if a booking is already created according to stored data.
-    const tx = pageData ? pageData.transaction : null;
+    const tx = pageData ? pageData.speculatedTransaction : null;
     const isBookingCreated = tx && tx.booking && tx.booking.id;
 
     const shouldFetchSpeculatedTransaction =
@@ -491,20 +491,26 @@ export class SelectAdditionalItemsPageComponent extends Component {
   handleSubmit(availableAdditionalItems) {
     return (values, _pre) => {
       console.log('handleSubmit');
+      console.log('values', values);
       const { additionalItemIds: selectedAdditionalItemIds } = values;
       const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(itemId => {
         const idx = availableAdditionalItems.findIndex(item => item.id == itemId);
         return { id: itemId, quantity: 1, item: availableAdditionalItems[idx] };
       });
 
-      const { listing, bookingData, bookingDates, transaction } = this.getTransactionValues();
+      const {
+        listing,
+        bookingData,
+        bookingDates,
+        speculatedTransaction,
+      } = this.getTransactionValues();
       const { history, callSetInitialValues } = this.props;
 
       const initialValues = {
         listing,
         bookingData,
         bookingDates,
-        transaction,
+        speculatedTransaction,
         selectedAdditionalItemIdQuantities,
       };
 

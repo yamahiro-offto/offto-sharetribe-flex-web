@@ -34,50 +34,6 @@ const InputCustomerDetailInfoFormComponent = props => (
         fetchErrors,
       } = formRenderProps;
 
-      const titleMessage = intl.formatMessage({ id: 'InputCustomerDetailInfoForm.title' });
-      const titlePlaceholderMessage = intl.formatMessage({
-        id: 'InputCustomerDetailInfoForm.titlePlaceholder',
-      });
-      const titleRequiredMessage = intl.formatMessage({
-        id: 'InputCustomerDetailInfoForm.titleRequired',
-      });
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'InputCustomerDetailInfoForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        }
-      );
-
-      const descriptionMessage = intl.formatMessage({
-        id: 'InputCustomerDetailInfoForm.description',
-      });
-      const descriptionPlaceholderMessage = intl.formatMessage({
-        id: 'InputCustomerDetailInfoForm.descriptionPlaceholder',
-      });
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH);
-      const descriptionRequiredMessage = intl.formatMessage({
-        id: 'InputCustomerDetailInfoForm.descriptionRequired',
-      });
-
-      const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
-      const errorMessageUpdateListing = updateListingError ? (
-        <p className={css.error}>
-          <FormattedMessage id="InputCustomerDetailInfoForm.updateFailed" />
-        </p>
-      ) : null;
-
-      // This error happens only on first tab (of EditListingWizard)
-      const errorMessageCreateListingDraft = createListingDraftError ? (
-        <p className={css.error}>
-          <FormattedMessage id="InputCustomerDetailInfoForm.createListingDraftError" />
-        </p>
-      ) : null;
-
-      const errorMessageShowListing = showListingsError ? (
-        <p className={css.error}>
-          <FormattedMessage id="InputCustomerDetailInfoForm.showListingFailed" />
-        </p>
-      ) : null;
 
       const classes = classNames(css.root, className);
       const submitReady = (updated && pristine) || ready;
@@ -99,7 +55,7 @@ const InputCustomerDetailInfoFormComponent = props => (
             name="gender" // values の key
             label={'Gender'}
             placeholder={'placeholder'}
-            validate=""
+            validate={composeValidators(required('Please select your gender'))}
             options={Object.keys(offtoData.Gender).map(gender => {
               return {
                 key: offtoData.Gender[gender],
@@ -119,7 +75,7 @@ const InputCustomerDetailInfoFormComponent = props => (
             name="age" // values の key
             label={'Age'}
             placeholder={'placeholder'}
-            validate=""
+            validate={composeValidators(required('Please select your age'))}
             options={[...Array(200).keys()].map(age => {
               return {
                 key: age,
@@ -139,7 +95,7 @@ const InputCustomerDetailInfoFormComponent = props => (
             name="skill" // values の key
             label={'Skill'}
             placeholder={'placeholder'}
-            validate=""
+            validate={composeValidators(required('Please select your skill'))}
             // options={[{ key: 'customer', label: 'customer' }, { key: 'shop', label: 'shop' }]}
             options={Object.keys(offtoData.Skill).map(skill => {
               return {
@@ -210,7 +166,7 @@ const InputCustomerDetailInfoFormComponent = props => (
             name="pickUpTime" // values の key
             label={'Pick up time'}
             placeholder={'placeholder'}
-            validate=""
+            validate={composeValidators(required('Please select pick up time'))}
             options={timeKeyLabels.flat()}
           />
         </div>
@@ -225,7 +181,7 @@ const InputCustomerDetailInfoFormComponent = props => (
             name="dropOffTime" // values の key
             label={'Drop off time'}
             placeholder={'placeholder'}
-            validate=""
+            validate={composeValidators(required('Please select drop off time'))}
             options={timeKeyLabels.flat()}
           />
         </div>
@@ -238,7 +194,7 @@ const InputCustomerDetailInfoFormComponent = props => (
           name="message"
           className={css.title}
           type="text"
-          label={'Message'}
+          label={'Message (optional)'}
           placeholder={"Hi! I'm Hiroki."}
           // validate={composeValidators(required('FootSize is required'))}
         />
@@ -246,12 +202,7 @@ const InputCustomerDetailInfoFormComponent = props => (
 
       return (
         <Form className={classes} onSubmit={handleSubmit}>
-          {errorMessageCreateListingDraft}
-          {errorMessageUpdateListing}
-          {errorMessageShowListing}
-
           {formDivs}
-
           <Button
             className={css.submitButton}
             type="submit"
