@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
-import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
+import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
 import {
   propTypes,
   LINE_ITEM_NIGHT,
@@ -129,10 +129,6 @@ export class InputCustomerDetailInfoPageComponent extends Component {
     if (window) {
       this.loadInitialData(selectedAdditionalItemIdQuantities);
     }
-    // this.setState({ ...this.state, dataLoaded: true });
-
-    // const { onInitPage, speculatedTransaction } = this.props;
-    // onInitPage(speculatedTransaction);
   }
 
   customPricingParams(params) {
@@ -215,7 +211,7 @@ export class InputCustomerDetailInfoPageComponent extends Component {
       bookingData,
       bookingDates,
       listing,
-      transaction,
+      speculatedTransaction,
       fetchSpeculatedTransaction,
       fetchStripeCustomer,
       history,
@@ -243,7 +239,7 @@ export class InputCustomerDetailInfoPageComponent extends Component {
         bookingData,
         bookingDates,
         listing,
-        transaction,
+        speculatedTransaction,
         selectedAdditionalItemIdQuantities,
         STORAGE_KEY
       );
@@ -251,11 +247,17 @@ export class InputCustomerDetailInfoPageComponent extends Component {
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction, selectedAdditionalItemIdQuantities }
+      ? {
+          bookingData,
+          bookingDates,
+          listing,
+          speculatedTransaction,
+          selectedAdditionalItemIdQuantities,
+        }
       : storedData(STORAGE_KEY);
 
     // Check if a booking is already created according to stored data.
-    const tx = pageData ? pageData.transaction : null;
+    const tx = pageData ? pageData.speculatedTransaction : null;
     const isBookingCreated = tx && tx.booking && tx.booking.id;
 
     const shouldFetchSpeculatedTransaction =
@@ -463,81 +465,69 @@ export class InputCustomerDetailInfoPageComponent extends Component {
     return handlePaymentIntentCreation(orderParams);
   }
 
-  handleSubmit(values) {
-    if (this.state.submitting) {
-      return;
-    }
-    this.setState({ submitting: true });
-
-    const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
-    const { card, message, paymentMethod, formValues } = values;
+  getTransactionValues() {
     const {
-      name,
-      addressLine1,
-      addressLine2,
-      postal,
-      city,
-      state,
-      country,
-      saveAfterOnetimePayment,
-    } = formValues;
-
-    // Billing address is recommended.
-    // However, let's not assume that <StripePaymentAddress> data is among formValues.
-    // Read more about this from Stripe's docs
-    // https://stripe.com/docs/stripe-js/reference#stripe-handle-card-payment-no-element
-    const addressMaybe =
-      addressLine1 && postal
-        ? {
-            address: {
-              city: city,
-              country: country,
-              line1: addressLine1,
-              line2: addressLine2,
-              postal_code: postal,
-              state: state,
-            },
-          }
-        : {};
-    const billingDetails = {
-      name,
-      email: ensureCurrentUser(currentUser).attributes.email,
-      ...addressMaybe,
-    };
-
-    const requestPaymentParams = {
-      pageData: this.state.pageData,
+      bookingData,
+      bookingDates,
+      listing,
       speculatedTransaction,
-      stripe: this.stripe,
-      card,
-      billingDetails,
-      message,
-      paymentIntent,
-      selectedPaymentMethod: paymentMethod,
-      saveAfterOnetimePayment: !!saveAfterOnetimePayment,
+      selectedAdditionalItemIdQuantities,
+      history,
+    } = this.props;
+
+    const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
+    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
+
+    return hasDataInProps
+      ? {
+          bookingData,
+          bookingDates,
+          listing,
+          speculatedTransaction,
+          selectedAdditionalItemIdQuantities,
+        }
+      : storedData(STORAGE_KEY);
+  }
+
+  handleSubmit(values) {
+    console.log('handleSubmit');
+    console.log('values', values);
+    const userDetailInfo = values;
+
+    const {
+      listing,
+      bookingData,
+      bookingDates,
+      speculatedTransaction,
+      selectedAdditionalItemIdQuantities,
+    } = this.getTransactionValues();
+    const { history, callSetInitialValues } = this.props;
+
+    const initialValues = {
+      listing,
+      bookingData,
+      bookingDates,
+      speculatedTransaction,
+      selectedAdditionalItemIdQuantities,
+      userDetailInfo,
     };
 
-    this.handlePaymentIntent(requestPaymentParams)
-      .then(res => {
-        const { orderId, messageSuccess, paymentMethodSaved } = res;
-        this.setState({ submitting: false });
+    console.log('initialValues', initialValues);
 
-        const routes = routeConfiguration();
-        const initialMessageFailedToTransaction = messageSuccess ? null : orderId;
-        const orderDetailsPath = pathByRouteName('OrderDetailsPage', routes, { id: orderId.uuid });
-        const initialValues = {
-          initialMessageFailedToTransaction,
-          savePaymentMethodFailed: !paymentMethodSaved,
-        };
+    const routes = routeConfiguration();
+    const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
 
-        initializeOrderPage(initialValues, routes, dispatch);
-        clearData(STORAGE_KEY);
-        history.push(orderDetailsPath);
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({ submitting: false });
-      });
+    callSetInitialValues(setInitialValues, initialValues);
+
+    // Redirect to InputCustomerDetailInfo
+    history.push(
+      createResourceLocatorString(
+        'CheckoutPage',
+        routes,
+        { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
+        {}
+      )
+    );
   }
 
   onStripeInitialized(stripe) {
@@ -902,17 +892,15 @@ export class InputCustomerDetailInfoPageComponent extends Component {
                   height: '170',
                   weight: '60',
                   footSize: '20',
-                  gender: '',
+                  gender: 'male',
                   age: '20',
-                  skill: '',
+                  skill: 'beginner',
                   pickUpTime: '12:00',
                   dropOffTime: '12:00',
                 }}
                 saveActionMsg={'submitButtonText'}
                 onSubmit={values => {
-                  console.log('updateValues', values);
-
-                  // onSubmit(updateValues);
+                  this.handleSubmit(values);
                 }}
                 onChange={values => values}
                 disabled={false}
@@ -1061,7 +1049,7 @@ const mapDispatchToProps = dispatch => ({
   onSavePaymentMethod: (stripeCustomer, stripePaymentMethodId) =>
     dispatch(savePaymentMethod(stripeCustomer, stripePaymentMethodId)),
   // onSelectedAdditionalItemChanged: (transaction, addiionalItemIds) => {},
-  onInitPage: params => dispatch(speculateTransactionSuccess(params)),
+  callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
 });
 
 const InputCustomerDetailInfoPage = compose(
