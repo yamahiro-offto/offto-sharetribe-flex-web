@@ -42,7 +42,6 @@ const initialState = {
   speculateTransactionInProgress: false,
   speculateTransactionError: null,
   speculatedTransaction: null,
-  transaction: null,
   initiateOrderError: null,
   confirmPaymentError: null,
   stripeCustomerFetched: false,
