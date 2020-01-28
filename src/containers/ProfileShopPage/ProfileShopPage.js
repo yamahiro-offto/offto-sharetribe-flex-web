@@ -85,8 +85,8 @@ export class ProfileShopPageComponent extends Component {
     const isMobileLayout = viewport.width < MAX_MOBILE_SCREEN_WIDTH;
 
     const isShopUser = offtoData.OfftoUser.userIsShop(user);
-    if(!isShopUser && userId){
-      return <NamedRedirect name="ProfilePage" params={{id: userId.uuid}}/>;
+    if (!isShopUser && userId) {
+      return <NamedRedirect name="ProfilePage" params={{ id: userId.uuid }} />;
     }
 
     const editLinkMobile = isCurrentUser ? (
@@ -184,8 +184,8 @@ export class ProfileShopPageComponent extends Component {
         {this.state.showReviewsType === REVIEW_TYPE_OF_PROVIDER ? (
           <Reviews reviews={reviewsOfProvider} />
         ) : (
-          <Reviews reviews={reviewsOfCustomer} />
-        )}
+            <Reviews reviews={reviewsOfCustomer} />
+          )}
       </div>
     );
 
@@ -197,7 +197,7 @@ export class ProfileShopPageComponent extends Component {
             <div className={css.shopImagesWrapper}>
               <div className={css.shopImages}>IMAGE</div>
               <div className={css.shopImages}>IMAGE</div>
-              <div className={css.shopImages}>IMAGE</div>
+              <div className={css.shopImagesLast}>IMAGE</div>
             </div>
           </div>
           <div className={css.rightColumn}>
@@ -231,7 +231,7 @@ export class ProfileShopPageComponent extends Component {
               <p>sample</p>
               <p>sample</p>
             </div>
-          </div> 
+          </div>
         </div>
         {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {hasListings ? (

@@ -207,25 +207,51 @@
 
 .centeringWrapper {
   margin:0 auto 0;
-
+  @media (--viewportMedium){
+    width:768px;
+  }
+  @media (--viewportLarge){
+    width:900px;
+  }
 }
 
 .shopImagesTop {
   background-color: aliceblue;
-  width:450px;
+  width:auto;
+  height: 300px;
   text-align: center;
+  margin-bottom: 10px;
+  @media (--viewportMedium){
+    width:768px;
+  }
+  @media (--viewportLarge){
+    width:450px;
+  }
 }
 
 .shopImagesWrapper {
   display:flex;
-  width: 450px;
+  width: auto;
+  height: 100px;
+  @media (--viewportMedium){
+    width:768px;
+  }
+  @media (--viewportLarge){
+    width:450px;
+  }
 }
 
 .shopImages {
   background-color: aliceblue;
   text-align: center;
   flex-grow: 1;
+  margin:0 10px 0 0;
+}
 
+.shopImagesLast {
+  background-color: aliceblue;
+  text-align: center;
+  flex-grow: 1;
 }
 
 .LayoutDoubleColumn {
@@ -250,11 +276,10 @@
     }
 }
 
-margin-top: 0;
-margin-bottom: 16px;
-@media (--viewportMedium) {
-  margin-top: 0;
-  margin-bottom: 20px;
-}
 
-
+/* Font 
+.shopNameTitle.shopCommentTitle.shopAddressTitle.shopOpeningHoursTitle.shopContactsTitle {
+  @apply --marketplaceH3FontStyles;
+  color: var(--matterColorAnti);
+  }
+*/
