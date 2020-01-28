@@ -244,7 +244,6 @@ export class ProfileShopPageComponent extends Component {
             </div>
           </div>
         </div>
-        {hasBio ? <p className={css.bio}>{bio}</p> : null}
         {hasListings ? (
           <div className={listingsContainerClasses}>
             <h2 className={css.listingsTitle}>
