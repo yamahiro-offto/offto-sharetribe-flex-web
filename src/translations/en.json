@@ -899,7 +899,7 @@
   "SectionHowItWorks.part3Text": "If you enjoyed the experience, let others know by giving a review to the shop. This way others will know where to rent outdoor gear.",
   "SectionHowItWorks.part3Title": "3. Review the shop",
   "SectionHowItWorks.titleLineOne": "How it works",
-  "SectionLocations.listingsInLocation": "{Activity category} in {location}",
+  "SectionLocations.listingsInLocation": "{Activity category}",
   "SectionLocations.title": "Explore outdoor gear in Japan",
   "SelectMultipleFilter.labelSelected": "{labelText} • {count}",
   "SelectMultipleFilterPlainForm.labelSelected": "{labelText} • {count}",
