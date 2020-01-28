@@ -399,34 +399,29 @@ export class ListingPageComponent extends Component {
         }}
       >
         <LayoutSingleColumn className={css.pageRoot}>
-        
           <LayoutWrapperTopbar>{topbar}</LayoutWrapperTopbar>
-         
           <LayoutWrapperMain>
-          
             <div className={css.LayoutDoubleColumn}>
-                            
               <div className={css.leftColumn}>
-           
                 <SectionImages
-                title={title}
-                listing={currentListing}
-                isOwnListing={isOwnListing}
-                editParams={{
-                  id: listingId.uuid,
-                  slug: listingSlug,
-                  type: listingType,
-                  tab: listingTab,
-                }}
-                imageCarouselOpen={this.state.imageCarouselOpen}
-                onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
-                handleViewPhotosClick={handleViewPhotosClick}
-                onManageDisableScrolling={onManageDisableScrolling}
-              />
- 
-              <SectionAvatar user={currentAuthor} params={params} />
+                  title={title}
+                  listing={currentListing}
+                  isOwnListing={isOwnListing}
+                  editParams={{
+                    id: listingId.uuid,
+                    slug: listingSlug,
+                    type: listingType,
+                    tab: listingTab,
+                  }}
+                  imageCarouselOpen={this.state.imageCarouselOpen}
+                  onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
+                  handleViewPhotosClick={handleViewPhotosClick}
+                  onManageDisableScrolling={onManageDisableScrolling}
+                />
 
-                
+                <SectionAvatar user={currentAuthor} params={params} />
+
+
                 <div className={css.mainContent}>
                   <SectionHeading
                     priceTitle={priceTitle}
@@ -460,9 +455,9 @@ export class ListingPageComponent extends Component {
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
                 </div>
-            </div>
-                
-            <div className={css.rightColumn}>
+              </div>
+
+              <div className={css.rightColumn}>
                 <BookingPanel
                   className={css.bookingPanel}
                   listing={currentListing}
@@ -476,12 +471,12 @@ export class ListingPageComponent extends Component {
                   timeSlots={timeSlots}
                   fetchTimeSlotsError={fetchTimeSlotsError}
                 />
-             </div>
-              
+              </div>
+
             </div>
-            
+
           </LayoutWrapperMain>
-          
+
           <LayoutWrapperFooter>
             <Footer />
           </LayoutWrapperFooter>

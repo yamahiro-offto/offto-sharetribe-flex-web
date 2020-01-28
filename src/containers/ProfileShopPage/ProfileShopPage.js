@@ -193,10 +193,12 @@ export class ProfileShopPageComponent extends Component {
       <div className={css.centeringWrapper}>
         <div className={css.LayoutDoubleColumn}>
           <div className={css.leftColumn}>
-            <div className={css.shopImagesTop}></div>
-            <div className={css.shopImages}></div>
-            <div className={css.shopImages}></div>
-            <div className={css.shopImages}></div>
+            <div className={css.shopImagesTop}>IMAGE</div>
+            <div className={css.shopImagesWrapper}>
+              <div className={css.shopImages}>IMAGE</div>
+              <div className={css.shopImages}>IMAGE</div>
+              <div className={css.shopImages}>IMAGE</div>
+            </div>
           </div>
           <div className={css.rightColumn}>
             <p className={css.shopNameTitle}>gear rental shop</p>
