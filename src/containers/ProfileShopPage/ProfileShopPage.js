@@ -200,36 +200,47 @@ export class ProfileShopPageComponent extends Component {
               <div className={css.shopImagesLast}>IMAGE</div>
             </div>
           </div>
+
           <div className={css.rightColumn}>
-            <p className={css.shopNameTitle}>gear rental shop</p>
-            <h1 className={css.shopName}>
-              <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
-            </h1>
-            <h2 className={css.shopCommentTitle}>Shop comment</h2>
-            <p className={css.shopComment}>samplesamplesamplesamplesamplesamplesample</p>
-            <h2 className={css.shopAddressTitle}>Address</h2>
-            <p className={css.shopAddress}>samplesamplesamplesamplesamplesamplesample</p>
-            <h2 className={css.shopOpeningHoursTitle}>Opening Hours</h2>
-            <div className={css.shopOpeningHoursWrapper}>
-              <p className={css.dayTitle}>Monday</p>
-              <p className={css.modayContent}></p>
-              <p className={css.dayTitle}>Tuesday</p>
-              <p className={css.tuesdayContent}></p>
-              <p className={css.dayTitle}>Wednesday</p>
-              <p className={css.wednesdayContent}></p>
-              <p className={css.dayTitle}>Thursday</p>
-              <p className={css.thursdayContent}></p>
-              <p className={css.dayTitle}>Friday</p>
-              <p className={css.fridayContent}></p>
-              <p className={css.dayTitle}>Saturday</p>
-              <p className={css.saturdayContent}></p>
-              <p className={css.dayTitle}>Sunday</p>
-              <p className={css.sundayContent}></p>
+            <div className={css.sectionShopName}>
+              <p className={css.shopNameTitle}>gear rental shop</p>
+              <h1 className={css.shopName}>
+                <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
+              </h1>
             </div>
-            <h2 className={css.shopContactsTitle}>Contacts</h2>
-            <div className={css.shopContactsWrapper}>
-              <p>sample</p>
-              <p>sample</p>
+            <div className={css.sectionShopComment}>
+              <h2 className={css.shopCommentTitle}>Shop comment</h2>
+              <p className={css.shopComment}>samplesamplesamplesamplesamplesamplesample</p>
+            </div>
+            <div className={css.sectionShopAddress}>
+              <h2 className={css.shopAddressTitle}>Address</h2>
+              <p className={css.shopAddress}>samplesamplesamplesamplesamplesamplesample</p>
+            </div>
+            <div className={css.sectionShopAddress}>
+              <h2 className={css.shopOpeningHoursTitle}>Opening Hours</h2>
+              <div className={css.shopOpeningHoursWrapper}>
+                <p className={css.dayTitle}>Monday</p>
+                <p className={css.modayContent}></p>
+                <p className={css.dayTitle}>Tuesday</p>
+                <p className={css.tuesdayContent}></p>
+                <p className={css.dayTitle}>Wednesday</p>
+                <p className={css.wednesdayContent}></p>
+                <p className={css.dayTitle}>Thursday</p>
+                <p className={css.thursdayContent}></p>
+                <p className={css.dayTitle}>Friday</p>
+                <p className={css.fridayContent}></p>
+                <p className={css.dayTitle}>Saturday</p>
+                <p className={css.saturdayContent}></p>
+                <p className={css.dayTitle}>Sunday</p>
+                <p className={css.sundayContent}></p>
+              </div>
+            </div>
+            <div className={css.sectionShopAddress}>
+              <h2 className={css.shopContactsTitle}>Contacts</h2>
+              <div className={css.shopContactsWrapper}>
+                <p>sample</p>
+                <p>sample</p>
+              </div>
             </div>
           </div>
         </div>

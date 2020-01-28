@@ -277,9 +277,13 @@
 }
 
 
-/* Font 
-.shopNameTitle.shopCommentTitle.shopAddressTitle.shopOpeningHoursTitle.shopContactsTitle {
-  @apply --marketplaceH3FontStyles;
+.shopNameTitle,.shopCommentTitle,.shopAddressTitle,.shopOpeningHoursTitle,.shopContactsTitle {
+  @apply --marketplaceH2FontStyles;
   color: var(--matterColorAnti);
+  margin-top: 0;
+  margin-bottom: 16px;
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 20px;
   }
-*/
+  }
