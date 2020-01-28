@@ -258,7 +258,7 @@
   display: -webkit-flex;
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin: 30px auto 30px;
   @media (--viewportLarge) {
     flex-direction: row;
     }

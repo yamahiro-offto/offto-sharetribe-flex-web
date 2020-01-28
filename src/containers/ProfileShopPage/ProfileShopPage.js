@@ -203,21 +203,29 @@ export class ProfileShopPageComponent extends Component {
 
           <div className={css.rightColumn}>
             <div className={css.sectionShopName}>
-              <p className={css.shopNameTitle}>gear rental shop</p>
+              <p className={css.shopNameTitle}>
+                <FormattedMessage id="ProfileShopPage.shopNameTitle" />
+              </p>
               <h1 className={css.shopName}>
                 <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
               </h1>
             </div>
             <div className={css.sectionShopComment}>
-              <h2 className={css.shopCommentTitle}>Shop comment</h2>
+              <h2 className={css.shopCommentTitle}>
+                <FormattedMessage id="ProfileShopPage.shopCommentTitle" />
+              </h2>
               <p className={css.shopComment}>samplesamplesamplesamplesamplesamplesample</p>
             </div>
             <div className={css.sectionShopAddress}>
-              <h2 className={css.shopAddressTitle}>Address</h2>
+              <h2 className={css.shopAddressTitle}>
+                <FormattedMessage id="ProfileShopPage.shopAddressTitle" />
+              </h2>
               <p className={css.shopAddress}>samplesamplesamplesamplesamplesamplesample</p>
             </div>
             <div className={css.sectionShopOpeningHours}>
-              <h2 className={css.shopOpeningHoursTitle}>Opening Hours</h2>
+              <h2 className={css.shopOpeningHoursTitle}>
+                <FormattedMessage id="ProfileShopPage.shopOpeningHoursTitle" />
+              </h2>
               <div className={css.shopOpeningHoursWrapper}>
                 <p className={css.dayTitle}>Monday</p>
                 <p className={css.modayContent}>10:00-18:00</p>
@@ -236,7 +244,9 @@ export class ProfileShopPageComponent extends Component {
               </div>
             </div>
             <div className={css.sectionShopContacts}>
-              <h2 className={css.shopContactsTitle}>Contacts</h2>
+              <h2 className={css.shopContactsTitle}>
+                <FormattedMessage id="ProfileShopPage.shopContactsTitle" />
+              </h2>
               <div className={css.shopContactsWrapper}>
                 <p>sample</p>
                 <p>sample</p>
