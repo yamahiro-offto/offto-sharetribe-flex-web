@@ -216,26 +216,26 @@ export class ProfileShopPageComponent extends Component {
               <h2 className={css.shopAddressTitle}>Address</h2>
               <p className={css.shopAddress}>samplesamplesamplesamplesamplesamplesample</p>
             </div>
-            <div className={css.sectionShopAddress}>
+            <div className={css.sectionShopOpeningHours}>
               <h2 className={css.shopOpeningHoursTitle}>Opening Hours</h2>
               <div className={css.shopOpeningHoursWrapper}>
                 <p className={css.dayTitle}>Monday</p>
-                <p className={css.modayContent}></p>
+                <p className={css.modayContent}>10:00-18:00</p>
                 <p className={css.dayTitle}>Tuesday</p>
-                <p className={css.tuesdayContent}></p>
+                <p className={css.tuesdayContent}>10:00-18:00</p>
                 <p className={css.dayTitle}>Wednesday</p>
-                <p className={css.wednesdayContent}></p>
+                <p className={css.wednesdayContent}>10:00-18:00</p>
                 <p className={css.dayTitle}>Thursday</p>
-                <p className={css.thursdayContent}></p>
+                <p className={css.thursdayContent}>10:00-18:00</p>
                 <p className={css.dayTitle}>Friday</p>
-                <p className={css.fridayContent}></p>
+                <p className={css.fridayContent}>10:00-18:00</p>
                 <p className={css.dayTitle}>Saturday</p>
-                <p className={css.saturdayContent}></p>
+                <p className={css.saturdayContent}>10:00-18:00</p>
                 <p className={css.dayTitle}>Sunday</p>
-                <p className={css.sundayContent}></p>
+                <p className={css.sundayContent}>10:00-18:00</p>
               </div>
             </div>
-            <div className={css.sectionShopAddress}>
+            <div className={css.sectionShopContacts}>
               <h2 className={css.shopContactsTitle}>Contacts</h2>
               <div className={css.shopContactsWrapper}>
                 <p>sample</p>

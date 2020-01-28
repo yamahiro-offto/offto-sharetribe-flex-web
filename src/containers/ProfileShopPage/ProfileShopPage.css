@@ -291,4 +291,24 @@
     margin-bottom: 52px;
   }
 
- 
+  .shopOpeningHoursWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:0;
+  }
+
+  .shopOpeningHoursWrapper p {
+    margin:0;
+  }
+
+  .shopOpeningHoursWrapper {
+    margin-top: 16px;
+  }
+
+  .shopContactsWrapper p {
+    margin:0;
+  }
+
+  .shopContactsWrapper {
+    margin-top: 16px;
+  }
