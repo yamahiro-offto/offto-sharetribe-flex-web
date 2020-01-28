@@ -200,7 +200,6 @@ export class ProfileShopPageComponent extends Component {
               <div className={css.shopImagesLast}>IMAGE</div>
             </div>
           </div>
-
           <div className={css.rightColumn}>
             <div className={css.sectionShopName}>
               <p className={css.shopNameTitle}>
@@ -227,19 +226,33 @@ export class ProfileShopPageComponent extends Component {
                 <FormattedMessage id="ProfileShopPage.shopOpeningHoursTitle" />
               </h2>
               <div className={css.shopOpeningHoursWrapper}>
-                <p className={css.dayTitle}>Monday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayMondayTitle" />
+                </p>
                 <p className={css.modayContent}>10:00-18:00</p>
-                <p className={css.dayTitle}>Tuesday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayTuesdayTitle" />
+                </p>
                 <p className={css.tuesdayContent}>10:00-18:00</p>
-                <p className={css.dayTitle}>Wednesday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayWednesdayTitle" />
+                </p>
                 <p className={css.wednesdayContent}>10:00-18:00</p>
-                <p className={css.dayTitle}>Thursday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayThursdayTitle" />
+                </p>
                 <p className={css.thursdayContent}>10:00-18:00</p>
-                <p className={css.dayTitle}>Friday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayFridayTitle" />
+                </p>
                 <p className={css.fridayContent}>10:00-18:00</p>
-                <p className={css.dayTitle}>Saturday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.daySaturdayTitle" />
+                </p>
                 <p className={css.saturdayContent}>10:00-18:00</p>
-                <p className={css.dayTitle}>Sunday</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.daySundayTitle" />
+                </p>
                 <p className={css.sundayContent}>10:00-18:00</p>
               </div>
             </div>
