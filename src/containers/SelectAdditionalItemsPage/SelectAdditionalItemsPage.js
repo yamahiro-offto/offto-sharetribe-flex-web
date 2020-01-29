@@ -43,6 +43,7 @@ import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../.
 import {
   AvatarMedium,
   BookingBreakdown,
+  BookingFlow,
   Logo,
   NamedLink,
   NamedRedirect,
@@ -860,6 +861,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
             <AvatarMedium user={currentAuthor} disableProfileLink />
           </div>
           <div className={css.bookListingContainer}>
+            <BookingFlow />
             <div className={css.heading}>
               <h1 className={css.title}>
                 <FormattedMessage id="SelectAdditionalItemsPage.title" />
