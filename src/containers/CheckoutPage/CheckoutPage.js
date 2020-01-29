@@ -55,6 +55,7 @@ import {
 } from './CheckoutPage.duck';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.css';
+import { customPricingParams } from '../../util/offtoPrice';
 
 const STORAGE_KEY = 'CheckoutPage';
 
@@ -111,11 +112,11 @@ export class CheckoutPageComponent extends Component {
   }
 
   componentDidMount() {
+    const { selectedAdditionalItemIdQuantities } = this.props;
     if (window) {
-      this.loadInitialData();
+      this.loadInitialData(selectedAdditionalItemIdQuantities);
     }
   }
-
   /**
    * Load initial data for the page
    *
@@ -132,16 +133,18 @@ export class CheckoutPageComponent extends Component {
    * This function also sets of fetching the speculative transaction
    * based on this initial data.
    */
-  loadInitialData() {
+  loadInitialData(selectedAdditionalItemIdQuantities = null) {
     const {
       bookingData,
       bookingDates,
       listing,
-      transaction,
+      speculatedTransaction,
       fetchSpeculatedTransaction,
       fetchStripeCustomer,
       history,
     } = this.props;
+
+    this.selectedAdditionalItemIdQuantities = selectedAdditionalItemIdQuantities;
 
     // Fetch currentUser with stripeCustomer entity
     // Note: since there's need for data loading in "componentWillMount" function,
@@ -154,47 +157,54 @@ export class CheckoutPageComponent extends Component {
     // Action is 'REPLACE' when user has directed through login/signup process
     const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
 
-    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
+    const hasDataInProps =
+      !!(bookingData && bookingDates && listing && selectedAdditionalItemIdQuantities) &&
+      hasNavigatedThroughLink;
     if (hasDataInProps) {
       // Store data only if data is passed through props and user has navigated through a link.
-      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
+      storeData(
+        bookingData,
+        bookingDates,
+        listing,
+        speculatedTransaction,
+        selectedAdditionalItemIdQuantities,
+        STORAGE_KEY
+      );
     }
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction }
+      ? {
+          bookingData,
+          bookingDates,
+          listing,
+          speculatedTransaction,
+          selectedAdditionalItemIdQuantities,
+        }
       : storedData(STORAGE_KEY);
 
     // Check if a booking is already created according to stored data.
-    const tx = pageData ? pageData.transaction : null;
+    const tx = pageData ? pageData.speculatedTransaction : null;
     const isBookingCreated = tx && tx.booking && tx.booking.id;
 
     const shouldFetchSpeculatedTransaction =
-      pageData &&
-      pageData.listing &&
-      pageData.listing.id &&
-      pageData.bookingData &&
-      pageData.bookingDates &&
-      pageData.bookingDates.bookingStart &&
-      pageData.bookingDates.bookingEnd &&
-      !isBookingCreated;
+      pageData.selectedAdditionalItemIdQuantities || // force to fetch
+      (pageData &&
+        pageData.listing &&
+        pageData.listing.id &&
+        pageData.bookingData &&
+        pageData.bookingDates &&
+        pageData.bookingDates.bookingStart &&
+        pageData.bookingDates.bookingEnd &&
+        !isBookingCreated);
 
     if (shouldFetchSpeculatedTransaction) {
-      const listingId = pageData.listing.id;
-      const { bookingStart, bookingEnd } = pageData.bookingDates;
+      const transactionParams = customPricingParams({
+        ...pageData,
+      });
 
-      // Convert picked date to date that will be converted on the API as
-      // a noon of correct year-month-date combo in UTC
-      const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
-      const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
-
-      // Fetch speculated transaction for showing price in booking breakdown
-      // NOTE: if unit type is line-item/units, quantity needs to be added.
-      // The way to pass it to checkout page is through pageData.bookingData
       fetchSpeculatedTransaction({
-        listingId,
-        bookingStart: bookingStartForAPI,
-        bookingEnd: bookingEndForAPI,
+        transactionParams,
       });
     }
 
@@ -204,6 +214,7 @@ export class CheckoutPageComponent extends Component {
   handlePaymentIntent(handlePaymentParams) {
     const {
       currentUser,
+
       stripeCustomerFetched,
       onInitiateOrder,
       onHandleCardPayment,
@@ -370,10 +381,14 @@ export class CheckoutPageComponent extends Component {
         ? { setupPaymentMethodForSaving: true }
         : {};
 
+    const params = storedData(STORAGE_KEY);
+    const customParams = customPricingParams(params);
+
     const orderParams = {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
+      lineItems: customParams.lineItems,
       ...optionalPaymentParams,
     };
 
@@ -906,6 +921,7 @@ const mapStateToProps = state => {
     listing,
     bookingData,
     bookingDates,
+    selectedAdditionalItemIdQuantities,
     stripeCustomerFetched,
     speculateTransactionInProgress,
     speculateTransactionError,
@@ -922,6 +938,7 @@ const mapStateToProps = state => {
     stripeCustomerFetched,
     bookingData,
     bookingDates,
+    selectedAdditionalItemIdQuantities,
     speculateTransactionInProgress,
     speculateTransactionError,
     speculatedTransaction,
