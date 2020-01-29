@@ -97,7 +97,7 @@
   @media (--viewportLarge) {
     flex-grow: 0;
     flex-basis: 519px;
-    margin-top: 121px;
+    margin-top: 50px;
     margin-right: 132px;
   }
 }
@@ -282,7 +282,7 @@
     padding-bottom: 55px;
 
     /* Position */
-    margin: 120px 0 24px 0;
+    margin: 50px 0 24px 0;
 
     /* Coloring */
     background-color: var(--matterColorLight);
@@ -346,6 +346,24 @@
   }
 }
 
+.bookingFlowAccessories {
+  color:var(--marketplaceColor);
+}
+.bookingFlowCustomerinfo,.bookingFlowPayment {
+  color:var(--marketplaceColorLight);
+}
+
+.subtitleWrapper {
+  display:flex;
+}
+
+.subtitleStep {
+  color:var(--marketplaceColorLight);
+  margin-left: 15px;
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
 
 /* .form {
   position: relative;

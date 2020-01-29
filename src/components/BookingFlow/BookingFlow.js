@@ -24,13 +24,13 @@ const BookingFlow = props => {
   return (
     <ul className={css.bookingFlowWrapper}>
       <li className={css.bookingFlowAccessories}>
-        <FormattedMessage id="BookingPanel.hostedBy" />
+        <FormattedMessage id="BookingFlow.accessories" />
       </li>
       <li className={css.bookingFlowCustomerinfo} >
-        <FormattedMessage id="BookingPanel.hostedBy" />
+        <FormattedMessage id="BookingFlow.customerinfo" />
       </li>
       <li className={css.bookingFlowPayment} >
-        <FormattedMessage id="BookingPanel.hostedBy" />
+        <FormattedMessage id="BookingFlow.payment" />
       </li>
     </ul>
   );

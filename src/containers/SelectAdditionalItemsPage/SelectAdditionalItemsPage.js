@@ -848,6 +848,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     return (
       <Page {...pageProps}>
         {topbar}
+        <BookingFlow />
         <div className={css.contentContainer}>
           <div className={css.aspectWrapper}>
             <ResponsiveImage
@@ -861,14 +862,19 @@ export class SelectAdditionalItemsPageComponent extends Component {
             <AvatarMedium user={currentAuthor} disableProfileLink />
           </div>
           <div className={css.bookListingContainer}>
-            <BookingFlow />
+
             <div className={css.heading}>
               <h1 className={css.title}>
                 <FormattedMessage id="SelectAdditionalItemsPage.title" />
               </h1>
-              <p>
-                <FormattedMessage id="SelectAdditionalItemsPage.subtitle" />
-              </p>
+              <div className={css.subtitleWrapper}>
+                <p>
+                  <FormattedMessage id="SelectAdditionalItemsPage.subtitle" />
+                </p>
+                <p className={css.subtitleStep}>
+                  <FormattedMessage id="SelectAdditionalItemsPage.step1" />
+                </p>
+              </div>
             </div>
 
             <div className={css.priceBreakdownContainer}>
@@ -938,7 +944,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
             {breakdown}
           </div>
         </div>
-      </Page>
+      </Page >
     );
   }
 }
