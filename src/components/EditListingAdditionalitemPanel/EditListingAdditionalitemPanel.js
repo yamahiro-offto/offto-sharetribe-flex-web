@@ -67,7 +67,7 @@ const EditListingAdditionalitemPanel = props => {
 
           onSubmit(updateValues);
         }}
-        onChange={onChange}
+        // onChange={{}}
         disabled={disabled}
         ready={ready}
         updated={panelUpdated}
