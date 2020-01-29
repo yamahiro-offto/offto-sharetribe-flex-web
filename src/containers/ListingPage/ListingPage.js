@@ -418,10 +418,7 @@ export class ListingPageComponent extends Component {
                   handleViewPhotosClick={handleViewPhotosClick}
                   onManageDisableScrolling={onManageDisableScrolling}
                 />
-
                 <SectionAvatar user={currentAuthor} params={params} />
-
-
                 <div className={css.mainContent}>
                   <SectionHeading
                     priceTitle={priceTitle}
@@ -456,7 +453,6 @@ export class ListingPageComponent extends Component {
                   />
                 </div>
               </div>
-
               <div className={css.rightColumn}>
                 <BookingPanel
                   className={css.bookingPanel}
@@ -472,11 +468,8 @@ export class ListingPageComponent extends Component {
                   fetchTimeSlotsError={fetchTimeSlotsError}
                 />
               </div>
-
             </div>
-
           </LayoutWrapperMain>
-
           <LayoutWrapperFooter>
             <Footer />
           </LayoutWrapperFooter>
