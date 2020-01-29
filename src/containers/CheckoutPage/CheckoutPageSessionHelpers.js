@@ -62,13 +62,14 @@ export const isValidTransaction = transaction => {
 };
 
 // Stores given bookingDates and listing to sessionStorage
-export const storeData = (bookingData, bookingDates, listing, transaction, storageKey) => {
+export const storeData = (bookingData, bookingDates, listing, speculatedTransaction, selectedAdditionalItemIdQuantities, storageKey) => {
   if (window && window.sessionStorage && listing && bookingDates && bookingData) {
     const data = {
       bookingData,
       bookingDates,
       listing,
-      transaction,
+      speculatedTransaction,
+      selectedAdditionalItemIdQuantities,
       storedAt: new Date(),
     };
 
@@ -105,7 +106,7 @@ export const storedData = storageKey => {
       return sdkTypes.reviver(k, v);
     };
 
-    const { bookingData, bookingDates, listing, transaction, storedAt } = checkoutPageData
+    const { bookingData, bookingDates, listing, speculatedTransaction, selectedAdditionalItemIdQuantities, storedAt } = checkoutPageData
       ? JSON.parse(checkoutPageData, reviver)
       : {};
 
@@ -114,8 +115,8 @@ export const storedData = storageKey => {
       ? moment(storedAt).isAfter(moment().subtract(1, 'days'))
       : false;
 
-    // resolve transaction as valid if it is missing
-    const isTransactionValid = !!transaction ? isValidTransaction(transaction) : true;
+    // resolve speculatedTransaction as valid if it is missing
+    const isTransactionValid = !!speculatedTransaction ? isValidTransaction(speculatedTransaction) : true;
 
     const isStoredDataValid =
       isFreshlySaved &&
@@ -124,7 +125,7 @@ export const storedData = storageKey => {
       isTransactionValid;
 
     if (isStoredDataValid) {
-      return { bookingData, bookingDates, listing, transaction };
+      return { bookingData, bookingDates, listing, speculatedTransaction, selectedAdditionalItemIdQuantities };
     }
   }
   return {};
