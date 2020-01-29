@@ -36,10 +36,10 @@ const initialState = {
   listing: null,
   bookingData: null,
   bookingDates: null,
+  selectedAdditionalItemIdQuantities: null,
   speculateTransactionInProgress: false,
   speculateTransactionError: null,
   speculatedTransaction: null,
-  transaction: null,
   initiateOrderError: null,
   confirmPaymentError: null,
   stripeCustomerFetched: false,
@@ -70,6 +70,14 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
         ...state,
         speculateTransactionInProgress: false,
         speculateTransactionError: payload,
+      };
+    case RESPECULATE_TRANSACTION_REQUEST:
+      return {
+        ...state,
+        speculateTransactionInProgress: true,
+        speculateTransactionError: null,
+        speculatedTransaction: null,
+        selectedAdditionalItemIdQuantities: payload.selectedAdditionalItemIdQuantities,
       };
 
     case INITIATE_ORDER_REQUEST:
@@ -147,6 +155,11 @@ export const speculateTransactionError = e => ({
   type: SPECULATE_TRANSACTION_ERROR,
   error: true,
   payload: e,
+});
+
+export const respeculateTransactionRequest = selectedAdditionalItemIdQuantities => ({
+  type: RESPECULATE_TRANSACTION_REQUEST,
+  payload: { selectedAdditionalItemIdQuantities },
 });
 
 export const stripeCustomerRequest = () => ({ type: STRIPE_CUSTOMER_REQUEST });
@@ -260,12 +273,16 @@ export const sendMessage = params => (dispatch, getState, sdk) => {
  * the price with the chosen information.
  */
 export const speculateTransaction = params => (dispatch, getState, sdk) => {
-  dispatch(speculateTransactionRequest());
+  const { transactionParams } = params;
+
+  const { selectedAdditionalItemIdQuantities } = transactionParams;
+  dispatch(respeculateTransactionRequest(selectedAdditionalItemIdQuantities));
+
   const bodyParams = {
     transition: TRANSITION_REQUEST_PAYMENT,
     processAlias: config.bookingProcessAlias,
     params: {
-      ...params,
+      ...transactionParams,
       cardToken: 'CheckoutPage_speculative_card_token',
     },
   };
@@ -284,7 +301,7 @@ export const speculateTransaction = params => (dispatch, getState, sdk) => {
       dispatch(speculateTransactionSuccess(tx));
     })
     .catch(e => {
-      const { listingId, bookingStart, bookingEnd } = params;
+      const { listingId, bookingStart, bookingEnd } = transactionParams;
       log.error(e, 'speculate-transaction-failed', {
         listingId: listingId.uuid,
         bookingStart,

@@ -275,14 +275,10 @@ export const sendMessage = params => (dispatch, getState, sdk) => {
  * the price with the chosen information.
  */
 export const speculateTransaction = params => (dispatch, getState, sdk) => {
-  const { transactionParams, selectedAdditionalItemIdQuantities } = params;
+  const { transactionParams } = params;
 
-  const isFirstCall = selectedAdditionalItemIdQuantities === null;
-  if (isFirstCall) {
-    dispatch(speculateTransactionRequest());
-  } else {
-    dispatch(respeculateTransactionRequest(selectedAdditionalItemIdQuantities));
-  }
+  const { selectedAdditionalItemIdQuantities } = transactionParams;
+  dispatch(respeculateTransactionRequest(selectedAdditionalItemIdQuantities));
 
   const bodyParams = {
     transition: TRANSITION_REQUEST_PAYMENT,
