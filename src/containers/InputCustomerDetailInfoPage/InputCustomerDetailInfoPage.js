@@ -49,7 +49,7 @@ import {
   Page,
   ResponsiveImage,
 } from '../../components';
-import { EditListingAdditionalitemForm } from '../../forms';
+import { InputCustomerDetailInfoForm } from '../../forms';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { handleCardPayment, retrievePaymentIntent } from '../../ducks/stripe.duck';
 import { savePaymentMethod } from '../../ducks/paymentMethods.duck';
@@ -61,6 +61,7 @@ import {
   stripeCustomer,
   confirmPayment,
   sendMessage,
+  speculateTransactionSuccess,
 } from './InputCustomerDetailInfoPage.duck';
 import { storeData, storedData, clearData } from './InputCustomerDetailInfoPageSessionHelpers';
 import css from './InputCustomerDetailInfoPage.css';
@@ -124,9 +125,14 @@ export class InputCustomerDetailInfoPageComponent extends Component {
   }
 
   componentDidMount() {
+    const { selectedAdditionalItemIdQuantities } = this.props;
     if (window) {
-      this.loadInitialData();
+      this.loadInitialData(selectedAdditionalItemIdQuantities);
     }
+    // this.setState({ ...this.state, dataLoaded: true });
+
+    // const { onInitPage, speculatedTransaction } = this.props;
+    // onInitPage(speculatedTransaction);
   }
 
   customPricingParams(params) {
@@ -228,15 +234,24 @@ export class InputCustomerDetailInfoPageComponent extends Component {
     // Action is 'REPLACE' when user has directed through login/signup process
     const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE';
 
-    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink;
+    const hasDataInProps =
+      !!(bookingData && bookingDates && listing && selectedAdditionalItemIdQuantities) &&
+      hasNavigatedThroughLink;
     if (hasDataInProps) {
       // Store data only if data is passed through props and user has navigated through a link.
-      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
+      storeData(
+        bookingData,
+        bookingDates,
+        listing,
+        transaction,
+        selectedAdditionalItemIdQuantities,
+        STORAGE_KEY
+      );
     }
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction }
+      ? { bookingData, bookingDates, listing, transaction, selectedAdditionalItemIdQuantities }
       : storedData(STORAGE_KEY);
 
     // Check if a booking is already created according to stored data.
@@ -244,7 +259,7 @@ export class InputCustomerDetailInfoPageComponent extends Component {
     const isBookingCreated = tx && tx.booking && tx.booking.id;
 
     const shouldFetchSpeculatedTransaction =
-      selectedAdditionalItemIdQuantities || // force to fetch
+      pageData.selectedAdditionalItemIdQuantities || // force to fetch
       (pageData &&
         pageData.listing &&
         pageData.listing.id &&
@@ -257,14 +272,12 @@ export class InputCustomerDetailInfoPageComponent extends Component {
     if (shouldFetchSpeculatedTransaction) {
       const transactionParams = this.customPricingParams({
         ...pageData,
-        selectedAdditionalItemIdQuantities,
       });
 
       console.log('transactionParams', transactionParams);
 
       fetchSpeculatedTransaction({
         transactionParams,
-        selectedAdditionalItemIdQuantities,
       });
     }
 
@@ -882,56 +895,33 @@ export class InputCustomerDetailInfoPageComponent extends Component {
                   />
                 </p>
               ) : null}
-              {showPaymentForm ? (
-                <EditListingAdditionalitemForm
-                  className={css.form}
-                  saveActionMsg={additionalItemsButtonText}
-                  // onSubmit={this.handleSubmit}
-                  onSubmit={values => {
-                    console.log('onSubmit values', values);
-                    const { additionalItems } = values;
-                    const updateValues = {
-                      publicData: {
-                        additionalItems,
-                      },
-                    };
-                    // onSubmit(updateValues);
-                  }}
-                  // onChange={this.handleChange}
-                  onChange={((values, _pre) => {
-                    const { additionalItemIds: selectedAdditionalItemIds } = values;
-                    const selectedAdditionalItemIdQuantities = selectedAdditionalItemIds.map(
-                      itemId => {
-                        const idx = additionalItems.findIndex(item => item.id == itemId);
-                        return { id: itemId, quantity: 1, item: additionalItems[idx] };
-                      }
-                    );
+              <InputCustomerDetailInfoForm
+                className={css.form}
+                currentListing={currentListing}
+                initialValues={{
+                  height: '170',
+                  weight: '60',
+                  footSize: '20',
+                  gender: '',
+                  age: '20',
+                  skill: '',
+                  pickUpTime: '12:00',
+                  dropOffTime: '12:00',
+                }}
+                saveActionMsg={'submitButtonText'}
+                onSubmit={values => {
+                  console.log('updateValues', values);
 
-                    // if not renewed, do nothing (may be called when initialValue is changed)
-                    if (
-                      this.selectedAdditionalItemIdQuantities &&
-                      selectedAdditionalItemIdQuantities &&
-                      this.selectedAdditionalItemIdQuantities.toString() ===
-                        selectedAdditionalItemIdQuantities.toString()
-                    ) {
-                      return;
-                    }
-
-                    this.loadInitialData(selectedAdditionalItemIdQuantities);
-                  }).bind(this)}
-                  initialValues={{
-                    additionalItemIds: selectedAdditionalItemIdQuantities
-                      ? selectedAdditionalItemIdQuantities.map(idQuantity => idQuantity.id)
-                      : [],
-                  }}
-                  additionalItems={additionalItems}
-                  disabled={false}
-                  ready={false}
-                  updated={false}
-                  updateInProgress={false}
-                  fetchErrors={{}}
-                />
-              ) : null}
+                  // onSubmit(updateValues);
+                }}
+                onChange={values => values}
+                disabled={false}
+                ready={false}
+                updated={false}
+                updateInProgress={false}
+                fetchErrors={false}
+                categories={config.custom.categories}
+              />
               {isPaymentExpired ? (
                 <p className={css.orderError}>
                   <FormattedMessage
@@ -1035,7 +1025,6 @@ const mapStateToProps = state => {
     speculateTransactionInProgress,
     speculateTransactionError,
     speculatedTransaction,
-    transaction,
     initiateOrderError,
     confirmPaymentError,
   } = state.InputCustomerDetailInfoPage;
@@ -1051,7 +1040,6 @@ const mapStateToProps = state => {
     speculateTransactionInProgress,
     speculateTransactionError,
     speculatedTransaction,
-    transaction,
     listing,
     initiateOrderError,
     handleCardPaymentError,
@@ -1073,6 +1061,7 @@ const mapDispatchToProps = dispatch => ({
   onSavePaymentMethod: (stripeCustomer, stripePaymentMethodId) =>
     dispatch(savePaymentMethod(stripeCustomer, stripePaymentMethodId)),
   // onSelectedAdditionalItemChanged: (transaction, addiionalItemIds) => {},
+  onInitPage: params => dispatch(speculateTransactionSuccess(params)),
 });
 
 const InputCustomerDetailInfoPage = compose(

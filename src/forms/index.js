@@ -15,6 +15,7 @@ export { default as EditListingRentalstyleForm } from './EditListingRentalstyleF
 export { default as EmailVerificationForm } from './EmailVerificationForm/EmailVerificationForm';
 export { default as EnquiryForm } from './EnquiryForm/EnquiryForm';
 export { default as FilterForm } from './FilterForm/FilterForm';
+export { default as InputCustomerDetailInfoForm } from './InputCustomerDetailInfoForm/InputCustomerDetailInfoForm';
 export { default as LocationSearchForm } from './LocationSearchForm/LocationSearchForm';
 export { default as LoginForm } from './LoginForm/LoginForm';
 export { default as ManageAdditionalItemsForm } from './ManageAdditionalItemsForm/ManageAdditionalItemsForm';
