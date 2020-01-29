@@ -864,12 +864,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
               <h1 className={css.title}>
                 <FormattedMessage id="SelectAdditionalItemsPage.title" />
               </h1>
-              <div className={css.author}>
-                <FormattedMessage
-                  id="SelectAdditionalItemsPage.hostedBy"
-                  values={{ name: currentAuthor.attributes.profile.displayName }}
-                />
-              </div>
+
             </div>
 
             <div className={css.priceBreakdownContainer}>
