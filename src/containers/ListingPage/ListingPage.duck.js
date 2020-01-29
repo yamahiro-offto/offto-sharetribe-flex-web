@@ -137,10 +137,10 @@ export const showListing = (listingId, isOwn = false) => (dispatch, getState, sd
     include: ['author', 'author.profileImage', 'images'],
     'fields.image': [
       // Listing page
-      'variants.landscape-crop',
-      'variants.landscape-crop2x',
-      'variants.landscape-crop4x',
-      'variants.landscape-crop6x',
+      'variants.square-crop',
+      'variants.square-crop2x',
+      'variants.square-crop4x',
+      'variants.square-crop6x',
 
       // Social media
       'variants.facebook',
