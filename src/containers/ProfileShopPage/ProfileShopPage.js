@@ -12,9 +12,7 @@ import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import {
   Page,
-  LayoutSideNavigation,
   LayoutWrapperMain,
-  LayoutWrapperSideNav,
   LayoutWrapperTopbar,
   LayoutWrapperFooter,
   Footer,
@@ -24,6 +22,7 @@ import {
   ListingCard,
   Reviews,
   ButtonTabNavHorizontal,
+  LayoutSingleColumn,
 } from '../../components';
 import { TopbarContainer, NotFoundPage } from '..';
 import { loadData } from './ProfileShopPage.duck';
@@ -86,8 +85,8 @@ export class ProfileShopPageComponent extends Component {
     const isMobileLayout = viewport.width < MAX_MOBILE_SCREEN_WIDTH;
 
     const isShopUser = offtoData.OfftoUser.userIsShop(user);
-    if(!isShopUser && userId){
-      return <NamedRedirect name="ProfilePage" params={{id: userId.uuid}}/>;
+    if (!isShopUser && userId) {
+      return <NamedRedirect name="ProfilePage" params={{ id: userId.uuid }} />;
     }
 
     const editLinkMobile = isCurrentUser ? (
@@ -185,17 +184,89 @@ export class ProfileShopPageComponent extends Component {
         {this.state.showReviewsType === REVIEW_TYPE_OF_PROVIDER ? (
           <Reviews reviews={reviewsOfProvider} />
         ) : (
-          <Reviews reviews={reviewsOfCustomer} />
-        )}
+            <Reviews reviews={reviewsOfCustomer} />
+          )}
       </div>
     );
 
     const mainContent = (
-      <div>
-        <h1 className={css.desktopHeading}>
-          <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
-        </h1>
-        {hasBio ? <p className={css.bio}>{bio}</p> : null}
+      <div className={css.centeringWrapper}>
+        <div className={css.LayoutDoubleColumn}>
+          <div className={css.leftColumn}>
+            <div className={css.shopImagesTop}>IMAGE</div>
+            <div className={css.shopImagesWrapper}>
+              <div className={css.shopImages}>IMAGE</div>
+              <div className={css.shopImages}>IMAGE</div>
+              <div className={css.shopImagesLast}>IMAGE</div>
+            </div>
+          </div>
+          <div className={css.rightColumn}>
+            <div className={css.sectionShopName}>
+              <p className={css.shopNameTitle}>
+                <FormattedMessage id="ProfileShopPage.shopNameTitle" />
+              </p>
+              <h1 className={css.shopName}>
+                <FormattedMessage id="ProfileShopPage.desktopHeading" values={{ name: displayName }} />
+              </h1>
+            </div>
+            <div className={css.sectionShopComment}>
+              <h2 className={css.shopCommentTitle}>
+                <FormattedMessage id="ProfileShopPage.shopCommentTitle" />
+              </h2>
+              <p className={css.shopComment}>samplesamplesamplesamplesamplesamplesample</p>
+            </div>
+            <div className={css.sectionShopAddress}>
+              <h2 className={css.shopAddressTitle}>
+                <FormattedMessage id="ProfileShopPage.shopAddressTitle" />
+              </h2>
+              <p className={css.shopAddress}>samplesamplesamplesamplesamplesamplesample</p>
+            </div>
+            <div className={css.sectionShopOpeningHours}>
+              <h2 className={css.shopOpeningHoursTitle}>
+                <FormattedMessage id="ProfileShopPage.shopOpeningHoursTitle" />
+              </h2>
+              <div className={css.shopOpeningHoursWrapper}>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayMondayTitle" />
+                </p>
+                <p className={css.modayContent}>10:00-18:00</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayTuesdayTitle" />
+                </p>
+                <p className={css.tuesdayContent}>10:00-18:00</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayWednesdayTitle" />
+                </p>
+                <p className={css.wednesdayContent}>10:00-18:00</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayThursdayTitle" />
+                </p>
+                <p className={css.thursdayContent}>10:00-18:00</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.dayFridayTitle" />
+                </p>
+                <p className={css.fridayContent}>10:00-18:00</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.daySaturdayTitle" />
+                </p>
+                <p className={css.saturdayContent}>10:00-18:00</p>
+                <p className={css.dayTitle}>
+                  <FormattedMessage id="ProfileShopPage.daySundayTitle" />
+                </p>
+                <p className={css.sundayContent}>10:00-18:00</p>
+              </div>
+            </div>
+            <div className={css.sectionShopContacts}>
+              <h2 className={css.shopContactsTitle}>
+                <FormattedMessage id="ProfileShopPage.shopContactsTitle" />
+              </h2>
+              <div className={css.shopContactsWrapper}>
+                <p>sample</p>
+                <p>sample</p>
+              </div>
+            </div>
+          </div>
+        </div>
         {hasListings ? (
           <div className={listingsContainerClasses}>
             <h2 className={css.listingsTitle}>
@@ -251,16 +322,15 @@ export class ProfileShopPageComponent extends Component {
           name: schemaTitle,
         }}
       >
-        <LayoutSideNavigation>
+        <LayoutSingleColumn>
           <LayoutWrapperTopbar>
             <TopbarContainer currentPage="ProfileShopPage" />
           </LayoutWrapperTopbar>
-          <LayoutWrapperSideNav className={css.aside}>{asideContent}</LayoutWrapperSideNav>
           <LayoutWrapperMain>{content}</LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />
           </LayoutWrapperFooter>
-        </LayoutSideNavigation>
+        </LayoutSingleColumn>
       </Page>
     );
   }

@@ -401,23 +401,23 @@ export class ListingPageComponent extends Component {
         <LayoutSingleColumn className={css.pageRoot}>
           <LayoutWrapperTopbar>{topbar}</LayoutWrapperTopbar>
           <LayoutWrapperMain>
-            <div>
-              <SectionImages
-                title={title}
-                listing={currentListing}
-                isOwnListing={isOwnListing}
-                editParams={{
-                  id: listingId.uuid,
-                  slug: listingSlug,
-                  type: listingType,
-                  tab: listingTab,
-                }}
-                imageCarouselOpen={this.state.imageCarouselOpen}
-                onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
-                handleViewPhotosClick={handleViewPhotosClick}
-                onManageDisableScrolling={onManageDisableScrolling}
-              />
-              <div className={css.contentContainer}>
+            <div className={css.LayoutDoubleColumn}>
+              <div className={css.leftColumn}>
+                <SectionImages
+                  title={title}
+                  listing={currentListing}
+                  isOwnListing={isOwnListing}
+                  editParams={{
+                    id: listingId.uuid,
+                    slug: listingSlug,
+                    type: listingType,
+                    tab: listingTab,
+                  }}
+                  imageCarouselOpen={this.state.imageCarouselOpen}
+                  onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
+                  handleViewPhotosClick={handleViewPhotosClick}
+                  onManageDisableScrolling={onManageDisableScrolling}
+                />
                 <SectionAvatar user={currentAuthor} params={params} />
                 <div className={css.mainContent}>
                   <SectionHeading
@@ -452,6 +452,8 @@ export class ListingPageComponent extends Component {
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
                 </div>
+              </div>
+              <div className={css.rightColumn}>
                 <BookingPanel
                   className={css.bookingPanel}
                   listing={currentListing}

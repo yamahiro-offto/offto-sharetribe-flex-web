@@ -345,3 +345,22 @@
     margin: 0 48px;
   }
 }
+
+.bookingFlowAccessories {
+  color:var(--marketplaceColor);
+}
+.bookingFlowCustomerinfo,.bookingFlowPayment {
+  color:var(--marketplaceColorLight);
+}
+
+.subtitleWrapper {
+  display:flex;
+}
+
+.subtitleStep {
+  color:var(--marketplaceColorLight);
+  margin-left: 15px;
+  @media (--viewportLarge) {
+    display: none;
+  }
+}

@@ -157,7 +157,7 @@
 .priceContainer {
   /* Layout */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   flex-shrink: 0;
   margin-right: 22px;
