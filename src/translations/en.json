@@ -935,7 +935,7 @@
   "SelectAdditionalItemsPage.speculateFailedMessage": "Oops, something went wrong. Please refresh the page and try again.",
   "SelectAdditionalItemsPage.speculateTransactionError": "Failed to fetch breakdown information.",
   "SelectAdditionalItemsPage.submitButton": "Continue to book",
-  "SelectAdditionalItemsPage.title": "Book {listingTitle}",
+  "SelectAdditionalItemsPage.title": "Add accessories",
   "SelectSingleFilter.plainClear": "Clear",
   "SelectSingleFilter.popupClear": "Clear",
   "SendMessageForm.sendFailed": "Failed to send. Please try again.",
