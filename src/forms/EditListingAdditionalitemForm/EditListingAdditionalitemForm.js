@@ -113,7 +113,7 @@ const EditListingAdditionalitemFormComponent = props => (
           </Button>
           <OnChange>
             {(value, previous) => {
-              onChange(value, previous)
+              onChange && onChange(value, previous);
             }}
           </OnChange>
         </Form>
