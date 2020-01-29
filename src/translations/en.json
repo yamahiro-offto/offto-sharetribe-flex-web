@@ -936,6 +936,7 @@
   "SelectAdditionalItemsPage.speculateTransactionError": "Failed to fetch breakdown information.",
   "SelectAdditionalItemsPage.submitButton": "Continue to book",
   "SelectAdditionalItemsPage.title": "Add accessories",
+  "SelectAdditionalItemsPage.subtitle": "You can add other accessories here.",
   "SelectSingleFilter.plainClear": "Clear",
   "SelectSingleFilter.popupClear": "Clear",
   "SendMessageForm.sendFailed": "Failed to send. Please try again.",

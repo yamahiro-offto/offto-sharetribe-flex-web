@@ -864,7 +864,9 @@ export class SelectAdditionalItemsPageComponent extends Component {
               <h1 className={css.title}>
                 <FormattedMessage id="SelectAdditionalItemsPage.title" />
               </h1>
-
+              <p>
+                <FormattedMessage id="SelectAdditionalItemsPage.subtitle" />
+              </p>
             </div>
 
             <div className={css.priceBreakdownContainer}>
