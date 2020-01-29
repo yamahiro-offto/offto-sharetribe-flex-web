@@ -74,6 +74,7 @@
   }
 }
 
+/* ダブルカラム化によりコメントアウト
 .desktopHeading {
   display: none;
 
@@ -82,6 +83,7 @@
     margin: 2px 0 24px 0;
   }
 }
+ */
 
 .bio {
   /* Preserve newlines, but collapse other whitespace */
@@ -200,3 +202,113 @@
 .desktopReviewsTabNav {
   margin-bottom: 32px;
 }
+
+/* これ以降木津が追加 */
+
+.centeringWrapper {
+  margin:0 auto 0;
+  @media (--viewportMedium){
+    width:768px;
+  }
+  @media (--viewportLarge){
+    width:900px;
+  }
+}
+
+.shopImagesTop {
+  background-color: aliceblue;
+  width:auto;
+  height: 300px;
+  text-align: center;
+  margin-bottom: 10px;
+  @media (--viewportMedium){
+    width:768px;
+  }
+  @media (--viewportLarge){
+    width:450px;
+  }
+}
+
+.shopImagesWrapper {
+  display:flex;
+  width: auto;
+  height: 100px;
+  @media (--viewportMedium){
+    width:768px;
+  }
+  @media (--viewportLarge){
+    width:450px;
+  }
+}
+
+.shopImages {
+  background-color: aliceblue;
+  text-align: center;
+  flex-grow: 1;
+  margin:0 10px 0 0;
+}
+
+.shopImagesLast {
+  background-color: aliceblue;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.LayoutDoubleColumn {
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  margin: 30px auto 30px;
+  @media (--viewportLarge) {
+    flex-direction: row;
+    }
+}
+
+.leftColumn {
+  padding: 0 10px 0 ;
+  @media (--viewportLarge) {
+    
+    }
+}
+.rightColumn {
+  padding: 0 10px 0 ;
+  @media (--viewportLarge) {
+    }
+}
+
+.shopNameTitle,.shopCommentTitle,.shopAddressTitle,.shopOpeningHoursTitle,.shopContactsTitle {
+  @apply --marketplaceH2FontStyles;
+  color: var(--matterColorAnti);
+  margin-top: 0;
+  margin-bottom: 16px;
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  }
+
+  .sectionShopName,.sectionShopComment,.sectionShopAddress,.sectionShopOpeningHours,.shopContacts {
+    margin-bottom: 52px;
+  }
+
+  .shopOpeningHoursWrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap:0;
+  }
+
+  .shopOpeningHoursWrapper p {
+    margin:0;
+  }
+
+  .shopOpeningHoursWrapper {
+    margin-top: 16px;
+  }
+
+  .shopContactsWrapper p {
+    margin:0;
+  }
+
+  .shopContactsWrapper {
+    margin-top: 16px;
+  }

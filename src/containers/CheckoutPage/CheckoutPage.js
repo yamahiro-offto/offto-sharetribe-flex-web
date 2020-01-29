@@ -203,7 +203,6 @@ export class CheckoutPageComponent extends Component {
         ...pageData,
       });
 
-
       fetchSpeculatedTransaction({
         transactionParams,
       });
@@ -215,6 +214,7 @@ export class CheckoutPageComponent extends Component {
   handlePaymentIntent(handlePaymentParams) {
     const {
       currentUser,
+
       stripeCustomerFetched,
       onInitiateOrder,
       onHandleCardPayment,
@@ -230,7 +230,7 @@ export class CheckoutPageComponent extends Component {
       selectedPaymentMethod,
       saveAfterOnetimePayment,
     } = handlePaymentParams;
-    const storedTx = ensureTransaction(pageData.speculatedTransaction);
+    const storedTx = ensureTransaction(pageData.transaction);
 
     const ensuredCurrentUser = ensureCurrentUser(currentUser);
     const ensuredStripeCustomer = ensureStripeCustomer(ensuredCurrentUser.stripeCustomer);
@@ -381,10 +381,14 @@ export class CheckoutPageComponent extends Component {
         ? { setupPaymentMethodForSaving: true }
         : {};
 
+    const params = storedData(STORAGE_KEY);
+    const customParams = customPricingParams(params);
+
     const orderParams = {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
+      lineItems: customParams.lineItems,
       ...optionalPaymentParams,
     };
 

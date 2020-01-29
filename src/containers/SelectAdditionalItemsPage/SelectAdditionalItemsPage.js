@@ -43,6 +43,7 @@ import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../.
 import {
   AvatarMedium,
   BookingBreakdown,
+  BookingFlow,
   Logo,
   NamedLink,
   NamedRedirect,
@@ -85,8 +86,8 @@ const paymentFlow = (selectedPaymentMethod, saveAfterOnetimePayment) => {
   return selectedPaymentMethod === 'defaultCard'
     ? USE_SAVED_CARD
     : saveAfterOnetimePayment
-    ? PAY_AND_SAVE_FOR_LATER_USE
-    : ONETIME_PAYMENT;
+      ? PAY_AND_SAVE_FOR_LATER_USE
+      : ONETIME_PAYMENT;
 };
 
 const initializeOrderPage = (initialValues, routes, dispatch) => {
@@ -101,8 +102,8 @@ const checkIsPaymentExpired = existingTransaction => {
   return txIsPaymentExpired(existingTransaction)
     ? true
     : txIsPaymentPending(existingTransaction)
-    ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
-    : false;
+      ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
+      : false;
 };
 
 export class SelectAdditionalItemsPageComponent extends Component {
@@ -169,12 +170,12 @@ export class SelectAdditionalItemsPageComponent extends Component {
 
     const lineItems_additionalItems = selectedAdditionalItemIdQuantities
       ? selectedAdditionalItemIdQuantities.map(idQuantity => ({
-          code: formatLineItemAdditionalItem(idQuantity.id),
-          // includeFor: ['customer', 'provider'],
-          unitPrice: new Money(idQuantity.item.price.amount, idQuantity.item.price.currency),
-          quantity: idQuantity.quantity,
-          // reversal: false,
-        }))
+        code: formatLineItemAdditionalItem(idQuantity.id),
+        // includeFor: ['customer', 'provider'],
+        unitPrice: new Money(idQuantity.item.price.amount, idQuantity.item.price.currency),
+        quantity: idQuantity.quantity,
+        // reversal: false,
+      }))
       : [];
 
     console.log('lineItem_listing', lineItem_listing);
@@ -370,10 +371,10 @@ export class SelectAdditionalItemsPageComponent extends Component {
       const paymentParams =
         selectedPaymentFlow !== USE_SAVED_CARD
           ? {
-              payment_method_data: {
-                billing_details: billingDetails,
-              },
-            }
+            payment_method_data: {
+              billing_details: billingDetails,
+            },
+          }
           : {};
 
       const params = {
@@ -453,8 +454,8 @@ export class SelectAdditionalItemsPageComponent extends Component {
       selectedPaymentFlow === USE_SAVED_CARD && hasDefaultPaymentMethod
         ? { paymentMethod: stripePaymentMethodId }
         : selectedPaymentFlow === PAY_AND_SAVE_FOR_LATER_USE
-        ? { setupPaymentMethodForSaving: true }
-        : {};
+          ? { setupPaymentMethodForSaving: true }
+          : {};
 
     const orderParams = {
       listingId: pageData.listing.id,
@@ -479,7 +480,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
         this.selectedAdditionalItemIdQuantities &&
         selectedAdditionalItemIdQuantities &&
         this.selectedAdditionalItemIdQuantities.toString() ===
-          selectedAdditionalItemIdQuantities.toString()
+        selectedAdditionalItemIdQuantities.toString()
       ) {
         return;
       }
@@ -797,8 +798,8 @@ export class SelectAdditionalItemsPageComponent extends Component {
     const unitTranslationKey = isNightly
       ? 'SelectAdditionalItemsPage.perNight'
       : isDaily
-      ? 'SelectAdditionalItemsPage.perDay'
-      : 'SelectAdditionalItemsPage.perUnit';
+        ? 'SelectAdditionalItemsPage.perDay'
+        : 'SelectAdditionalItemsPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);
@@ -847,6 +848,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
     return (
       <Page {...pageProps}>
         {topbar}
+        <BookingFlow />
         <div className={css.contentContainer}>
           <div className={css.aspectWrapper}>
             <ResponsiveImage
@@ -860,13 +862,18 @@ export class SelectAdditionalItemsPageComponent extends Component {
             <AvatarMedium user={currentAuthor} disableProfileLink />
           </div>
           <div className={css.bookListingContainer}>
+
             <div className={css.heading}>
-              <h1 className={css.title}>{title}</h1>
-              <div className={css.author}>
-                <FormattedMessage
-                  id="SelectAdditionalItemsPage.hostedBy"
-                  values={{ name: currentAuthor.attributes.profile.displayName }}
-                />
+              <h1 className={css.title}>
+                <FormattedMessage id="SelectAdditionalItemsPage.title" />
+              </h1>
+              <div className={css.subtitleWrapper}>
+                <p>
+                  <FormattedMessage id="SelectAdditionalItemsPage.subtitle" />
+                </p>
+                <p className={css.subtitleStep}>
+                  <FormattedMessage id="SelectAdditionalItemsPage.step1" />
+                </p>
               </div>
             </div>
 
@@ -937,7 +944,7 @@ export class SelectAdditionalItemsPageComponent extends Component {
             {breakdown}
           </div>
         </div>
-      </Page>
+      </Page >
     );
   }
 }

@@ -20,10 +20,7 @@
   margin: 24px;
 }
 
-.sectionImages {
-}
-
-.threeToTwoWrapper {
+.squareWrapper {
   /* Layout */
   display: block;
   width: 100%;
@@ -34,22 +31,19 @@
   }
 
   @media (--viewportLarge) {
-    padding: 36px 36px 0 36px;
+    padding-top: 36px ;
   }
 }
 
 /* Firefox doesn't support image aspect ratio inside flexbox */
 .aspectWrapper {
   position: relative; /* allow positioning own listing action bar */
-  padding-bottom: 66.6667%; /* 3:2 Aspect Ratio */
+  padding-bottom: 100%; /*66.6667%の場合 3:2 Aspect Ratio */
   background-color: var(--matterColorNegative); /* Loading BG color */
 
   /* Image carousel can be opened from the image, therefore we should show a pointer */
   cursor: pointer;
 
-  @media (--viewportMedium) {
-    padding-bottom: 0; /* No fixed aspect on desktop layouts */
-  }
 }
 
 .actionBar {
@@ -130,15 +124,7 @@
   transition: var(--transitionStyleButton);
 
   @media (--viewportMedium) {
-    position: static;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    right: auto;
-    height: calc(0.41 * 100vw);
-    max-height: 50vh;
-    object-fit: cover;
-    border-radius: var(--borderRadius);
+    
 
     &:hover {
       transform: scale(1.005);
@@ -183,6 +169,7 @@
   height: 100vh;
   background-color: rgba(1, 1, 1, 0.92);
 }
+  
 
 .carouselModalContainer {
   width: 100%;
@@ -210,6 +197,57 @@
   }
 }
 
+.LayoutDoubleColumn {
+  @media (--viewportMedium) {
+    display:flex;
+    flex-direction: column;
+  }
+
+  @media (--viewportLarge) {
+    flex-direction: row;
+    max-width:1024px;
+    margin: 0 auto;
+    
+  }
+
+  @media (--viewportXLarge) {
+    flex-direction: row;
+  }
+}
+
+
+.leftColumn {
+  @media (--viewportMedium) {
+
+        }
+        
+
+  @media (--viewportLarge) {
+    flex: 2 1 66% ;
+    border-right: solid 1px var(--matterColorNegative);
+    padding-right:36px;
+    padding-bottom:100px;
+    
+  }
+
+  }
+
+.rightColumn {
+  @media (--viewportMedium) {
+    width:100%;
+    position:relative;
+
+  }
+
+  @media (--viewportLarge) {
+    flex: 1 2 33% ;
+    position:relative;
+    padding-bottom:100px;
+  }
+
+}
+
+
 .mainContent {
   flex-basis: 100%;
   margin-bottom: 23px;
@@ -224,23 +262,29 @@
     margin-top: 50px;
     margin-bottom: 0px;
     /* contentContainer's full width - (bookingColumn + two paddings + margin + border) */
-    max-width: calc(100% - 433px);
+    /* max-width: calc(100% - 433px); */
     flex-basis: calc(100% - 433px);
     flex-shrink: 0;
     flex-grow: 1;
   }
 }
 
+
 .bookingPanel {
+   @media (--viewportMedium) {
+    display: block;
+    margin-top: 95px;
+    padding-left: 60px;
+     }
+
+
   @media (--viewportLarge) {
     display: block;
     margin-top: 95px;
-    margin-left: 60px;
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-left-color: var(--matterColorNegative);
-
     padding-left: 60px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 70px;
 
     /* The calendar needs 312px */
     flex-basis: 312px;
