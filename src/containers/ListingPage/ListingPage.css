@@ -38,11 +38,14 @@
 /* Firefox doesn't support image aspect ratio inside flexbox */
 .aspectWrapper {
   position: relative; /* allow positioning own listing action bar */
-  padding-bottom: 100%; /*66.6667%の場合 3:2 Aspect Ratio */
+  padding-bottom: 66.6667%; /* 3:2 Aspect Ratio */
   background-color: var(--matterColorNegative); /* Loading BG color */
 
   /* Image carousel can be opened from the image, therefore we should show a pointer */
   cursor: pointer;
+    @media (--viewportMedium) {
+    padding-bottom: 0; /* No fixed aspect on desktop layouts */
+  }
 
 }
 
@@ -124,7 +127,15 @@
   transition: var(--transitionStyleButton);
 
   @media (--viewportMedium) {
-    
+    position: static;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    height: calc(0.41 * 100vw);
+    max-height: 50vh;
+    object-fit: cover;
+    border-radius: var(--borderRadius);
 
     &:hover {
       transform: scale(1.005);
@@ -262,7 +273,6 @@
     margin-top: 50px;
     margin-bottom: 0px;
     /* contentContainer's full width - (bookingColumn + two paddings + margin + border) */
-    /* max-width: calc(100% - 433px); */
     flex-basis: calc(100% - 433px);
     flex-shrink: 0;
     flex-grow: 1;
